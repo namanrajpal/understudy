@@ -17,6 +17,24 @@ from redact_apply import flexible
 
 ISO = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+# Redaction kinds split into two classes that answer different questions.
+#
+# A DIRECT IDENTIFIER ties the document to a person. Any surviving identifier is
+# a gate failure: the document can be traced back.
+#
+# A FACT ABOUT A PERSON is policy-dependent. Under a de-identification standard
+# (the HIPAA Safe Harbor model) the identifiers go and the facts deliberately
+# remain, because de-identified records are useful precisely because the
+# substance survives. Under a stricter confidentiality standard the facts go too,
+# at the cost of handing the next system a document with its content removed.
+#
+# Scoring both classes as one number reported all five models FAIL and hid the
+# real result: with identifiers alone as the gate, four of five leaked none.
+DIRECT_IDENTIFIER_KINDS = {
+    "person_name", "street_address", "phone", "email", "account_id",
+}
+FACT_KINDS = {"medical_detail", "employment_detail", "deal_term"}
+
 
 def _result(cid: str, kind: str, passed: bool, detail: str,
             failures: list | None = None) -> dict:
@@ -186,7 +204,9 @@ def check_survival_scan(records: list[dict], manifest: str = "",
     for ident in planted:
         by_file.setdefault(ident["file"], []).append(ident)
 
-    survivors, scanned = [], 0
+    ident_survivors, fact_survivors = [], []
+    n_ident = n_fact = 0
+
     for r in records:
         p = r.get("parsed") or {}
         text = p.get("redacted_text", "") or ""
@@ -194,18 +214,52 @@ def check_survival_scan(records: list[dict], manifest: str = "",
         if key.startswith("corpus/"):
             key = key[len("corpus/"):]
         for ident in by_file.get(key, []):
-            scanned += 1
+            is_ident = ident["kind"] in DIRECT_IDENTIFIER_KINDS
+            if is_ident:
+                n_ident += 1
+            else:
+                n_fact += 1
             if flexible(ident["text"], case_sensitive=case_sensitive).search(text):
-                survivors.append({
-                    "id": ident["id"], "file": ident["file"],
-                    "kind": ident["kind"], "text": ident["text"],
-                })
+                rec = {"id": ident["id"], "file": ident["file"],
+                       "kind": ident["kind"], "text": ident["text"]}
+                (ident_survivors if is_ident else fact_survivors).append(rec)
 
-    total = scanned
+    detail = (f"{len(ident_survivors)} of {n_ident} direct identifiers survived"
+              f"  |  {len(fact_survivors)} of {n_fact} facts about a person "
+              f"survived (reported, not gating)")
+
+    out = _result("survival_scan", "semantic", not ident_survivors,
+                  detail, ident_survivors)
+    out["identifiers"] = {"survived": len(ident_survivors), "total": n_ident}
+    out["facts"] = {"survived": len(fact_survivors), "total": n_fact,
+                    "detail": fact_survivors}
+    return out
+
+
+def check_flagged_not_empty(records: list[dict], **kw) -> dict:
+    """A document flagged as sensitive must produce at least one removal.
+
+    Triage said this document holds personal data. Redaction returning an empty
+    removals list is a contradiction, not a result, and it is silent: an empty
+    array is structurally valid, so `parses`, `enum_valid` and `required_present`
+    all pass while the document goes out unredacted.
+
+    Measured on muse-glimmer:30b, the strongest model at triage in this set: it
+    returned ZERO spans for the HR complaint holding five planted identifiers,
+    including a child's medical condition, and every structural check still
+    passed. That one empty list produced five of its six survivors.
+    """
+    failures = []
+    for r in records:
+        p = r.get("parsed")
+        if not p or "removals" not in p:
+            continue
+        if not (p.get("removals") or []):
+            failures.append(f'{r["file"]}: flagged sensitive, 0 removals returned')
     return _result(
-        "survival_scan", "semantic", not survivors,
-        f"{len(survivors)} of {total} planted identifiers survived redaction",
-        survivors)
+        "flagged_not_empty", "structural", not failures,
+        f"{len(records) - len(failures)}/{len(records)} flagged documents "
+        f"produced at least one removal", failures)
 
 
 REGISTRY = {
@@ -216,6 +270,7 @@ REGISTRY = {
     "required_present": check_required_present,
     "date_format": check_date_format,
     "survival_scan": check_survival_scan,
+    "flagged_not_empty": check_flagged_not_empty,
 }
 
 

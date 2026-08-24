@@ -5,42 +5,74 @@
   "authored_on": "2026-08-23",
   "purpose": "Take whatever the triage runbooks flagged as holding personal data and produce a version safe to send outside the building.",
   "note": "One runbook, both corpora. Emails and contracts go through the same redaction spec.",
-
   "input": {
     "from": "flagged",
     "flag_field": "contains_personal_data",
     "loader": "inherit"
   },
-
   "steps": [
-    { "n": 1, "name": "Collect every document flagged as sensitive", "op": "load" },
-    { "n": 2, "name": "Remove identifying detail from each one",      "op": "redact" },
-    { "n": 3, "name": "Scan the output for anything that survived",   "op": "check" },
-    { "n": 4, "name": "Show original beside redacted",                "op": "report" }
+    {
+      "n": 1,
+      "name": "Collect every document flagged as sensitive",
+      "op": "load"
+    },
+    {
+      "n": 2,
+      "name": "Remove identifying detail from each one",
+      "op": "redact"
+    },
+    {
+      "n": 3,
+      "name": "Scan the output for anything that survived",
+      "op": "check"
+    },
+    {
+      "n": 4,
+      "name": "Show original beside redacted",
+      "op": "report"
+    }
   ],
-
   "redact": {
     "prompt": "Remove every piece of identifying detail from the document below and return JSON matching the required schema.\n\nIn redacted_text, reproduce the document EXACTLY as written except that each identifying span is replaced by its kind in square brackets, for example [PERSON_NAME] or [STREET_ADDRESS]. Copy every other character verbatim, including headers, line breaks, and spelling. Do not summarise, reorder, reword, correct, or add anything. Adding a word you did not read is a failure even if the meaning is unchanged.\n\nAn identifying span is not only a name or a number. A whole clause or sentence can be the identifying detail, and you must replace the entire clause when that is the case. Remove all of these:\n- names of people, including partial names, initials, and nicknames\n- street addresses and building or unit numbers\n- phone numbers, email addresses, account, order, and employee numbers\n- medical detail about a person, INCLUDING a clause describing a condition, a procedure, a treatment, an admission, or a reason for leave. Replace the whole clause with [MEDICAL_DETAIL]. For instance a sentence fragment saying that someone is going into hospital for a named operation is a medical detail, not ordinary scheduling text.\n- employment matters about a named person, INCLUDING a clause describing a complaint, a disciplinary record, a review, a termination, a leave arrangement, or a wage garnishment and its stated cause. Replace the whole clause with [EMPLOYMENT_DETAIL]. A court order against an employee and the reason for it are both employment detail.\n- named commercial terms such as a deal value, a valuation, or a named counterparty in a confidential matter\n\nRemove indirect identifiers too. A named employer, a named school or hospital, a job title held by one person at a small company, or a family relationship can each identify someone on their own.\n\nremovals must list EVERY span you replaced, using the exact original text as it appeared. The number of entries in removals must equal the number of replacements you made in redacted_text. If you replaced nine spans, removals has nine entries. An empty or partial removals list is a failure, because it is the audit record for the redaction.\n\nDOCUMENT:\n{document}",
     "schema": {
       "type": "object",
       "properties": {
-        "redacted_text": { "type": "string" },
+        "redacted_text": {
+          "type": "string"
+        },
         "removals": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
-              "text": { "type": "string" },
+              "text": {
+                "type": "string"
+              },
               "kind": {
                 "type": "string",
-                "enum": ["person_name", "street_address", "phone", "email", "account_id", "medical_detail", "employment_detail", "deal_term"]
+                "enum": [
+                  "person_name",
+                  "street_address",
+                  "phone",
+                  "email",
+                  "account_id",
+                  "medical_detail",
+                  "employment_detail",
+                  "deal_term"
+                ]
               }
             },
-            "required": ["text", "kind"]
+            "required": [
+              "text",
+              "kind"
+            ]
           }
         }
       },
-      "required": ["redacted_text", "removals"]
+      "required": [
+        "redacted_text",
+        "removals"
+      ]
     },
     "options": {
       "temperature": 0,
@@ -48,11 +80,23 @@
       "num_ctx": 8192
     }
   },
-
   "checks": [
-    { "id": "parses",           "kind": "structural" },
-    { "id": "required_present", "kind": "structural" },
-    { "id": "enum_valid",       "kind": "structural" },
+    {
+      "id": "parses",
+      "kind": "structural"
+    },
+    {
+      "id": "required_present",
+      "kind": "structural"
+    },
+    {
+      "id": "enum_valid",
+      "kind": "structural"
+    },
+    {
+      "id": "flagged_not_empty",
+      "kind": "structural"
+    },
     {
       "id": "survival_scan",
       "kind": "semantic",
@@ -61,7 +105,6 @@
       "case_sensitive": false
     }
   ],
-
   "report": {
     "title": "Redaction gate",
     "layout": "side_by_side",
