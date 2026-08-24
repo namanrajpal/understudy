@@ -1,5 +1,5 @@
 {
-  "run_id": "2026-08-23T22-47-21",
+  "run_id": "2026-08-24T11-59-58",
   "runbook": {
     "id": "redact",
     "version": "1.0",
@@ -31,7 +31,7 @@
   "source": "flagged by triage-inbox",
   "reference_date": "2026-08-27",
   "device": {
-    "label": "MacBook Pro M4 Pro",
+    "label": "842f5777843e",
     "os": "darwin",
     "machine": "arm64",
     "python": "3.12.12"
@@ -39,29 +39,29 @@
   "model": {
     "name": "qwen3.8:27b",
     "digest": "22130167c4c2",
-    "load_seconds": 2.5
+    "load_seconds": 10.4
   },
   "network": {
     "probe": "reachable",
-    "detail": "connected to 162.159.140.245:443",
+    "detail": "connected to 172.66.0.243:443",
     "targets": [
       {
         "target": "api.openai.com:443",
         "reachable": true,
-        "detail": "connected to 162.159.140.245:443",
-        "ms": 307.9
+        "detail": "connected to 172.66.0.243:443",
+        "ms": 24.7
       },
       {
         "target": "api.anthropic.com:443",
         "reachable": true,
         "detail": "connected to 160.79.104.10:443",
-        "ms": 517.4
+        "ms": 24.9
       },
       {
         "target": "cloudflare.com:443",
         "reachable": true,
-        "detail": "connected to 104.16.132.229:443",
-        "ms": 385.7
+        "detail": "connected to 104.16.133.229:443",
+        "ms": 30.0
       }
     ],
     "model_host": {
@@ -69,36 +69,36 @@
       "reachable": true,
       "detail": "connected to 127.0.0.1:11434"
     },
-    "at": "2026-08-24T05:47:22+00:00"
+    "at": "2026-08-24T18:59:58+00:00"
   },
   "local": {
     "calls": 3,
     "retries": 0,
     "prompt_tokens": 2025,
     "output_tokens": 1233,
-    "wall_seconds": 139.5,
-    "tokens_per_second": 8.8,
+    "wall_seconds": 132.1,
+    "tokens_per_second": 9.3,
     "per_call": [
       {
         "file": "corpus/inbox/003-hr-escalation-confidential.eml",
         "prompt_tokens": 721,
         "output_tokens": 536,
-        "seconds": 64.37
+        "seconds": 58.34
       },
       {
         "file": "corpus/inbox/012-customer-medical-context.eml",
         "prompt_tokens": 654,
         "output_tokens": 386,
-        "seconds": 40.88
+        "seconds": 40.14
       },
       {
         "file": "corpus/inbox/025-internal-hr-payroll-detail.eml",
         "prompt_tokens": 650,
         "output_tokens": 311,
-        "seconds": 34.26
+        "seconds": 33.62
       }
     ],
-    "wall_seconds_total": 139.5
+    "wall_seconds_total": 132.1
   },
   "frontier": {
     "calls": 3,
@@ -109,8 +109,8 @@
     "note": "Authored triage-inbox, triage-contracts and redact once. Did not run during this execution and is not required to."
   },
   "checks": {
-    "passed": 3,
-    "failed": 1,
+    "passed": 5,
+    "failed": 0,
     "details": [
       {
         "id": "parses",
@@ -134,18 +134,34 @@
         "failures": []
       },
       {
+        "id": "flagged_not_empty",
+        "kind": "structural",
+        "passed": true,
+        "detail": "3/3 flagged documents produced at least one removal",
+        "failures": []
+      },
+      {
         "id": "survival_scan",
         "kind": "semantic",
-        "passed": false,
-        "detail": "1 of 14 planted identifiers survived redaction",
-        "failures": [
-          {
-            "id": "P05",
-            "file": "inbox/003-hr-escalation-confidential.eml",
-            "kind": "employment_detail",
-            "text": "was written up twice in 2024 for the same behaviour"
-          }
-        ]
+        "passed": true,
+        "detail": "0 of 10 direct identifiers survived  |  1 of 4 facts about a person survived (reported, not gating)",
+        "failures": [],
+        "identifiers": {
+          "survived": 0,
+          "total": 10
+        },
+        "facts": {
+          "survived": 1,
+          "total": 4,
+          "detail": [
+            {
+              "id": "P05",
+              "file": "inbox/003-hr-escalation-confidential.eml",
+              "kind": "employment_detail",
+              "text": "was written up twice in 2024 for the same behaviour"
+            }
+          ]
+        }
       }
     ]
   },
@@ -382,5 +398,6 @@
       "spans_not_found": []
     }
   ],
+  "empty_removal_retries": 0,
   "removals_total": 21
 }

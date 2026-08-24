@@ -1,5 +1,5 @@
 {
-  "run_id": "2026-08-23T22-27-36",
+  "run_id": "2026-08-24T11-58-04",
   "runbook": {
     "id": "redact",
     "version": "1.0",
@@ -31,7 +31,7 @@
   "source": "flagged by triage-inbox",
   "reference_date": "2026-08-27",
   "device": {
-    "label": "MacBook Pro M4 Pro",
+    "label": "842f5777843e",
     "os": "darwin",
     "machine": "arm64",
     "python": "3.12.12"
@@ -39,7 +39,7 @@
   "model": {
     "name": "gemma4:12b",
     "digest": "4eb23ef187e2",
-    "load_seconds": 1.7
+    "load_seconds": 5.0
   },
   "network": {
     "probe": "reachable",
@@ -49,19 +49,19 @@
         "target": "api.openai.com:443",
         "reachable": true,
         "detail": "connected to 172.66.0.243:443",
-        "ms": 196.0
+        "ms": 26.4
       },
       {
         "target": "api.anthropic.com:443",
         "reachable": true,
         "detail": "connected to 160.79.104.10:443",
-        "ms": 146.9
+        "ms": 21.2
       },
       {
         "target": "cloudflare.com:443",
         "reachable": true,
-        "detail": "connected to 104.16.133.229:443",
-        "ms": 70.8
+        "detail": "connected to 104.16.132.229:443",
+        "ms": 23.7
       }
     ],
     "model_host": {
@@ -69,36 +69,36 @@
       "reachable": true,
       "detail": "connected to 127.0.0.1:11434"
     },
-    "at": "2026-08-24T05:27:36+00:00"
+    "at": "2026-08-24T18:58:04+00:00"
   },
   "local": {
     "calls": 3,
     "retries": 0,
     "prompt_tokens": 2012,
     "output_tokens": 1376,
-    "wall_seconds": 63.4,
-    "tokens_per_second": 21.7,
+    "wall_seconds": 61.2,
+    "tokens_per_second": 22.5,
     "per_call": [
       {
         "file": "corpus/inbox/003-hr-escalation-confidential.eml",
         "prompt_tokens": 717,
         "output_tokens": 593,
-        "seconds": 27.68
+        "seconds": 26.95
       },
       {
         "file": "corpus/inbox/012-customer-medical-context.eml",
         "prompt_tokens": 654,
         "output_tokens": 463,
-        "seconds": 20.73
+        "seconds": 19.88
       },
       {
         "file": "corpus/inbox/025-internal-hr-payroll-detail.eml",
         "prompt_tokens": 641,
         "output_tokens": 320,
-        "seconds": 15.01
+        "seconds": 14.42
       }
     ],
-    "wall_seconds_total": 63.4
+    "wall_seconds_total": 61.3
   },
   "frontier": {
     "calls": 3,
@@ -109,8 +109,8 @@
     "note": "Authored triage-inbox, triage-contracts and redact once. Did not run during this execution and is not required to."
   },
   "checks": {
-    "passed": 3,
-    "failed": 1,
+    "passed": 5,
+    "failed": 0,
     "details": [
       {
         "id": "parses",
@@ -134,18 +134,34 @@
         "failures": []
       },
       {
+        "id": "flagged_not_empty",
+        "kind": "structural",
+        "passed": true,
+        "detail": "3/3 flagged documents produced at least one removal",
+        "failures": []
+      },
+      {
         "id": "survival_scan",
         "kind": "semantic",
-        "passed": false,
-        "detail": "1 of 14 planted identifiers survived redaction",
-        "failures": [
-          {
-            "id": "P13",
-            "file": "inbox/025-internal-hr-payroll-detail.eml",
-            "kind": "employment_detail",
-            "text": "a wage garnishment order for unpaid child support"
-          }
-        ]
+        "passed": true,
+        "detail": "0 of 10 direct identifiers survived  |  1 of 4 facts about a person survived (reported, not gating)",
+        "failures": [],
+        "identifiers": {
+          "survived": 0,
+          "total": 10
+        },
+        "facts": {
+          "survived": 1,
+          "total": 4,
+          "detail": [
+            {
+              "id": "P13",
+              "file": "inbox/025-internal-hr-payroll-detail.eml",
+              "kind": "employment_detail",
+              "text": "a wage garnishment order for unpaid child support"
+            }
+          ]
+        }
       }
     ]
   },
@@ -409,5 +425,6 @@
       "spans_not_found": []
     }
   ],
+  "empty_removal_retries": 0,
   "removals_total": 24
 }

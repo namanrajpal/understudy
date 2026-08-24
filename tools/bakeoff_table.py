@@ -79,12 +79,23 @@ def main() -> None:
         if red:
             scan = next((c for c in red["checks"]["details"]
                          if c["id"] == "survival_scan"), None)
+            empty = next((c for c in red["checks"]["details"]
+                          if c["id"] == "flagged_not_empty"), None)
             entry["redact"] = {
                 "status": "ok",
                 "documents": len(red["records"]),
                 "removals": red["removals_total"],
                 "survival_scan": "pass" if (scan and scan["passed"]) else "fail",
                 "detail": scan["detail"] if scan else "",
+                # Split gate: identifiers are the pass criterion, facts are
+                # reported. See check_survival_scan in src/checks.py.
+                "identifiers_survived": (scan or {}).get("identifiers", {}).get("survived"),
+                "identifiers_total": (scan or {}).get("identifiers", {}).get("total"),
+                "facts_survived": (scan or {}).get("facts", {}).get("survived"),
+                "facts_total": (scan or {}).get("facts", {}).get("total"),
+                "flagged_not_empty": (None if empty is None
+                                      else ("pass" if empty["passed"] else "fail")),
+                "empty_removal_retries": red.get("empty_removal_retries", 0),
             }
         else:
             entry["redact"] = {"status": "did not complete"}
@@ -112,15 +123,18 @@ def main() -> None:
                   f'{t["tokens_per_second"]:>7} {chk:>8}')
 
     print()
-    print("redaction gate")
-    print(f'  {"model":<14} {"docs":>5} {"removals":>9} {"survival scan":>15}')
+    print("redaction gate  (identifiers gate the result, facts are reported)")
+    print(f'  {"model":<19}{"gate":>6}{"identifiers":>13}{"facts":>8}'
+          f'{"removals":>10}{"retries":>9}')
     for model in MODELS:
         r = summary[model]["redact"]
         if r.get("status") != "ok":
-            print(f'  {model:<14} {"did not complete":>5}')
+            print(f'  {model:<19}{"did not complete":>6}')
             continue
-        print(f'  {model:<14} {r["documents"]:>5} {r["removals"]:>9} '
-              f'{r["survival_scan"].upper():>15}   {r["detail"]}')
+        ids = f'{r.get("identifiers_survived")}/{r.get("identifiers_total")}'
+        fct = f'{r.get("facts_survived")}/{r.get("facts_total")}'
+        print(f'  {model:<19}{r["survival_scan"].upper():>6}{ids:>13}{fct:>8}'
+              f'{r["removals"]:>10}{r.get("empty_removal_retries", 0):>9}')
 
     out = BAKE / "summary.json"
     out.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")

@@ -128,6 +128,7 @@ def main() -> None:
     # 3. Walk the runbook.
     banner("Steps")
     usage = model_mod.Usage()
+    empty_retries = 0
     records: list[dict] = []
     check_results: list[dict] = []
     docs: list[dict] = []
@@ -170,12 +171,38 @@ def main() -> None:
                 if parsed is None:
                     rec["raw"] = raw[:400]
                 elif op == "redact":
+                    # A flagged document returning zero spans is a contradiction,
+                    # not a result: triage already said it holds personal data.
+                    # It is also silent, because an empty array is structurally
+                    # valid. Retry once, saying so plainly.
+                    #
+                    # Measured on muse-glimmer:30b, the strongest model at triage
+                    # here: it returned zero spans for the HR complaint holding
+                    # five planted identifiers, and every structural check passed.
+                    if not (parsed.get("removals") or []):
+                        retry_prompt = prompt + (
+                            "\n\nYour previous response listed no removals for "
+                            "this document. That is incorrect: this document was "
+                            "already identified as containing personal data. Read "
+                            "it again and list every identifying span you find, "
+                            "starting with names, addresses, phone numbers, email "
+                            "addresses, and account or employee numbers."
+                        )
+                        retried, _ = model_mod.generate(
+                            args.model, retry_prompt, schema, options,
+                            usage, doc["file"])
+                        if retried and (retried.get("removals") or []):
+                            parsed = retried
+                            rec["retried_empty"] = True
+                            empty_retries += 1
+
                     # The model finds the spans. Code applies them, because
                     # substituting a substring is mechanical and the model is
                     # measurably unreliable at it on long spans. See
                     # src/redact_apply.py for the measurement that forced this.
                     applied, report = apply_removals(
                         doc["text"], parsed.get("removals", []))
+                    rec["parsed"] = parsed
                     rec["model_redacted_text"] = parsed.get("redacted_text", "")
                     parsed["redacted_text"] = applied
                     rec["applied"] = report
@@ -230,6 +257,7 @@ def main() -> None:
             "details": check_results,
         },
         "records": records,
+        "empty_removal_retries": empty_retries,
         "removals_total": sum(
             len((r.get("parsed") or {}).get("removals", []) or [])
             for r in records),
@@ -255,6 +283,9 @@ def main() -> None:
           f'{payload["checks"]["failed"]} failed')
     if is_redact:
         print(f'  removals         {payload["removals_total"]}')
+        if empty_retries:
+            print(f'  empty retries    {empty_retries}  '
+                  f'(flagged document returned no spans, asked again)')
     print(f'  network          {net["probe"]}')
     print()
     print(f'  frontier calls this run: 0. '
