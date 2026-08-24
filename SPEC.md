@@ -5,12 +5,18 @@ not in an implementation.
 
 ## Concept
 
-A high-capability model authors a **runbook** once, online. A small local model
-executes that runbook repeatedly, offline. The runbook fixes the control flow,
-the schemas, and the checks. The local model supplies the per-document judgment.
+A high-capability model authors a **runbook** once. A small local model executes
+that runbook repeatedly, on the machine the documents are already on. The runbook
+fixes the control flow, the schemas, and the checks. The local model supplies the
+per-document judgment.
 
 Reasoning that happens **once** lives in the runbook. Reasoning that happens
 **every run** happens locally.
+
+`src/probe.py` records whether a public host was reachable during a run. It is
+diagnostics recorded into the run file, not a claim the pipeline makes. The
+substantive privacy property is that every model call goes to loopback, so no
+document is transmitted anywhere regardless of what the network was doing.
 
 ## Layout
 

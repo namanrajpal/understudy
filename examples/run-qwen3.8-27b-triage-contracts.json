@@ -1,0 +1,564 @@
+{
+  "run_id": "2026-08-23T22-33-18",
+  "runbook": {
+    "id": "triage-contracts",
+    "version": "1.0",
+    "purpose": "Read every contract in a folder and work out when each one actually renews.",
+    "authored_by": "frontier model, once. Never runs again.",
+    "steps": [
+      {
+        "n": 1,
+        "name": "Read the contract folder from disk",
+        "op": "load"
+      },
+      {
+        "n": 2,
+        "name": "Extract renewal terms from each contract",
+        "op": "extract"
+      },
+      {
+        "n": 3,
+        "name": "Validate every record",
+        "op": "check"
+      },
+      {
+        "n": 4,
+        "name": "Assemble the renewal calendar",
+        "op": "report"
+      }
+    ]
+  },
+  "source": "corpus/contracts/*.txt",
+  "reference_date": "2026-08-27",
+  "device": {
+    "label": "MacBook Pro M4 Pro",
+    "os": "darwin",
+    "machine": "arm64",
+    "python": "3.12.12"
+  },
+  "model": {
+    "name": "qwen3.8:27b",
+    "digest": "22130167c4c2",
+    "load_seconds": 8.3
+  },
+  "network": {
+    "probe": "reachable",
+    "detail": "connected to 172.66.0.243:443",
+    "targets": [
+      {
+        "target": "api.openai.com:443",
+        "reachable": true,
+        "detail": "connected to 172.66.0.243:443",
+        "ms": 101.1
+      },
+      {
+        "target": "api.anthropic.com:443",
+        "reachable": true,
+        "detail": "connected to 160.79.104.10:443",
+        "ms": 57.8
+      },
+      {
+        "target": "cloudflare.com:443",
+        "reachable": true,
+        "detail": "connected to 104.16.133.229:443",
+        "ms": 77.0
+      }
+    ],
+    "model_host": {
+      "target": "127.0.0.1:11434",
+      "reachable": true,
+      "detail": "connected to 127.0.0.1:11434"
+    },
+    "at": "2026-08-24T05:33:19+00:00"
+  },
+  "local": {
+    "calls": 21,
+    "retries": 0,
+    "prompt_tokens": 20695,
+    "output_tokens": 1875,
+    "wall_seconds": 372.0,
+    "tokens_per_second": 5.0,
+    "per_call": [
+      {
+        "file": "corpus/contracts/001-service-agreement-northwind.txt",
+        "prompt_tokens": 1021,
+        "output_tokens": 86,
+        "seconds": 25.85
+      },
+      {
+        "file": "corpus/contracts/002-saas-subscription-brightledger.txt",
+        "prompt_tokens": 991,
+        "output_tokens": 89,
+        "seconds": 16.97
+      },
+      {
+        "file": "corpus/contracts/003-lease-harbor-point.txt",
+        "prompt_tokens": 1008,
+        "output_tokens": 87,
+        "seconds": 17.27
+      },
+      {
+        "file": "corpus/contracts/004-maintenance-summit-hvac.txt",
+        "prompt_tokens": 959,
+        "output_tokens": 86,
+        "seconds": 16.68
+      },
+      {
+        "file": "corpus/contracts/005-sow-tidewater-analytics.txt",
+        "prompt_tokens": 980,
+        "output_tokens": 89,
+        "seconds": 16.96
+      },
+      {
+        "file": "corpus/contracts/006-service-agreement-pinnacle.txt",
+        "prompt_tokens": 941,
+        "output_tokens": 88,
+        "seconds": 16.83
+      },
+      {
+        "file": "corpus/contracts/007-service-agreement-alder-creek.txt",
+        "prompt_tokens": 1016,
+        "output_tokens": 90,
+        "seconds": 17.68
+      },
+      {
+        "file": "corpus/contracts/008-saas-subscription-quillstack.txt",
+        "prompt_tokens": 1002,
+        "output_tokens": 91,
+        "seconds": 18.1
+      },
+      {
+        "file": "corpus/contracts/009-maintenance-granite-fleet.txt",
+        "prompt_tokens": 972,
+        "output_tokens": 89,
+        "seconds": 17.47
+      },
+      {
+        "file": "corpus/contracts/010-service-agreement-lantern-hr.txt",
+        "prompt_tokens": 954,
+        "output_tokens": 92,
+        "seconds": 17.28
+      },
+      {
+        "file": "corpus/contracts/011-sow-meridian-design.txt",
+        "prompt_tokens": 983,
+        "output_tokens": 91,
+        "seconds": 17.45
+      },
+      {
+        "file": "corpus/contracts/012-saas-subscription-forgepoint.txt",
+        "prompt_tokens": 989,
+        "output_tokens": 92,
+        "seconds": 17.4
+      },
+      {
+        "file": "corpus/contracts/013-service-agreement-blue-heron.txt",
+        "prompt_tokens": 994,
+        "output_tokens": 94,
+        "seconds": 17.85
+      },
+      {
+        "file": "corpus/contracts/014-maintenance-copperline-it.txt",
+        "prompt_tokens": 967,
+        "output_tokens": 92,
+        "seconds": 17.4
+      },
+      {
+        "file": "corpus/contracts/015-lease-ironwood-storage.txt",
+        "prompt_tokens": 969,
+        "output_tokens": 91,
+        "seconds": 17.38
+      },
+      {
+        "file": "corpus/contracts/016-saas-subscription-cartograph.txt",
+        "prompt_tokens": 950,
+        "output_tokens": 93,
+        "seconds": 17.1
+      },
+      {
+        "file": "corpus/contracts/017-service-agreement-westmark.txt",
+        "prompt_tokens": 971,
+        "output_tokens": 90,
+        "seconds": 17.38
+      },
+      {
+        "file": "corpus/contracts/018-saas-subscription-ledgerline.txt",
+        "prompt_tokens": 974,
+        "output_tokens": 91,
+        "seconds": 17.82
+      },
+      {
+        "file": "corpus/contracts/019-maintenance-stonebridge.txt",
+        "prompt_tokens": 975,
+        "output_tokens": 89,
+        "seconds": 16.96
+      },
+      {
+        "file": "corpus/contracts/020-nda-riverbend.txt",
+        "prompt_tokens": 1021,
+        "output_tokens": 77,
+        "seconds": 16.36
+      },
+      {
+        "file": "corpus/contracts/021-sow-caldwell-consulting.txt",
+        "prompt_tokens": 1058,
+        "output_tokens": 88,
+        "seconds": 17.84
+      }
+    ],
+    "wall_seconds_total": 372.1
+  },
+  "frontier": {
+    "calls": 3,
+    "prompt_tokens": null,
+    "output_tokens": null,
+    "when": "runbook authoring, 2026-08-23",
+    "model": "frontier reasoning model, via chat",
+    "note": "Authored triage-inbox, triage-contracts and redact once. Did not run during this execution and is not required to."
+  },
+  "checks": {
+    "passed": 6,
+    "failed": 0,
+    "details": [
+      {
+        "id": "parses",
+        "kind": "structural",
+        "passed": true,
+        "detail": "21/21 model outputs parsed as JSON",
+        "failures": []
+      },
+      {
+        "id": "record_count",
+        "kind": "structural",
+        "passed": true,
+        "detail": "21 records for 21 input files",
+        "failures": []
+      },
+      {
+        "id": "file_mapping",
+        "kind": "structural",
+        "passed": true,
+        "detail": "21/21 records map to a real input file",
+        "failures": []
+      },
+      {
+        "id": "enum_valid",
+        "kind": "structural",
+        "passed": true,
+        "detail": "42/42 enum values allowed",
+        "failures": []
+      },
+      {
+        "id": "required_present",
+        "kind": "structural",
+        "passed": true,
+        "detail": "7 required fields checked on 21 records",
+        "failures": []
+      },
+      {
+        "id": "date_format",
+        "kind": "semantic",
+        "passed": true,
+        "detail": "21/21 dates are ISO or exactly 'unknown'",
+        "failures": []
+      }
+    ]
+  },
+  "records": [
+    {
+      "file": "corpus/contracts/001-service-agreement-northwind.txt",
+      "chars": 738,
+      "parsed": {
+        "doc_type": "maintenance",
+        "counterparty": "Northwind Facilities Group",
+        "renewal_basis": "fixed_date",
+        "renewal_date": "2026-10-31",
+        "notice_days": 0,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/002-saas-subscription-brightledger.txt",
+      "chars": 532,
+      "parsed": {
+        "doc_type": "saas_subscription",
+        "counterparty": "BrightLedger Software Inc.",
+        "renewal_basis": "fixed_date",
+        "renewal_date": "2026-09-15",
+        "notice_days": 0,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/003-lease-harbor-point.txt",
+      "chars": 561,
+      "parsed": {
+        "doc_type": "lease",
+        "counterparty": "Harbor Point Commercial Properties",
+        "renewal_basis": "fixed_date",
+        "renewal_date": "2028-02-29",
+        "notice_days": 0,
+        "expires_within_90_days": false,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/004-maintenance-summit-hvac.txt",
+      "chars": 442,
+      "parsed": {
+        "doc_type": "maintenance",
+        "counterparty": "Summit Mechanical Services",
+        "renewal_basis": "fixed_date",
+        "renewal_date": "2027-06-30",
+        "notice_days": 0,
+        "expires_within_90_days": false,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/005-sow-tidewater-analytics.txt",
+      "chars": 491,
+      "parsed": {
+        "doc_type": "statement_of_work",
+        "counterparty": "Tidewater Analytics LLC",
+        "renewal_basis": "fixed_date",
+        "renewal_date": "2026-11-13",
+        "notice_days": 0,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/006-service-agreement-pinnacle.txt",
+      "chars": 352,
+      "parsed": {
+        "doc_type": "service_agreement",
+        "counterparty": "Pinnacle Freight Partners",
+        "renewal_basis": "fixed_date",
+        "renewal_date": "2029-01-31",
+        "notice_days": 0,
+        "expires_within_90_days": false,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/007-service-agreement-alder-creek.txt",
+      "chars": 734,
+      "parsed": {
+        "doc_type": "maintenance",
+        "counterparty": "Alder Creek Security Systems",
+        "renewal_basis": "anniversary_of_execution",
+        "renewal_date": "2026-09-18",
+        "notice_days": 30,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/008-saas-subscription-quillstack.txt",
+      "chars": 614,
+      "parsed": {
+        "doc_type": "saas_subscription",
+        "counterparty": "Quillstack Technologies",
+        "renewal_basis": "anniversary_of_execution",
+        "renewal_date": "2026-11-05",
+        "notice_days": 45,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/009-maintenance-granite-fleet.txt",
+      "chars": 532,
+      "parsed": {
+        "doc_type": "maintenance",
+        "counterparty": "Granite Fleet Care",
+        "renewal_basis": "anniversary_of_execution",
+        "renewal_date": "2026-10-02",
+        "notice_days": 60,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/010-service-agreement-lantern-hr.txt",
+      "chars": 445,
+      "parsed": {
+        "doc_type": "service_agreement",
+        "counterparty": "Lantern HR Advisory",
+        "renewal_basis": "anniversary_of_execution",
+        "renewal_date": "2026-03-11",
+        "notice_days": 30,
+        "expires_within_90_days": false,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/011-sow-meridian-design.txt",
+      "chars": 539,
+      "parsed": {
+        "doc_type": "statement_of_work",
+        "counterparty": "Meridian Design Studio",
+        "renewal_basis": "anniversary_of_execution",
+        "renewal_date": "2026-11-20",
+        "notice_days": 30,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/012-saas-subscription-forgepoint.txt",
+      "chars": 578,
+      "parsed": {
+        "doc_type": "saas_subscription",
+        "counterparty": "Forgepoint Systems",
+        "renewal_basis": "auto_renew_unless_notice",
+        "renewal_date": "2026-09-30",
+        "notice_days": 60,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/013-service-agreement-blue-heron.txt",
+      "chars": 631,
+      "parsed": {
+        "doc_type": "service_agreement",
+        "counterparty": "Blue Heron Waste Solutions",
+        "renewal_basis": "auto_renew_unless_notice",
+        "renewal_date": "2026-11-30",
+        "notice_days": 90,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/014-maintenance-copperline-it.txt",
+      "chars": 498,
+      "parsed": {
+        "doc_type": "maintenance",
+        "counterparty": "Copperline IT Support",
+        "renewal_basis": "auto_renew_unless_notice",
+        "renewal_date": "2026-10-15",
+        "notice_days": 30,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/015-lease-ironwood-storage.txt",
+      "chars": 454,
+      "parsed": {
+        "doc_type": "lease",
+        "counterparty": "Ironwood Self Storage",
+        "renewal_basis": "auto_renew_unless_notice",
+        "renewal_date": "2026-09-01",
+        "notice_days": 15,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/016-saas-subscription-cartograph.txt",
+      "chars": 400,
+      "parsed": {
+        "doc_type": "saas_subscription",
+        "counterparty": "Cartograph Data Co.",
+        "renewal_basis": "auto_renew_unless_notice",
+        "renewal_date": "2027-04-30",
+        "notice_days": 60,
+        "expires_within_90_days": false,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/017-service-agreement-westmark.txt",
+      "chars": 536,
+      "parsed": {
+        "doc_type": "statement_of_work",
+        "counterparty": "Westmark Audit Group",
+        "renewal_basis": "fiscal_year_end",
+        "renewal_date": "2026-09-30",
+        "notice_days": 0,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/018-saas-subscription-ledgerline.txt",
+      "chars": 545,
+      "parsed": {
+        "doc_type": "saas_subscription",
+        "counterparty": "Ledgerline Compliance",
+        "renewal_basis": "fiscal_year_end",
+        "renewal_date": "2026-09-30",
+        "notice_days": 30,
+        "expires_within_90_days": true,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/019-maintenance-stonebridge.txt",
+      "chars": 534,
+      "parsed": {
+        "doc_type": "maintenance",
+        "counterparty": "Stonebridge Grounds Care",
+        "renewal_basis": "fiscal_year_end",
+        "renewal_date": "2027-06-30",
+        "notice_days": 0,
+        "expires_within_90_days": false,
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/020-nda-riverbend.txt",
+      "chars": 831,
+      "parsed": {
+        "doc_type": "nda",
+        "counterparty": "Riverbend Capital Advisors",
+        "renewal_basis": "none",
+        "renewal_date": "unknown",
+        "notice_days": 0,
+        "expires_within_90_days": false,
+        "contains_personal_data": true
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/contracts/021-sow-caldwell-consulting.txt",
+      "chars": 760,
+      "parsed": {
+        "doc_type": "statement_of_work",
+        "counterparty": "Caldwell Consulting",
+        "renewal_basis": "fixed_date",
+        "renewal_date": "2026-10-09",
+        "notice_days": 0,
+        "expires_within_90_days": true,
+        "contains_personal_data": true
+      },
+      "needs_review": false
+    }
+  ],
+  "removals_total": 0
+}

@@ -100,6 +100,29 @@ def warm(model: str) -> float:
     return round(time.monotonic() - t0, 1)
 
 
+def _extract_json(text: str) -> str:
+    """Pull the outermost JSON object out of a model's text.
+
+    Models decorate structured output in ways that are individually trivial and
+    collectively fatal to a naive `json.loads`:
+
+    - muse-glimmer:30b appends its end-of-turn token, so the response is
+      `{"doc_type":"maintenance",...}<|eot|>`. Measured: 21 of 21 documents
+      failed to parse and scored 0%, while the JSON inside was perfect.
+    - reasoning models may emit prose before the object.
+
+    Slicing from the first brace to the last is enough for both, and it cannot
+    silently change a response that was already valid JSON.
+    """
+    text = text.strip()
+    if not text:
+        return ""
+    start, end = text.find("{"), text.rfind("}")
+    if start != -1 and end > start:
+        return text[start:end + 1]
+    return text
+
+
 def _payload(resp: dict) -> str:
     """Get the model's JSON out of an Ollama response.
 
@@ -111,14 +134,10 @@ def _payload(resp: dict) -> str:
     """
     text = (resp.get("response") or "").strip()
     if text:
-        return text
+        return _extract_json(text)
     thinking = (resp.get("thinking") or "").strip()
     if thinking:
-        # Reasoning prose may precede the object. Take the outermost JSON.
-        start, end = thinking.find("{"), thinking.rfind("}")
-        if start != -1 and end > start:
-            return thinking[start:end + 1]
-        return thinking
+        return _extract_json(thinking)
     return ""
 
 

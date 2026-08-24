@@ -32,7 +32,7 @@ inbox:
 
 # Depends on inbox having run: redact consumes whatever triage flagged.
 redact:
-	@$(PY) src/run.py runbooks/redact.json --model $(MODEL)
+	@$(PY) src/run.py runbooks/redact.json --model $(MODEL) --from out/run-latest.json
 
 all: validate contracts inbox redact report
 

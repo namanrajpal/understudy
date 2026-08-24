@@ -1,0 +1,29 @@
+=== corpus determinism: regenerate and compare ===
+PASS  corpus regenerates byte-identical
+
+=== repo integrity ===
+  ok    runbooks/triage-contracts.json extract prompt interpolates the document
+  ok    runbooks/triage-inbox.json extract prompt interpolates the document
+  ok    3 runbooks structurally valid
+  ok    21 contracts and 25 emails on disk
+  ok    46 documents have ground truth, all keyed to real files
+  ok    21 planted identifiers, all present in their source document (6 only match across a line break)
+  ok    no prompt references ground truth
+
+repo is internally consistent
+
+=== regex baseline ===
+  fixed_date                      6/7     85.7%
+  none                            1/1    100.0%
+
+  OVERALL                        12/21    57.1%
+
+  contracts expiring within 90 days that the baseline gets wrong: 6
+    007-service-agreement-alder-creek.txt    anniversary_of_execution   want 2026-09-18  got unknown
+    008-saas-subscription-quillstack.txt     anniversary_of_execution   want 2026-11-05  got unknown
+    009-maintenance-granite-fleet.txt        anniversary_of_execution   want 2026-10-02  got unknown
+    011-sow-meridian-design.txt              anniversary_of_execution   want 2026-11-20  got unknown
+    017-service-agreement-westmark.txt       fiscal_year_end            want 2026-09-30  got unknown
+    018-saas-subscription-ledgerline.txt     fiscal_year_end            want 2026-09-30  got unknown
+
+  -> /Users/namanraj/Workspace/local-runbook/out/baseline-regex.json

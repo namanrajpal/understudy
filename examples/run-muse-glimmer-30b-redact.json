@@ -1,0 +1,324 @@
+{
+  "run_id": "2026-08-23T23-14-23",
+  "runbook": {
+    "id": "redact",
+    "version": "1.0",
+    "purpose": "Take whatever the triage runbooks flagged as holding personal data and produce a version safe to send outside the building.",
+    "authored_by": "frontier model, once. Never runs again.",
+    "steps": [
+      {
+        "n": 1,
+        "name": "Collect every document flagged as sensitive",
+        "op": "load"
+      },
+      {
+        "n": 2,
+        "name": "Remove identifying detail from each one",
+        "op": "redact"
+      },
+      {
+        "n": 3,
+        "name": "Scan the output for anything that survived",
+        "op": "check"
+      },
+      {
+        "n": 4,
+        "name": "Show original beside redacted",
+        "op": "report"
+      }
+    ]
+  },
+  "source": "flagged by triage-inbox",
+  "reference_date": "2026-08-27",
+  "device": {
+    "label": "MacBook Pro M4 Pro",
+    "os": "darwin",
+    "machine": "arm64",
+    "python": "3.12.12"
+  },
+  "model": {
+    "name": "muse-glimmer:30b",
+    "digest": "de878ce33ad8",
+    "load_seconds": 7.1
+  },
+  "network": {
+    "probe": "reachable",
+    "detail": "connected to 172.66.0.243:443",
+    "targets": [
+      {
+        "target": "api.openai.com:443",
+        "reachable": true,
+        "detail": "connected to 172.66.0.243:443",
+        "ms": 91.6
+      },
+      {
+        "target": "api.anthropic.com:443",
+        "reachable": true,
+        "detail": "connected to 160.79.104.10:443",
+        "ms": 53.0
+      },
+      {
+        "target": "cloudflare.com:443",
+        "reachable": true,
+        "detail": "connected to 104.16.132.229:443",
+        "ms": 67.7
+      }
+    ],
+    "model_host": {
+      "target": "127.0.0.1:11434",
+      "reachable": true,
+      "detail": "connected to 127.0.0.1:11434"
+    },
+    "at": "2026-08-24T06:14:23+00:00"
+  },
+  "local": {
+    "calls": 3,
+    "retries": 0,
+    "prompt_tokens": 2068,
+    "output_tokens": 857,
+    "wall_seconds": 87.0,
+    "tokens_per_second": 9.8,
+    "per_call": [
+      {
+        "file": "corpus/inbox/003-hr-escalation-confidential.eml",
+        "prompt_tokens": 737,
+        "output_tokens": 253,
+        "seconds": 32.82
+      },
+      {
+        "file": "corpus/inbox/012-customer-medical-context.eml",
+        "prompt_tokens": 663,
+        "output_tokens": 349,
+        "seconds": 30.98
+      },
+      {
+        "file": "corpus/inbox/025-internal-hr-payroll-detail.eml",
+        "prompt_tokens": 668,
+        "output_tokens": 255,
+        "seconds": 23.24
+      }
+    ],
+    "wall_seconds_total": 87.1
+  },
+  "frontier": {
+    "calls": 3,
+    "prompt_tokens": null,
+    "output_tokens": null,
+    "when": "runbook authoring, 2026-08-23",
+    "model": "frontier reasoning model, via chat",
+    "note": "Authored triage-inbox, triage-contracts and redact once. Did not run during this execution and is not required to."
+  },
+  "checks": {
+    "passed": 3,
+    "failed": 1,
+    "details": [
+      {
+        "id": "parses",
+        "kind": "structural",
+        "passed": true,
+        "detail": "3/3 model outputs parsed as JSON",
+        "failures": []
+      },
+      {
+        "id": "required_present",
+        "kind": "structural",
+        "passed": true,
+        "detail": "2 required fields checked on 3 records",
+        "failures": []
+      },
+      {
+        "id": "enum_valid",
+        "kind": "structural",
+        "passed": true,
+        "detail": "11/11 enum values allowed",
+        "failures": []
+      },
+      {
+        "id": "survival_scan",
+        "kind": "semantic",
+        "passed": false,
+        "detail": "6 of 14 planted identifiers survived redaction",
+        "failures": [
+          {
+            "id": "P01",
+            "file": "inbox/003-hr-escalation-confidential.eml",
+            "kind": "person_name",
+            "text": "Devon Mackey"
+          },
+          {
+            "id": "P02",
+            "file": "inbox/003-hr-escalation-confidential.eml",
+            "kind": "person_name",
+            "text": "Alicia Brennan"
+          },
+          {
+            "id": "P03",
+            "file": "inbox/003-hr-escalation-confidential.eml",
+            "kind": "medical_detail",
+            "text": "her son is being treated for epilepsy at St. Aubin Children's"
+          },
+          {
+            "id": "P04",
+            "file": "inbox/003-hr-escalation-confidential.eml",
+            "kind": "phone",
+            "text": "904-555-0143"
+          },
+          {
+            "id": "P05",
+            "file": "inbox/003-hr-escalation-confidential.eml",
+            "kind": "employment_detail",
+            "text": "was written up twice in 2024 for the same behaviour"
+          },
+          {
+            "id": "P13",
+            "file": "inbox/025-internal-hr-payroll-detail.eml",
+            "kind": "employment_detail",
+            "text": "a wage garnishment order for unpaid child support"
+          }
+        ]
+      }
+    ]
+  },
+  "records": [
+    {
+      "file": "corpus/inbox/003-hr-escalation-confidential.eml",
+      "chars": 950,
+      "parsed": {
+        "redacted_text": "From: Alicia Brennan <a.brennan@cedarridge.example>\nDate: Fri, 21 Aug 2026 17:22:10 -0400\nSubject: Confidential - concern about conduct on the warehouse floor\n\nPlease treat this as confidential.\n\nI need to raise a concern about Devon Mackey on the second shift. Over the past\nthree weeks he has made repeated comments about Renata's schedule changes in\nfront of other staff. She has been leaving early on Tuesdays because her son is\nbeing treated for epilepsy at St. Aubin Children's, which she disclosed to me in\nconfidence and which I have not shared with the floor.\n\nI checked the personnel file and Devon was written up twice in 2024 for the same\nbehaviour, so this is not new.\n\nRenata has not filed anything herself and I do not want to put her in that\nposition. I would like to talk through options before this escalates on its own.\nYou can reach me directly at 904-555-0143 rather than through the shared line.\n\nAlicia Brennan\nShift Supervisor",
+        "removals": []
+      },
+      "needs_review": false,
+      "model_redacted_text": "From: [PERSON_NAME] <[EMAIL_ADDRESS]>\nDate: Fri, 21 Aug 2026 17:22:10 -0400\nSubject: Confidential - concern about conduct on the warehouse floor\n\nPlease treat this as confidential.\n\nI need to raise a concern about [PERSON_NAME] on the second shift. Over the past\nthree weeks he has made repeated comments about [PERSON_NAME]'s schedule changes in\nfront of other staff. She has been leaving early on Tuesdays because [MEDICAL_DETAIL] which she disclosed to me in\nconfidence and which I have not shared with the floor.\n\nI checked the personnel file and [PERSON_NAME] was written up twice in 2024 for the same\nbehaviour, so this is not new.\n\n[PERSON_NAME] has not filed anything herself and I do not want to put her in that\nposition. I would like to talk through options before this escalates on its own.\nYou can reach me directly at [PHONE_NUMBER] rather than through the shared line.\n\n[PERSON_NAME]\n[EMPLOYMENT_DETAIL]",
+      "applied": [],
+      "spans_not_found": []
+    },
+    {
+      "file": "corpus/inbox/012-customer-medical-context.eml",
+      "chars": 573,
+      "parsed": {
+        "redacted_text": "From: [PERSON_NAME] <[EMAIL]>\nDate: Mon, 24 Aug 2026 06:31:19 -0400\nSubject: Need to change my delivery address urgently\n\nPlease change the delivery address on my standing order, [ACCOUNT_ID].\n\n[MEDICAL_DETAIL] Send everything to [STREET_ADDRESS],\nUnit [STREET_ADDRESS] until the middle of October, then back to the usual address.\n\nIf there's a problem call me today on [PHONE] because after Wednesday I\nwon't be reachable for a couple of days.\n\n[PERSON_NAME]",
+        "removals": [
+          {
+            "text": "Rosalind Achebe",
+            "kind": "person_name"
+          },
+          {
+            "text": "r.achebe@mailbox.example",
+            "kind": "email"
+          },
+          {
+            "text": "acct 4471-88213",
+            "kind": "account_id"
+          },
+          {
+            "text": "I'm being admitted for a hip replacement on Wednesday and I'll be at my daughter's place for six weeks afterwards.",
+            "kind": "medical_detail"
+          },
+          {
+            "text": "882 Ashgrove Lane",
+            "kind": "street_address"
+          },
+          {
+            "text": "12",
+            "kind": "street_address"
+          },
+          {
+            "text": "904-555-0198",
+            "kind": "phone"
+          },
+          {
+            "text": "Rosalind Achebe",
+            "kind": "person_name"
+          }
+        ]
+      },
+      "needs_review": false,
+      "model_redacted_text": "From: [PERSON_NAME] <[EMAIL_ADDRESS]>\nDate: Mon, 24 Aug 2026 06:31:19 -0400\nSubject: Need to change my delivery address urgently\n\nPlease change the delivery address on my standing order, acct [ACCOUNT_NUMBER].\n\n[MEDICAL_DETAIL] Send everything to [STREET_ADDRESS],\nUnit [UNIT_NUMBER] until the middle of October, then back to the usual address.\n\nIf there's a problem call me today on [PHONE_NUMBER] because after Wednesday I\nwon't be reachable for a couple of days.\n\n[PERSON_NAME]",
+      "applied": [
+        {
+          "text": "I'm being admitted for a hip replacement on Wednesday and I'll be at my daughter's place for six weeks afterwards.",
+          "kind": "medical_detail",
+          "applied": "rewrapped"
+        },
+        {
+          "text": "r.achebe@mailbox.example",
+          "kind": "email",
+          "applied": "exact"
+        },
+        {
+          "text": "882 Ashgrove Lane",
+          "kind": "street_address",
+          "applied": "exact"
+        },
+        {
+          "text": "Rosalind Achebe",
+          "kind": "person_name",
+          "applied": "exact"
+        },
+        {
+          "text": "acct 4471-88213",
+          "kind": "account_id",
+          "applied": "exact"
+        },
+        {
+          "text": "Rosalind Achebe",
+          "kind": "person_name",
+          "applied": "absorbed"
+        },
+        {
+          "text": "904-555-0198",
+          "kind": "phone",
+          "applied": "exact"
+        },
+        {
+          "text": "12",
+          "kind": "street_address",
+          "applied": "exact"
+        }
+      ],
+      "spans_not_found": []
+    },
+    {
+      "file": "corpus/inbox/025-internal-hr-payroll-detail.eml",
+      "chars": 662,
+      "parsed": {
+        "redacted_text": "From: Payroll <payroll@cedarridge.example>\nDate: Fri, 21 Aug 2026 15:33:27 -0400\nSubject: Garnishment order received - need handling instruction\n\nWe received a court order this morning affecting [PERSON_NAME], emp id\n[EMPLOYMENT_DETAIL].\n\nIt is a wage garnishment order for unpaid child support, effective with the\nnext pay run. The order specifies 18 percent of disposable earnings and lists\nhis address of record as [STREET_ADDRESS], which does not match what we have\non file.\n\nPayroll closes Tuesday. I need written instruction on whether to apply it this\ncycle or next, and someone needs to confirm the address discrepancy before we\nsend any notice to him.\n\nPayroll",
+        "removals": [
+          {
+            "text": "Trevor Lindqvist",
+            "kind": "person_name"
+          },
+          {
+            "text": "88-4412",
+            "kind": "employment_detail"
+          },
+          {
+            "text": "41 Marlowe Terrace",
+            "kind": "street_address"
+          }
+        ]
+      },
+      "needs_review": false,
+      "model_redacted_text": "From: Payroll <payroll@cedarridge.example>\nDate: Fri, 21 Aug 2026 15:33:27 -0400\nSubject: Garnishment order received - need handling instruction\n\nWe received a court order this morning affecting [PERSON_NAME], emp id\n[EMPLOYEE_NUMBER].\n\nIt is a wage garnishment order for unpaid child support, effective with the\nnext pay run. The order specifies 18 percent of disposable earnings and lists\nhis address of record as [STREET_ADDRESS], which does not match what we have\non file.\n\nPayroll closes Tuesday. I need written instruction on whether to apply it this\ncycle or next, and someone needs to confirm the address discrepancy before we\nsend any notice to him.\n\nPayroll",
+      "applied": [
+        {
+          "text": "41 Marlowe Terrace",
+          "kind": "street_address",
+          "applied": "exact"
+        },
+        {
+          "text": "Trevor Lindqvist",
+          "kind": "person_name",
+          "applied": "exact"
+        },
+        {
+          "text": "88-4412",
+          "kind": "employment_detail",
+          "applied": "exact"
+        }
+      ],
+      "spans_not_found": []
+    }
+  ],
+  "removals_total": 11
+}

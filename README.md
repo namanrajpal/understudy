@@ -75,6 +75,15 @@ quantizations of it start around 9 GB if that is your constraint.
 ```bash
 ollama pull gemma4:12b
 
+make validate    # integrity checks. No model, no network.
+make all         # contracts, inbox, redact, then rebuild the report
+make score       # accuracy against ground truth, per field
+```
+
+`make` with no target lists everything. The equivalent long form, if you would
+rather see what it is doing:
+
+```bash
 python3 tools/make_corpus.py                      # generate the 46 documents
 python3 src/run.py runbooks/triage-contracts.json
 python3 src/run.py runbooks/triage-inbox.json
@@ -89,9 +98,9 @@ machine produced each run.
 Other things worth running:
 
 ```bash
-python3 tools/score.py out/run-latest.json    # accuracy against ground truth
-python3 tools/baseline_regex.py               # what pattern matching gets instead
-bash    tools/bakeoff.sh                      # all three models, same runbooks
+make baseline    # what pattern matching gets instead
+make bakeoff     # every model in the set, over every runbook
+MODEL=qwen3.5:4b make contracts    # any single run, against any tag
 ```
 
 ## Measured results
@@ -285,18 +294,41 @@ corpus/            46 synthetic documents, generated, plus ground truth
   TRUTH.json         expected extraction, for scoring. Never prompted.
 src/
   run.py             executes a runbook, prints the step trace
-  model.py           Ollama client, measured token accounting, thinking-model safe
+  model.py           Ollama client, measured token accounting, reasoning-safe
   loaders.py         .eml and plain text
   checks.py          the seven checks
   redact_apply.py    deterministic span replacement, and why it exists
   report.py          one self-contained HTML page, no CDN
 tools/
   make_corpus.py     generates the corpus, deterministic
+  validate.py        repo integrity. No model, no network. This is what CI runs.
   score.py           accuracy against ground truth, per field
   baseline_regex.py  what patterns get instead
-  bakeoff.sh         three models, same runbooks
+  bakeoff.sh         every model over every runbook
+docs/
+  RESULTS.md         measured numbers with provenance
+  FINDINGS.md        six things that went wrong and what they meant
+  CORPUS.md          how the corpus was built, and what it does not prove
+examples/            committed output, so you can look without running anything
 out/                 runs and reports. Gitignored.
 ```
+
+## Verifying the repo without a model
+
+```bash
+make validate
+```
+
+Checks that every runbook matches the schema the runner expects, that every
+ground-truth key names a file that exists and every file has ground truth, that
+every planted identifier is genuinely present in its source document, and that no
+prompt anywhere can reach ground truth. Needs no model and no network, and runs
+in CI on every push.
+
+The last two matter more than they sound. A planted identifier that is not
+actually in its document cannot survive redaction, so it would pass the survival
+scan without being examined. And a prompt with access to ground truth produces an
+accuracy number that measures nothing.
 
 ## Notes on honesty
 

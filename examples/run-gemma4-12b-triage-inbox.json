@@ -1,0 +1,612 @@
+{
+  "run_id": "2026-08-23T22-24-48",
+  "runbook": {
+    "id": "triage-inbox",
+    "version": "1.0",
+    "purpose": "Read every email in a folder, route it to an owner, and flag anything holding personal data.",
+    "authored_by": "frontier model, once. Never runs again.",
+    "steps": [
+      {
+        "n": 1,
+        "name": "Read the inbox from disk",
+        "op": "load"
+      },
+      {
+        "n": 2,
+        "name": "Classify and extract from each email",
+        "op": "extract"
+      },
+      {
+        "n": 3,
+        "name": "Validate every record",
+        "op": "check"
+      },
+      {
+        "n": 4,
+        "name": "Assemble the routing report",
+        "op": "report"
+      }
+    ]
+  },
+  "source": "corpus/inbox/*.eml",
+  "reference_date": "2026-08-27",
+  "device": {
+    "label": "MacBook Pro M4 Pro",
+    "os": "darwin",
+    "machine": "arm64",
+    "python": "3.12.12"
+  },
+  "model": {
+    "name": "gemma4:12b",
+    "digest": "4eb23ef187e2",
+    "load_seconds": 1.7
+  },
+  "network": {
+    "probe": "reachable",
+    "detail": "connected to 162.159.140.245:443",
+    "targets": [
+      {
+        "target": "api.openai.com:443",
+        "reachable": true,
+        "detail": "connected to 162.159.140.245:443",
+        "ms": 66.8
+      },
+      {
+        "target": "api.anthropic.com:443",
+        "reachable": true,
+        "detail": "connected to 160.79.104.10:443",
+        "ms": 45.1
+      },
+      {
+        "target": "cloudflare.com:443",
+        "reachable": true,
+        "detail": "connected to 104.16.133.229:443",
+        "ms": 64.2
+      }
+    ],
+    "model_host": {
+      "target": "127.0.0.1:11434",
+      "reachable": true,
+      "detail": "connected to 127.0.0.1:11434"
+    },
+    "at": "2026-08-24T05:24:48+00:00"
+  },
+  "local": {
+    "calls": 25,
+    "retries": 0,
+    "prompt_tokens": 20119,
+    "output_tokens": 2169,
+    "wall_seconds": 165.9,
+    "tokens_per_second": 13.1,
+    "per_call": [
+      {
+        "file": "corpus/inbox/001-duplicate-invoice.eml",
+        "prompt_tokens": 824,
+        "output_tokens": 96,
+        "seconds": 8.36
+      },
+      {
+        "file": "corpus/inbox/002-order-arrived-damaged.eml",
+        "prompt_tokens": 814,
+        "output_tokens": 96,
+        "seconds": 6.99
+      },
+      {
+        "file": "corpus/inbox/003-hr-escalation-confidential.eml",
+        "prompt_tokens": 896,
+        "output_tokens": 89,
+        "seconds": 6.97
+      },
+      {
+        "file": "corpus/inbox/004-vendor-quote-packaging.eml",
+        "prompt_tokens": 841,
+        "output_tokens": 82,
+        "seconds": 6.56
+      },
+      {
+        "file": "corpus/inbox/005-job-application-warehouse.eml",
+        "prompt_tokens": 777,
+        "output_tokens": 82,
+        "seconds": 6.31
+      },
+      {
+        "file": "corpus/inbox/006-sales-inquiry-wholesale.eml",
+        "prompt_tokens": 823,
+        "output_tokens": 92,
+        "seconds": 6.82
+      },
+      {
+        "file": "corpus/inbox/007-support-login-loop.eml",
+        "prompt_tokens": 791,
+        "output_tokens": 81,
+        "seconds": 6.26
+      },
+      {
+        "file": "corpus/inbox/008-spam-seo.eml",
+        "prompt_tokens": 797,
+        "output_tokens": 73,
+        "seconds": 5.96
+      },
+      {
+        "file": "corpus/inbox/009-complaint-wrong-size.eml",
+        "prompt_tokens": 794,
+        "output_tokens": 90,
+        "seconds": 6.61
+      },
+      {
+        "file": "corpus/inbox/010-invoice-po-mismatch.eml",
+        "prompt_tokens": 806,
+        "output_tokens": 97,
+        "seconds": 7.0
+      },
+      {
+        "file": "corpus/inbox/011-support-integration-docs.eml",
+        "prompt_tokens": 778,
+        "output_tokens": 81,
+        "seconds": 6.27
+      },
+      {
+        "file": "corpus/inbox/012-customer-medical-context.eml",
+        "prompt_tokens": 833,
+        "output_tokens": 90,
+        "seconds": 6.78
+      },
+      {
+        "file": "corpus/inbox/013-sales-inquiry-custom.eml",
+        "prompt_tokens": 776,
+        "output_tokens": 88,
+        "seconds": 6.55
+      },
+      {
+        "file": "corpus/inbox/014-spam-invoice-phish.eml",
+        "prompt_tokens": 775,
+        "output_tokens": 84,
+        "seconds": 6.38
+      },
+      {
+        "file": "corpus/inbox/015-vendor-quote-freight.eml",
+        "prompt_tokens": 808,
+        "output_tokens": 90,
+        "seconds": 6.74
+      },
+      {
+        "file": "corpus/inbox/016-complaint-tone-ambiguous.eml",
+        "prompt_tokens": 805,
+        "output_tokens": 88,
+        "seconds": 6.66
+      },
+      {
+        "file": "corpus/inbox/017-job-application-referral.eml",
+        "prompt_tokens": 787,
+        "output_tokens": 81,
+        "seconds": 6.28
+      },
+      {
+        "file": "corpus/inbox/018-internal-hr-benefits.eml",
+        "prompt_tokens": 793,
+        "output_tokens": 87,
+        "seconds": 6.59
+      },
+      {
+        "file": "corpus/inbox/019-support-return-label.eml",
+        "prompt_tokens": 779,
+        "output_tokens": 88,
+        "seconds": 6.57
+      },
+      {
+        "file": "corpus/inbox/020-invoice-credit-note.eml",
+        "prompt_tokens": 784,
+        "output_tokens": 95,
+        "seconds": 6.82
+      },
+      {
+        "file": "corpus/inbox/021-sales-inquiry-tiny.eml",
+        "prompt_tokens": 784,
+        "output_tokens": 81,
+        "seconds": 6.27
+      },
+      {
+        "file": "corpus/inbox/022-vendor-quote-insurance.eml",
+        "prompt_tokens": 819,
+        "output_tokens": 85,
+        "seconds": 6.54
+      },
+      {
+        "file": "corpus/inbox/023-complaint-escalation-threat.eml",
+        "prompt_tokens": 833,
+        "output_tokens": 97,
+        "seconds": 7.01
+      },
+      {
+        "file": "corpus/inbox/024-spam-recruiter-blast.eml",
+        "prompt_tokens": 782,
+        "output_tokens": 72,
+        "seconds": 6.01
+      },
+      {
+        "file": "corpus/inbox/025-internal-hr-payroll-detail.eml",
+        "prompt_tokens": 820,
+        "output_tokens": 84,
+        "seconds": 6.58
+      }
+    ],
+    "wall_seconds_total": 166.0
+  },
+  "frontier": {
+    "calls": 3,
+    "prompt_tokens": null,
+    "output_tokens": null,
+    "when": "runbook authoring, 2026-08-23",
+    "model": "frontier reasoning model, via chat",
+    "note": "Authored triage-inbox, triage-contracts and redact once. Did not run during this execution and is not required to."
+  },
+  "checks": {
+    "passed": 5,
+    "failed": 0,
+    "details": [
+      {
+        "id": "parses",
+        "kind": "structural",
+        "passed": true,
+        "detail": "25/25 model outputs parsed as JSON",
+        "failures": []
+      },
+      {
+        "id": "record_count",
+        "kind": "structural",
+        "passed": true,
+        "detail": "25 records for 25 input files",
+        "failures": []
+      },
+      {
+        "id": "file_mapping",
+        "kind": "structural",
+        "passed": true,
+        "detail": "25/25 records map to a real input file",
+        "failures": []
+      },
+      {
+        "id": "enum_valid",
+        "kind": "structural",
+        "passed": true,
+        "detail": "75/75 enum values allowed",
+        "failures": []
+      },
+      {
+        "id": "required_present",
+        "kind": "structural",
+        "passed": true,
+        "detail": "6 required fields checked on 25 records",
+        "failures": []
+      }
+    ]
+  },
+  "records": [
+    {
+      "file": "corpus/inbox/001-duplicate-invoice.eml",
+      "chars": 563,
+      "parsed": {
+        "category": "invoice_dispute",
+        "urgency": "this_week",
+        "summary": "Customer received a duplicate invoice (20841-A) for an amount already paid via ACH.",
+        "action": "Void the duplicate invoice 20841-A and confirm with the customer.",
+        "owner": "finance",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/002-order-arrived-damaged.eml",
+      "chars": 568,
+      "parsed": {
+        "category": "customer_complaint",
+        "urgency": "today",
+        "summary": "Customer received 2 of 10 units damaged in Order 55219 and needs replacements by Thursday.",
+        "action": "Contact Marcus to confirm if replacements can be shipped today or if he needs to source locally.",
+        "owner": "support",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/003-hr-escalation-confidential.eml",
+      "chars": 950,
+      "parsed": {
+        "category": "internal_hr",
+        "urgency": "today",
+        "summary": "Shift Supervisor reporting a conduct issue and privacy breach regarding a staff member's medical information.",
+        "action": "Schedule a meeting with Alicia to discuss the disciplinary matter and the breach of confidentiality.",
+        "owner": "people_ops",
+        "contains_personal_data": true
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/004-vendor-quote-packaging.eml",
+      "chars": 543,
+      "parsed": {
+        "category": "vendor_quote",
+        "urgency": "no_deadline",
+        "summary": "Sunil from Arbor Pack provided a quote for custom corrugated inserts.",
+        "action": "Forward to finance to review and file the quote for the packaging materials.",
+        "owner": "finance",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/005-job-application-warehouse.eml",
+      "chars": 455,
+      "parsed": {
+        "category": "job_application",
+        "urgency": "no_deadline",
+        "summary": "Theo Vandersloot is applying for the Warehouse Associate position with a forklift certification.",
+        "action": "Forward resume to the hiring manager for review.",
+        "owner": "people_ops",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/006-sales-inquiry-wholesale.eml",
+      "chars": 600,
+      "parsed": {
+        "category": "sales_inquiry",
+        "urgency": "this_week",
+        "summary": "Northgate Outdoor is inquiring about wholesale terms and drop shipping for a 40-store rollout.",
+        "action": "Provide wholesale pricing, volume terms, and drop shipping capabilities to the Category Manager.",
+        "owner": "sales",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/007-support-login-loop.eml",
+      "chars": 472,
+      "parsed": {
+        "category": "support_request",
+        "urgency": "this_week",
+        "summary": "Dealer portal is logging the user out every 90 seconds.",
+        "action": "Investigate and fix the session timeout issue for the dealer portal.",
+        "owner": "support",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/008-spam-seo.eml",
+      "chars": 478,
+      "parsed": {
+        "category": "spam",
+        "urgency": "no_deadline",
+        "summary": "Unsolicited outreach from a marketing agency regarding SEO services.",
+        "action": "No action required; mark as spam.",
+        "owner": "none",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/009-complaint-wrong-size.eml",
+      "chars": 482,
+      "parsed": {
+        "category": "customer_complaint",
+        "urgency": "this_week",
+        "summary": "Customer received the wrong size for the second time and wants a correct replacement or a refund including shipping.",
+        "action": "Issue a refund or send the correct size and provide a shipping credit.",
+        "owner": "support",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/010-invoice-po-mismatch.eml",
+      "chars": 481,
+      "parsed": {
+        "category": "invoice_dispute",
+        "urgency": "this_week",
+        "summary": "Invoice 20903 has a $340 freight discrepancy against PO 4471.",
+        "action": "Finance needs to provide a corrected invoice or a PO amendment by the 31st.",
+        "owner": "finance",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/011-support-integration-docs.eml",
+      "chars": 470,
+      "parsed": {
+        "category": "support_request",
+        "urgency": "no_deadline",
+        "summary": "User is requesting documentation for the inventory webhook payload format.",
+        "action": "Provide the correct link or documentation regarding absolute stock counts vs. deltas.",
+        "owner": "support",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/012-customer-medical-context.eml",
+      "chars": 573,
+      "parsed": {
+        "category": "support_request",
+        "urgency": "today",
+        "summary": "Customer needs to update delivery address for account 4471-88213 due to surgery.",
+        "action": "Update the shipping address for the specified account and confirm with the customer.",
+        "owner": "support",
+        "contains_personal_data": true
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/013-sales-inquiry-custom.eml",
+      "chars": 409,
+      "parsed": {
+        "category": "sales_inquiry",
+        "urgency": "this_week",
+        "summary": "Inquiry regarding custom colorway availability and minimum order quantities for a 250-unit order.",
+        "action": "Provide information on custom color capabilities and minimum order quantities.",
+        "owner": "sales",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/014-spam-invoice-phish.eml",
+      "chars": 428,
+      "parsed": {
+        "category": "invoice_dispute",
+        "urgency": "today",
+        "summary": "A remittance advice document was sent via DocuShare and expires in 24 hours.",
+        "action": "Finance team needs to review and sign the remittance advice document.",
+        "owner": "finance",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/015-vendor-quote-freight.eml",
+      "chars": 597,
+      "parsed": {
+        "category": "vendor_quote",
+        "urgency": "this_week",
+        "summary": "Pinnacle Freight sent updated LTL shipping rates effective October 1.",
+        "action": "Review the new rate schedule and decide if the current rates should be locked before Sept 15.",
+        "owner": "finance",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/016-complaint-tone-ambiguous.eml",
+      "chars": 583,
+      "parsed": {
+        "category": "customer_complaint",
+        "urgency": "no_deadline",
+        "summary": "Customer is happy with product quality but frustrated by repeated shipping delays and tracking errors.",
+        "action": "Acknowledge the feedback and apologize for the logistics issues to maintain the relationship.",
+        "owner": "support",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/017-job-application-referral.eml",
+      "chars": 542,
+      "parsed": {
+        "category": "job_application",
+        "urgency": "no_deadline",
+        "summary": "Naomi Castellanos is applying for the Operations Coordinator role via a referral.",
+        "action": "Forward resume to the hiring manager for review.",
+        "owner": "people_ops",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/018-internal-hr-benefits.eml",
+      "chars": 488,
+      "parsed": {
+        "category": "internal_hr",
+        "urgency": "this_week",
+        "summary": "Staff member requesting a meeting to discuss adjusting the open enrollment window dates.",
+        "action": "Schedule a 20-minute meeting with Yusuf to discuss the enrollment timeline.",
+        "owner": "people_ops",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/019-support-return-label.eml",
+      "chars": 414,
+      "parsed": {
+        "category": "customer_complaint",
+        "urgency": "this_week",
+        "summary": "Customer has not received a promised return label and is concerned about the upcoming return window deadline.",
+        "action": "Issue a return label to the customer and confirm the return window status.",
+        "owner": "support",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/020-invoice-credit-note.eml",
+      "chars": 465,
+      "parsed": {
+        "category": "invoice_dispute",
+        "urgency": "today",
+        "summary": "Credit note 331 for $1,910 is missing from the account and needs resolution before Wednesday's audit.",
+        "action": "Finance must apply the credit or provide a written explanation for the discrepancy.",
+        "owner": "finance",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/021-sales-inquiry-tiny.eml",
+      "chars": 423,
+      "parsed": {
+        "category": "sales_inquiry",
+        "urgency": "no_deadline",
+        "summary": "Potential customer inquiring about minimum order requirements for a single-location shop.",
+        "action": "Provide information on dealer account tiers and minimum order requirements.",
+        "owner": "sales",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/022-vendor-quote-insurance.eml",
+      "chars": 558,
+      "parsed": {
+        "category": "vendor_quote",
+        "urgency": "this_week",
+        "summary": "Insurance broker provided three carrier options for the general liability renewal.",
+        "action": "Review the three quote options and select a carrier before the September 12th deadline.",
+        "owner": "finance",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/023-complaint-escalation-threat.eml",
+      "chars": 590,
+      "parsed": {
+        "category": "customer_complaint",
+        "urgency": "today",
+        "summary": "Customer is angry about a 3-week delay on order 54880 and demands a response today.",
+        "action": "Contact Duncan Pryce immediately to provide a status update on order 54880.",
+        "owner": "support",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/024-spam-recruiter-blast.eml",
+      "chars": 452,
+      "parsed": {
+        "category": "spam",
+        "urgency": "no_deadline",
+        "summary": "Recruitment agency offering pre-vetted warehouse candidates.",
+        "action": "No action required; unsolicited recruitment blast.",
+        "owner": "none",
+        "contains_personal_data": false
+      },
+      "needs_review": false
+    },
+    {
+      "file": "corpus/inbox/025-internal-hr-payroll-detail.eml",
+      "chars": 662,
+      "parsed": {
+        "category": "internal_hr",
+        "urgency": "today",
+        "summary": "Payroll department received a court-ordered wage garnishment for employee Trevor Lindqvist.",
+        "action": "Provide instructions on the garnishment timing and confirm the address discrepancy.",
+        "owner": "people_ops",
+        "contains_personal_data": true
+      },
+      "needs_review": false
+    }
+  ],
+  "removals_total": 0
+}

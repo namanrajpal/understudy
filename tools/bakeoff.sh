@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Model bake-off: same runbooks, same corpus, three model sizes.
+# Model bake-off: same runbooks, same corpus, five models across three labs.
 #
 # The point is not to crown a winner. It is to show where quality falls off as
 # the model gets smaller, so "how good is good enough" is a measured question
@@ -9,6 +9,10 @@
 #   bash tools/bakeoff.sh
 #
 # Writes out/bakeoff/ and prints a comparison table.
+#
+# Each model is explicitly unloaded when its runs finish. run.py pins models
+# with keep_alive:-1, which never expires, so without that step five models in
+# sequence stack past physical memory.
 
 set -u
 cd "$(dirname "$0")/.." || exit 1
@@ -55,6 +59,17 @@ for m in "${MODELS[@]}"; do
     grep -E "survival_scan|removals|checks " "$OUT/log-$slug-redact.txt" | head -4
     echo
   fi
+  # Release this model before moving to the next one.
+  #
+  # src/run.py sets keep_alive:-1 so a model never unloads mid-run, which is
+  # correct for a single demo but wrong here: pinned models do not expire, so
+  # five of them in sequence stack to roughly 56 GB of weights and the machine
+  # swaps instead of evicting cleanly. Unload explicitly.
+  curl -s --max-time 30 http://127.0.0.1:11434/api/generate \
+    -d "{\"model\": \"$m\", \"keep_alive\": 0}" > /dev/null 2>&1
+  sleep 3
+  echo "  unloaded $m"
+  echo
 done
 
 echo "================ SUMMARY ================"

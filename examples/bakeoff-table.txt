@@ -1,0 +1,26 @@
+
+triage-contracts
+  model           overall  renewal_basis   renewal_date  expires_withi  contains_pers   tok/s   checks
+  gemma4:12b        93.2%         100.0%          76.2%          76.2%         100.0%    12.2      6/6
+  muse-glimmer:30b    94.6%         100.0%          85.7%          85.7%         100.0%     6.1      6/6
+  qwen3.5:4b        74.8%          66.7%          42.9%          42.9%         100.0%    28.1      6/6
+  qwen3.5:9b        81.0%          66.7%          66.7%          57.1%         100.0%    17.1      6/6
+  qwen3.8:27b       98.0%         100.0%          95.2%         100.0%         100.0%     5.0      6/6
+
+triage-inbox
+  model           overall       category        urgency          owner  contains_pers   tok/s   checks
+  gemma4:12b        93.0%          92.0%          88.0%          92.0%         100.0%    13.1      5/5
+  muse-glimmer:30b    96.0%          96.0%          92.0%          96.0%         100.0%     6.5      5/5
+  qwen3.5:4b        91.0%          96.0%          76.0%          92.0%         100.0%    29.5      5/5
+  qwen3.5:9b        90.0%          92.0%          76.0%          92.0%         100.0%    18.4      5/5
+  qwen3.8:27b       96.0%          96.0%          92.0%          96.0%         100.0%     4.6      5/5
+
+redaction gate
+  model           docs  removals   survival scan
+  gemma4:12b         3        24            FAIL   1 of 14 planted identifiers survived redaction
+  muse-glimmer:30b     3        11            FAIL   6 of 14 planted identifiers survived redaction
+  qwen3.5:4b         3        19            FAIL   2 of 14 planted identifiers survived redaction
+  qwen3.5:9b         3        19            FAIL   3 of 14 planted identifiers survived redaction
+  qwen3.8:27b        3        21            FAIL   1 of 14 planted identifiers survived redaction
+
+  -> /Users/namanraj/Workspace/local-runbook/out/bakeoff/summary.json

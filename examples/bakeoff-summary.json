@@ -1,0 +1,222 @@
+{
+  "gemma4:12b": {
+    "model": "gemma4:12b",
+    "tasks": {
+      "triage-contracts": {
+        "status": "ok",
+        "documents": 21,
+        "needs_review": 0,
+        "checks_passed": 6,
+        "checks_failed": 0,
+        "tokens_per_second": 12.2,
+        "wall_seconds": 163.2,
+        "overall_pct": 93.2,
+        "fields": {
+          "renewal_basis": 100.0,
+          "renewal_date": 76.2,
+          "expires_within_90_days": 76.2,
+          "contains_personal_data": 100.0
+        }
+      },
+      "triage-inbox": {
+        "status": "ok",
+        "documents": 25,
+        "needs_review": 0,
+        "checks_passed": 5,
+        "checks_failed": 0,
+        "tokens_per_second": 13.1,
+        "wall_seconds": 165.9,
+        "overall_pct": 93.0,
+        "fields": {
+          "category": 92.0,
+          "urgency": 88.0,
+          "owner": 92.0,
+          "contains_personal_data": 100.0
+        }
+      }
+    },
+    "redact": {
+      "status": "ok",
+      "documents": 3,
+      "removals": 24,
+      "survival_scan": "fail",
+      "detail": "1 of 14 planted identifiers survived redaction"
+    }
+  },
+  "muse-glimmer:30b": {
+    "model": "muse-glimmer:30b",
+    "tasks": {
+      "triage-contracts": {
+        "status": "ok",
+        "documents": 21,
+        "needs_review": 0,
+        "checks_passed": 6,
+        "checks_failed": 0,
+        "tokens_per_second": 6.1,
+        "wall_seconds": 196.6,
+        "overall_pct": 94.6,
+        "fields": {
+          "renewal_basis": 100.0,
+          "renewal_date": 85.7,
+          "expires_within_90_days": 85.7,
+          "contains_personal_data": 100.0
+        }
+      },
+      "triage-inbox": {
+        "status": "ok",
+        "documents": 25,
+        "needs_review": 0,
+        "checks_passed": 5,
+        "checks_failed": 0,
+        "tokens_per_second": 6.5,
+        "wall_seconds": 219.4,
+        "overall_pct": 96.0,
+        "fields": {
+          "category": 96.0,
+          "urgency": 92.0,
+          "owner": 96.0,
+          "contains_personal_data": 100.0
+        }
+      }
+    },
+    "redact": {
+      "status": "ok",
+      "documents": 3,
+      "removals": 11,
+      "survival_scan": "fail",
+      "detail": "6 of 14 planted identifiers survived redaction"
+    }
+  },
+  "qwen3.5:4b": {
+    "model": "qwen3.5:4b",
+    "tasks": {
+      "triage-contracts": {
+        "status": "ok",
+        "documents": 21,
+        "needs_review": 0,
+        "checks_passed": 6,
+        "checks_failed": 0,
+        "tokens_per_second": 28.1,
+        "wall_seconds": 66.8,
+        "overall_pct": 74.8,
+        "fields": {
+          "renewal_basis": 66.7,
+          "renewal_date": 42.9,
+          "expires_within_90_days": 42.9,
+          "contains_personal_data": 100.0
+        }
+      },
+      "triage-inbox": {
+        "status": "ok",
+        "documents": 25,
+        "needs_review": 0,
+        "checks_passed": 5,
+        "checks_failed": 0,
+        "tokens_per_second": 29.5,
+        "wall_seconds": 69.0,
+        "overall_pct": 91.0,
+        "fields": {
+          "category": 96.0,
+          "urgency": 76.0,
+          "owner": 92.0,
+          "contains_personal_data": 100.0
+        }
+      }
+    },
+    "redact": {
+      "status": "ok",
+      "documents": 3,
+      "removals": 19,
+      "survival_scan": "fail",
+      "detail": "2 of 14 planted identifiers survived redaction"
+    }
+  },
+  "qwen3.5:9b": {
+    "model": "qwen3.5:9b",
+    "tasks": {
+      "triage-contracts": {
+        "status": "ok",
+        "documents": 21,
+        "needs_review": 0,
+        "checks_passed": 6,
+        "checks_failed": 0,
+        "tokens_per_second": 17.1,
+        "wall_seconds": 108.1,
+        "overall_pct": 81.0,
+        "fields": {
+          "renewal_basis": 66.7,
+          "renewal_date": 66.7,
+          "expires_within_90_days": 57.1,
+          "contains_personal_data": 100.0
+        }
+      },
+      "triage-inbox": {
+        "status": "ok",
+        "documents": 25,
+        "needs_review": 0,
+        "checks_passed": 5,
+        "checks_failed": 0,
+        "tokens_per_second": 18.4,
+        "wall_seconds": 112.6,
+        "overall_pct": 90.0,
+        "fields": {
+          "category": 92.0,
+          "urgency": 76.0,
+          "owner": 92.0,
+          "contains_personal_data": 100.0
+        }
+      }
+    },
+    "redact": {
+      "status": "ok",
+      "documents": 3,
+      "removals": 19,
+      "survival_scan": "fail",
+      "detail": "3 of 14 planted identifiers survived redaction"
+    }
+  },
+  "qwen3.8:27b": {
+    "model": "qwen3.8:27b",
+    "tasks": {
+      "triage-contracts": {
+        "status": "ok",
+        "documents": 21,
+        "needs_review": 0,
+        "checks_passed": 6,
+        "checks_failed": 0,
+        "tokens_per_second": 5.0,
+        "wall_seconds": 372.0,
+        "overall_pct": 98.0,
+        "fields": {
+          "renewal_basis": 100.0,
+          "renewal_date": 95.2,
+          "expires_within_90_days": 100.0,
+          "contains_personal_data": 100.0
+        }
+      },
+      "triage-inbox": {
+        "status": "ok",
+        "documents": 25,
+        "needs_review": 0,
+        "checks_passed": 5,
+        "checks_failed": 0,
+        "tokens_per_second": 4.6,
+        "wall_seconds": 453.6,
+        "overall_pct": 96.0,
+        "fields": {
+          "category": 96.0,
+          "urgency": 92.0,
+          "owner": 96.0,
+          "contains_personal_data": 100.0
+        }
+      }
+    },
+    "redact": {
+      "status": "ok",
+      "documents": 3,
+      "removals": 21,
+      "survival_scan": "fail",
+      "detail": "1 of 14 planted identifiers survived redaction"
+    }
+  }
+}
