@@ -32,15 +32,12 @@ REQUIRED_RUNBOOK_KEYS = {"id", "version", "authored_by", "authored_on", "purpose
 
 # Checks the runner knows how to execute. A runbook naming anything else is a
 # typo that would otherwise silently skip a check.
-KNOWN_CHECKS = {
-    "parses",
-    "record_count",
-    "file_mapping",
-    "enum_valid",
-    "required_present",
-    "date_format",
-    "survival_scan",
-}
+# Derived from the runner's own registry rather than duplicated here, so adding
+# a check in src/checks.py cannot silently desync this validator from reality.
+sys.path.insert(0, str(ROOT / "src"))
+from checks import REGISTRY as _CHECK_REGISTRY  # noqa: E402
+
+KNOWN_CHECKS = set(_CHECK_REGISTRY)
 
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
