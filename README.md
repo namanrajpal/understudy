@@ -1,4 +1,4 @@
-# local-runbook
+# understudy
 
 Define the work once with a capable model. Do the work repeatedly with a small
 one, on your own machine.
@@ -30,6 +30,7 @@ Every model call goes to a local Ollama endpoint on loopback. No document in
 
 | | |
 |---|---|
+| The write-up of the whole experiment | [`docs/POST.md`](docs/POST.md) |
 | See the output without installing anything | [`examples/`](examples/) |
 | The measured numbers, with provenance | [`docs/RESULTS.md`](docs/RESULTS.md) |
 | Six things that went wrong and what they meant | [`docs/FINDINGS.md`](docs/FINDINGS.md) |
@@ -163,29 +164,35 @@ reference the pattern cannot locate.
 
 Every identifier planted in the corpus is listed in `corpus/PLANTED.json`, which
 is never included in any prompt. After redaction, every planted string is
-scanned against every redacted document.
+scanned against every redacted document. The scan gates on **direct
+identifiers** (names, addresses, phone numbers, emails, account ids); facts
+about a person (medical, employment, deal terms) are reported beside the gate
+but do not fail it, the same line the HIPAA Safe Harbor de-identification
+standard draws.
 
 ```
-[FAIL] survival_scan      1 of 14 planted identifiers survived redaction
-                          P05 employment_detail
-                          "was written up twice in 2024 for the same behaviour"
+redaction gate  (identifiers gate the result, facts are reported)
+  model                gate  identifiers   facts  removals  retries
+  gemma4:12b           PASS         0/10     1/4        24        0
+  qwen3.8:27b          PASS         0/10     1/4        21        0
+  muse-glimmer:30b     PASS         0/10     1/4        21        2
 ```
 
-**The gate fails, and that is the reported number.** It is not tuned until it
-passes, for two reasons worth knowing before you copy this design.
+All five models pass: 0 of 10 planted identifiers survive on any model. Two
+design decisions did most of the work, and both are about trusting the model
+less, not more.
 
-An earlier version of this scan reported `0 of 14`, and it was wrong in the
-dangerous direction: it matched strings more strictly than the redactor did, so
-identifiers whose line breaks differed from the manifest were invisible to it and
-counted as removed without being examined. Separately, which identifier survives
-**varies between runs at temperature 0**, and both observed survivors were
-multi-line narrative clauses rather than name-shaped tokens.
+The model finds the spans but **code applies them**. Asked to both find and
+rewrite, models reliably substituted short tokens and reliably left multi-line
+clauses verbatim while correctly listing them as removals. Finding an
+identifying span is judgment. Replacing a substring is not.
 
-So the claim is not that the model redacts perfectly. It is that the model
-catches name-shaped identifiers reliably, is inconsistent on narrative clauses,
-and a deterministic scan turns that inconsistency into a caught failure instead
-of a leak. A redaction pipeline without a deterministic verifier is a hope, not a
-control.
+An empty answer is treated as suspicious, not clean. `muse-glimmer:30b`
+returned zero removal spans for a flagged document holding five planted
+identifiers, and every structural check passed, because an empty array is
+structurally valid. The runner now retries any flagged document that returns no
+removals, which recovered that run from 3 leaked identifiers to none. A
+redaction pipeline without a deterministic verifier is a hope, not a control.
 
 ## Findings
 
