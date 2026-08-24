@@ -1,0 +1,15 @@
+DATA SERVICES SUBSCRIPTION
+
+Provider: Cartograph Data Co.
+Customer: Cedar Ridge Outfitters LLC
+
+TERM
+The then-current term ends April 30, 2027 and renews automatically for
+twelve (12) month periods unless cancelled in writing sixty (60) days in
+advance of the renewal date.
+
+SUBSCRIPTION
+Geospatial demand dataset, quarterly refresh, single-region licence.
+
+FEE
+$14,400 annually, invoiced in advance.

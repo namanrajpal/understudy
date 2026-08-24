@@ -1,0 +1,346 @@
+{
+  "reference_date": "2026-08-27",
+  "inbox": {
+    "inbox/001-duplicate-invoice.eml": {
+      "category": "invoice_dispute",
+      "urgency": "this_week",
+      "owner": "finance",
+      "contains_personal_data": false
+    },
+    "inbox/002-order-arrived-damaged.eml": {
+      "category": "customer_complaint",
+      "urgency": "today",
+      "owner": "support",
+      "contains_personal_data": false
+    },
+    "inbox/003-hr-escalation-confidential.eml": {
+      "category": "internal_hr",
+      "urgency": "today",
+      "owner": "people_ops",
+      "contains_personal_data": true
+    },
+    "inbox/004-vendor-quote-packaging.eml": {
+      "category": "vendor_quote",
+      "urgency": "no_deadline",
+      "owner": "none",
+      "contains_personal_data": false
+    },
+    "inbox/005-job-application-warehouse.eml": {
+      "category": "job_application",
+      "urgency": "no_deadline",
+      "owner": "people_ops",
+      "contains_personal_data": false
+    },
+    "inbox/006-sales-inquiry-wholesale.eml": {
+      "category": "sales_inquiry",
+      "urgency": "this_week",
+      "owner": "sales",
+      "contains_personal_data": false
+    },
+    "inbox/007-support-login-loop.eml": {
+      "category": "support_request",
+      "urgency": "this_week",
+      "owner": "support",
+      "contains_personal_data": false
+    },
+    "inbox/008-spam-seo.eml": {
+      "category": "spam",
+      "urgency": "no_deadline",
+      "owner": "none",
+      "contains_personal_data": false
+    },
+    "inbox/009-complaint-wrong-size.eml": {
+      "category": "customer_complaint",
+      "urgency": "this_week",
+      "owner": "support",
+      "contains_personal_data": false
+    },
+    "inbox/010-invoice-po-mismatch.eml": {
+      "category": "invoice_dispute",
+      "urgency": "this_week",
+      "owner": "finance",
+      "contains_personal_data": false
+    },
+    "inbox/011-support-integration-docs.eml": {
+      "category": "support_request",
+      "urgency": "no_deadline",
+      "owner": "support",
+      "contains_personal_data": false
+    },
+    "inbox/012-customer-medical-context.eml": {
+      "category": "support_request",
+      "urgency": "today",
+      "owner": "support",
+      "contains_personal_data": true
+    },
+    "inbox/013-sales-inquiry-custom.eml": {
+      "category": "sales_inquiry",
+      "urgency": "no_deadline",
+      "owner": "sales",
+      "contains_personal_data": false
+    },
+    "inbox/014-spam-invoice-phish.eml": {
+      "category": "spam",
+      "urgency": "no_deadline",
+      "owner": "none",
+      "contains_personal_data": false
+    },
+    "inbox/015-vendor-quote-freight.eml": {
+      "category": "vendor_quote",
+      "urgency": "this_week",
+      "owner": "finance",
+      "contains_personal_data": false
+    },
+    "inbox/016-complaint-tone-ambiguous.eml": {
+      "category": "customer_complaint",
+      "urgency": "this_week",
+      "owner": "support",
+      "contains_personal_data": false
+    },
+    "inbox/017-job-application-referral.eml": {
+      "category": "job_application",
+      "urgency": "no_deadline",
+      "owner": "people_ops",
+      "contains_personal_data": false
+    },
+    "inbox/018-internal-hr-benefits.eml": {
+      "category": "internal_hr",
+      "urgency": "this_week",
+      "owner": "people_ops",
+      "contains_personal_data": false
+    },
+    "inbox/019-support-return-label.eml": {
+      "category": "support_request",
+      "urgency": "this_week",
+      "owner": "support",
+      "contains_personal_data": false
+    },
+    "inbox/020-invoice-credit-note.eml": {
+      "category": "invoice_dispute",
+      "urgency": "today",
+      "owner": "finance",
+      "contains_personal_data": false
+    },
+    "inbox/021-sales-inquiry-tiny.eml": {
+      "category": "sales_inquiry",
+      "urgency": "no_deadline",
+      "owner": "sales",
+      "contains_personal_data": false
+    },
+    "inbox/022-vendor-quote-insurance.eml": {
+      "category": "vendor_quote",
+      "urgency": "this_week",
+      "owner": "finance",
+      "contains_personal_data": false
+    },
+    "inbox/023-complaint-escalation-threat.eml": {
+      "category": "customer_complaint",
+      "urgency": "today",
+      "owner": "support",
+      "contains_personal_data": false
+    },
+    "inbox/024-spam-recruiter-blast.eml": {
+      "category": "spam",
+      "urgency": "no_deadline",
+      "owner": "none",
+      "contains_personal_data": false
+    },
+    "inbox/025-internal-hr-payroll-detail.eml": {
+      "category": "internal_hr",
+      "urgency": "today",
+      "owner": "people_ops",
+      "contains_personal_data": true
+    }
+  },
+  "contracts": {
+    "contracts/001-service-agreement-northwind.txt": {
+      "doc_type": "maintenance",
+      "counterparty": "Northwind Facilities Group",
+      "renewal_basis": "fixed_date",
+      "renewal_date": "2026-10-31",
+      "notice_days": 0,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/002-saas-subscription-brightledger.txt": {
+      "doc_type": "saas_subscription",
+      "counterparty": "BrightLedger Software Inc.",
+      "renewal_basis": "fixed_date",
+      "renewal_date": "2026-09-15",
+      "notice_days": 0,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/003-lease-harbor-point.txt": {
+      "doc_type": "lease",
+      "counterparty": "Harbor Point Commercial Properties",
+      "renewal_basis": "fixed_date",
+      "renewal_date": "2028-02-29",
+      "notice_days": 0,
+      "expires_within_90_days": false,
+      "contains_personal_data": false
+    },
+    "contracts/004-maintenance-summit-hvac.txt": {
+      "doc_type": "maintenance",
+      "counterparty": "Summit Mechanical Services",
+      "renewal_basis": "fixed_date",
+      "renewal_date": "2027-06-30",
+      "notice_days": 0,
+      "expires_within_90_days": false,
+      "contains_personal_data": false
+    },
+    "contracts/005-sow-tidewater-analytics.txt": {
+      "doc_type": "statement_of_work",
+      "counterparty": "Tidewater Analytics LLC",
+      "renewal_basis": "fixed_date",
+      "renewal_date": "2026-11-13",
+      "notice_days": 0,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/006-service-agreement-pinnacle.txt": {
+      "doc_type": "service_agreement",
+      "counterparty": "Pinnacle Freight Partners",
+      "renewal_basis": "fixed_date",
+      "renewal_date": "2029-01-31",
+      "notice_days": 0,
+      "expires_within_90_days": false,
+      "contains_personal_data": false
+    },
+    "contracts/007-service-agreement-alder-creek.txt": {
+      "doc_type": "service_agreement",
+      "counterparty": "Alder Creek Security Systems",
+      "renewal_basis": "anniversary_of_execution",
+      "renewal_date": "2026-09-18",
+      "notice_days": 30,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/008-saas-subscription-quillstack.txt": {
+      "doc_type": "saas_subscription",
+      "counterparty": "Quillstack Technologies",
+      "renewal_basis": "anniversary_of_execution",
+      "renewal_date": "2026-11-05",
+      "notice_days": 45,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/009-maintenance-granite-fleet.txt": {
+      "doc_type": "maintenance",
+      "counterparty": "Granite Fleet Care",
+      "renewal_basis": "anniversary_of_execution",
+      "renewal_date": "2026-10-02",
+      "notice_days": 60,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/010-service-agreement-lantern-hr.txt": {
+      "doc_type": "service_agreement",
+      "counterparty": "Lantern HR Advisory",
+      "renewal_basis": "anniversary_of_execution",
+      "renewal_date": "2027-03-11",
+      "notice_days": 30,
+      "expires_within_90_days": false,
+      "contains_personal_data": false
+    },
+    "contracts/011-sow-meridian-design.txt": {
+      "doc_type": "statement_of_work",
+      "counterparty": "Meridian Design Studio",
+      "renewal_basis": "anniversary_of_execution",
+      "renewal_date": "2026-11-20",
+      "notice_days": 30,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/012-saas-subscription-forgepoint.txt": {
+      "doc_type": "saas_subscription",
+      "counterparty": "Forgepoint Systems",
+      "renewal_basis": "auto_renew_unless_notice",
+      "renewal_date": "2026-09-30",
+      "notice_days": 60,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/013-service-agreement-blue-heron.txt": {
+      "doc_type": "service_agreement",
+      "counterparty": "Blue Heron Waste Solutions",
+      "renewal_basis": "auto_renew_unless_notice",
+      "renewal_date": "2026-11-30",
+      "notice_days": 90,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/014-maintenance-copperline-it.txt": {
+      "doc_type": "maintenance",
+      "counterparty": "Copperline IT Support",
+      "renewal_basis": "auto_renew_unless_notice",
+      "renewal_date": "2026-10-15",
+      "notice_days": 30,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/015-lease-ironwood-storage.txt": {
+      "doc_type": "lease",
+      "counterparty": "Ironwood Self Storage",
+      "renewal_basis": "auto_renew_unless_notice",
+      "renewal_date": "2026-09-01",
+      "notice_days": 15,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/016-saas-subscription-cartograph.txt": {
+      "doc_type": "saas_subscription",
+      "counterparty": "Cartograph Data Co.",
+      "renewal_basis": "auto_renew_unless_notice",
+      "renewal_date": "2027-04-30",
+      "notice_days": 60,
+      "expires_within_90_days": false,
+      "contains_personal_data": false
+    },
+    "contracts/017-service-agreement-westmark.txt": {
+      "doc_type": "service_agreement",
+      "counterparty": "Westmark Audit Group",
+      "renewal_basis": "fiscal_year_end",
+      "renewal_date": "2026-09-30",
+      "notice_days": 0,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/018-saas-subscription-ledgerline.txt": {
+      "doc_type": "saas_subscription",
+      "counterparty": "Ledgerline Compliance",
+      "renewal_basis": "fiscal_year_end",
+      "renewal_date": "2026-09-30",
+      "notice_days": 30,
+      "expires_within_90_days": true,
+      "contains_personal_data": false
+    },
+    "contracts/019-maintenance-stonebridge.txt": {
+      "doc_type": "maintenance",
+      "counterparty": "Stonebridge Grounds Care",
+      "renewal_basis": "fiscal_year_end",
+      "renewal_date": "2027-06-30",
+      "notice_days": 0,
+      "expires_within_90_days": false,
+      "contains_personal_data": false
+    },
+    "contracts/020-nda-riverbend.txt": {
+      "doc_type": "nda",
+      "counterparty": "Riverbend Capital Advisors",
+      "renewal_basis": "none",
+      "renewal_date": "unknown",
+      "notice_days": 0,
+      "expires_within_90_days": false,
+      "contains_personal_data": true
+    },
+    "contracts/021-sow-caldwell-consulting.txt": {
+      "doc_type": "statement_of_work",
+      "counterparty": "Caldwell Consulting",
+      "renewal_basis": "fixed_date",
+      "renewal_date": "2026-10-09",
+      "notice_days": 0,
+      "expires_within_90_days": true,
+      "contains_personal_data": true
+    }
+  }
+}

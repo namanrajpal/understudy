@@ -1,0 +1,255 @@
+{
+  "reference_date": "2026-08-27",
+  "overall": {
+    "right": 12,
+    "total": 21,
+    "pct": 57.1
+  },
+  "by_basis": {
+    "fixed_date": {
+      "right": 6,
+      "total": 7,
+      "pct": 85.7
+    },
+    "anniversary_of_execution": {
+      "right": 0,
+      "total": 5,
+      "pct": 0.0
+    },
+    "auto_renew_unless_notice": {
+      "right": 5,
+      "total": 5,
+      "pct": 100.0
+    },
+    "fiscal_year_end": {
+      "right": 0,
+      "total": 3,
+      "pct": 0.0
+    },
+    "none": {
+      "right": 1,
+      "total": 1,
+      "pct": 100.0
+    }
+  },
+  "missed_expiring": [
+    {
+      "file": "contracts/007-service-agreement-alder-creek.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-09-18",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/008-saas-subscription-quillstack.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-11-05",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/009-maintenance-granite-fleet.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-10-02",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/011-sow-meridian-design.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-11-20",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/017-service-agreement-westmark.txt",
+      "basis": "fiscal_year_end",
+      "expected": "2026-09-30",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/018-saas-subscription-ledgerline.txt",
+      "basis": "fiscal_year_end",
+      "expected": "2026-09-30",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    }
+  ],
+  "rows": [
+    {
+      "file": "contracts/001-service-agreement-northwind.txt",
+      "basis": "fixed_date",
+      "expected": "2026-10-31",
+      "got": "2026-10-31",
+      "ok": true,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/002-saas-subscription-brightledger.txt",
+      "basis": "fixed_date",
+      "expected": "2026-09-15",
+      "got": "2026-09-15",
+      "ok": true,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/003-lease-harbor-point.txt",
+      "basis": "fixed_date",
+      "expected": "2028-02-29",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": false
+    },
+    {
+      "file": "contracts/004-maintenance-summit-hvac.txt",
+      "basis": "fixed_date",
+      "expected": "2027-06-30",
+      "got": "2027-06-30",
+      "ok": true,
+      "expires_within_90_days": false
+    },
+    {
+      "file": "contracts/005-sow-tidewater-analytics.txt",
+      "basis": "fixed_date",
+      "expected": "2026-11-13",
+      "got": "2026-11-13",
+      "ok": true,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/006-service-agreement-pinnacle.txt",
+      "basis": "fixed_date",
+      "expected": "2029-01-31",
+      "got": "2029-01-31",
+      "ok": true,
+      "expires_within_90_days": false
+    },
+    {
+      "file": "contracts/007-service-agreement-alder-creek.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-09-18",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/008-saas-subscription-quillstack.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-11-05",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/009-maintenance-granite-fleet.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-10-02",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/010-service-agreement-lantern-hr.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2027-03-11",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": false
+    },
+    {
+      "file": "contracts/011-sow-meridian-design.txt",
+      "basis": "anniversary_of_execution",
+      "expected": "2026-11-20",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/012-saas-subscription-forgepoint.txt",
+      "basis": "auto_renew_unless_notice",
+      "expected": "2026-09-30",
+      "got": "2026-09-30",
+      "ok": true,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/013-service-agreement-blue-heron.txt",
+      "basis": "auto_renew_unless_notice",
+      "expected": "2026-11-30",
+      "got": "2026-11-30",
+      "ok": true,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/014-maintenance-copperline-it.txt",
+      "basis": "auto_renew_unless_notice",
+      "expected": "2026-10-15",
+      "got": "2026-10-15",
+      "ok": true,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/015-lease-ironwood-storage.txt",
+      "basis": "auto_renew_unless_notice",
+      "expected": "2026-09-01",
+      "got": "2026-09-01",
+      "ok": true,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/016-saas-subscription-cartograph.txt",
+      "basis": "auto_renew_unless_notice",
+      "expected": "2027-04-30",
+      "got": "2027-04-30",
+      "ok": true,
+      "expires_within_90_days": false
+    },
+    {
+      "file": "contracts/017-service-agreement-westmark.txt",
+      "basis": "fiscal_year_end",
+      "expected": "2026-09-30",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/018-saas-subscription-ledgerline.txt",
+      "basis": "fiscal_year_end",
+      "expected": "2026-09-30",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": true
+    },
+    {
+      "file": "contracts/019-maintenance-stonebridge.txt",
+      "basis": "fiscal_year_end",
+      "expected": "2027-06-30",
+      "got": "unknown",
+      "ok": false,
+      "expires_within_90_days": false
+    },
+    {
+      "file": "contracts/020-nda-riverbend.txt",
+      "basis": "none",
+      "expected": "unknown",
+      "got": "unknown",
+      "ok": true,
+      "expires_within_90_days": false
+    },
+    {
+      "file": "contracts/021-sow-caldwell-consulting.txt",
+      "basis": "fixed_date",
+      "expected": "2026-10-09",
+      "got": "2026-10-09",
+      "ok": true,
+      "expires_within_90_days": true
+    }
+  ]
+}

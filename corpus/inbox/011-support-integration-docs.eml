@@ -1,0 +1,18 @@
+From: Wes Ndiaye <wes@thistleandpine.example>
+To: hello@cedarridge.example
+Subject: Where do I find the inventory webhook payload format?
+Date: Wed, 19 Aug 2026 16:20:11 -0400
+Message-ID: <011-support-integration-docs@cedarridge.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Looking for documentation on the inventory webhook. The dealer portal mentions
+it under integrations but the link goes to a 404.
+
+Specifically I want to know whether the payload sends absolute stock counts or
+deltas, because that changes how I write the consumer.
+
+No rush, this is a side project for us this quarter.
+
+Wes

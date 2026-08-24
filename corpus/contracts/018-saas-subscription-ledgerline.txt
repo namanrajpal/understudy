@@ -1,0 +1,19 @@
+COMPLIANCE PLATFORM AGREEMENT
+
+Vendor:   Ledgerline Compliance
+Customer: Cedar Ridge Outfitters LLC
+
+TERM
+The subscription is aligned to the Customer's fiscal year and terminates at
+fiscal year end unless renewed. Customer's fiscal calendar closes at the end of
+September each year.
+
+Renewal requires an affirmative purchase order; absent one, access is suspended
+at fiscal year end and data is retained for ninety (90) days.
+
+NOTICE
+Customer shall indicate renewal intent at least thirty (30) days before fiscal
+year end.
+
+FEE
+$1,875 per month.

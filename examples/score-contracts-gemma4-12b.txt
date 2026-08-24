@@ -1,0 +1,46 @@
+gemma4:12b  contracts  21 documents
+
+  field                        correct         
+  doc_type                     21/21   100.0%  ####################
+  counterparty                 21/21   100.0%  ####################
+  renewal_basis                21/21   100.0%  ####################
+  renewal_date                 16/21    76.2%  ###############
+  notice_days                  21/21   100.0%  ####################
+  expires_within_90_days       16/21    76.2%  ###############
+  contains_personal_data       21/21   100.0%  ####################
+
+  OVERALL                     137/147   93.2%
+
+  10 misses:
+    corpus/contracts/007-service-agreement-alder-creek.txt renewal_date
+      expected '2026-09-18'
+      got      '2027-09-18'
+    corpus/contracts/007-service-agreement-alder-creek.txt expires_within_90_days
+      expected True
+      got      False
+    corpus/contracts/008-saas-subscription-quillstack.txt renewal_date
+      expected '2026-11-05'
+      got      '2027-11-05'
+    corpus/contracts/008-saas-subscription-quillstack.txt expires_within_90_days
+      expected True
+      got      False
+    corpus/contracts/009-maintenance-granite-fleet.txt renewal_date
+      expected '2026-10-02'
+      got      '2027-10-02'
+    corpus/contracts/009-maintenance-granite-fleet.txt expires_within_90_days
+      expected True
+      got      False
+    corpus/contracts/011-sow-meridian-design.txt renewal_date
+      expected '2026-11-20'
+      got      '2027-11-20'
+    corpus/contracts/011-sow-meridian-design.txt expires_within_90_days
+      expected True
+      got      False
+    corpus/contracts/012-saas-subscription-forgepoint.txt renewal_date
+      expected '2026-09-30'
+      got      '2027-09-30'
+    corpus/contracts/012-saas-subscription-forgepoint.txt expires_within_90_days
+      expected True
+      got      False
+
+  -> /Users/namanraj/Workspace/local-runbook/out/score-gemma4-12b-contracts.json

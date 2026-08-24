@@ -1,0 +1,9 @@
+out/
+*.pyc
+__pycache__/
+.venv/
+venv/
+.DS_Store
+recordings/
+*.mov
+*.mp4

@@ -1,0 +1,40 @@
+{
+  "reference_date": "2026-08-27",
+  "window_days": 90,
+  "synthetic": true,
+  "note": "Every document is synthetic. No real person, company, or agreement.",
+  "inbox": {
+    "total": 25,
+    "by_category": {
+      "invoice_dispute": 3,
+      "customer_complaint": 4,
+      "internal_hr": 3,
+      "vendor_quote": 3,
+      "job_application": 2,
+      "sales_inquiry": 3,
+      "support_request": 4,
+      "spam": 3
+    },
+    "by_urgency": {
+      "this_week": 10,
+      "today": 6,
+      "no_deadline": 9
+    },
+    "with_personal_data": 3,
+    "planted_identifiers": 14
+  },
+  "contracts": {
+    "total": 21,
+    "by_basis": {
+      "fixed_date": 7,
+      "anniversary_of_execution": 5,
+      "auto_renew_unless_notice": 5,
+      "fiscal_year_end": 3,
+      "none": 1
+    },
+    "expiring_within_90_days": 14,
+    "expiring_behind_computed_basis": 6,
+    "with_personal_data": 2
+  },
+  "planted_identifiers_total": 21
+}

@@ -1,0 +1,48 @@
+name: validate
+
+# Everything here runs without a model and without a network call, which is the
+# point: the parts of this repo that can break silently are the runbook schemas,
+# the ground-truth keys, and the planted-identifier manifest. Those are all
+# checkable on a plain runner in seconds.
+#
+# Accuracy numbers are deliberately NOT produced here. They need a local model
+# on real hardware, so they are measured on a machine and committed to
+# RESULTS.md with the model tag and digest that produced them.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Runbook, corpus and ground-truth integrity
+        run: python3 tools/validate.py
+
+      - name: Every runbook and manifest is parseable JSON
+        run: |
+          for f in runbooks/*.json corpus/*.json; do
+            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" || exit 1
+            echo "  ok  $f"
+          done
+
+      - name: No dependency creep
+        # The repo claims standard library only. This is what keeps that true.
+        run: |
+          if [ -f requirements.txt ] || [ -f pyproject.toml ] || [ -f setup.py ]; then
+            echo "A dependency manifest appeared. The repo claims stdlib only."
+            exit 1
+          fi
+          echo "  ok  no dependency manifest"
+
+      - name: Sources compile
+        run: python3 -m compileall -q src tools

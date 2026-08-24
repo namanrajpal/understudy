@@ -1,0 +1,16 @@
+MANAGED IT SUPPORT CONTRACT
+
+Provider: Copperline IT Support
+Client:   Cedar Ridge Outfitters LLC
+
+TERM
+Current term concludes October 15, 2026, and the contract rolls over for a
+further twelve (12) months automatically absent written notice from either
+party at least thirty (30) days beforehand.
+
+SERVICE LEVELS
+Four (4) hour response for priority incidents, next business day for standard
+requests. Monthly patch and backup verification report.
+
+FEE
+$3,100 per month covering up to 40 endpoints.

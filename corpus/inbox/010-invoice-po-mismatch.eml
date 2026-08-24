@@ -1,0 +1,18 @@
+From: Accounts Payable <ap@harborpointcommercial.example>
+To: hello@cedarridge.example
+Subject: Invoice 20903 does not match PO 4471
+Date: Fri, 21 Aug 2026 13:02:38 -0400
+Message-ID: <010-invoice-po-mismatch@cedarridge.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Invoice 20903 is for $8,140. Purchase order 4471 authorises $7,800.
+
+The $340 difference appears to be a freight line that the PO does not cover. =
+Our
+system will reject the invoice automatically at month end, so we need either a
+corrected invoice or a PO amendment from your side before the 31st.
+
+Accounts Payable
+Harbor Point Commercial

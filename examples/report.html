@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Local runbook report</title><style>
+:root{--ink:#1a1714;--mid:#6b625a;--rule:#ddd5cb;--paper:#faf7f2;
+--panel:#fff;--flag:#b23b2e;--ok:#2f6f4f;--warn:#a86a1f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 32px 96px}
+h1{font-size:30px;letter-spacing:-.02em;margin:0 0 6px;font-weight:640}
+h2{font-size:19px;letter-spacing:-.01em;margin:44px 0 14px;font-weight:620;
+padding-bottom:8px;border-bottom:1px solid var(--rule)}
+h3{font-size:14px;margin:26px 0 8px;font-weight:620;color:var(--mid);
+text-transform:uppercase;letter-spacing:.07em}
+.sub{color:var(--mid);margin:0 0 4px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+table{width:100%;border-collapse:collapse;margin:10px 0 4px;background:var(--panel)}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+color:var(--mid);padding:9px 10px;border-bottom:1px solid var(--rule);font-weight:620}
+td{padding:9px 10px;border-bottom:1px solid #efe9e1;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.flag{color:var(--flag);font-weight:620}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+gap:12px;margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.card .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mid)}
+.card .v{font-size:25px;font-weight:640;letter-spacing:-.02em;margin-top:3px;
+font-variant-numeric:tabular-nums}
+.card .n{font-size:12px;color:var(--mid);margin-top:2px}
+.chk{display:flex;gap:9px;padding:7px 0;align-items:baseline;
+border-bottom:1px solid #efe9e1}
+.chk:last-child{border-bottom:none}
+.badge{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:2px 7px;
+border-radius:3px;flex:none;min-width:44px;text-align:center}
+.pass{background:#e6f0e9;color:var(--ok)}
+.fail{background:#f7e4e1;color:var(--flag)}
+.chk .id{font-weight:620;min-width:150px;flex:none}
+.chk .d{color:var(--mid);font-size:13.5px}
+.sbs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 22px}
+.sbs>div{background:var(--panel);border:1px solid var(--rule);border-radius:6px;
+padding:14px 16px;overflow-x:auto}
+.sbs h4{margin:0 0 9px;font-size:11px;text-transform:uppercase;
+letter-spacing:.06em;color:var(--mid);font-weight:620}
+pre{margin:0;white-space:pre-wrap;word-break:break-word;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.5}
+mark{background:#fde8d7;color:#8a4418;border-radius:2px;padding:0 2px;font-weight:600}
+.gone{background:#e9efe9;color:var(--ok);border-radius:2px;padding:0 3px;font-weight:640}
+.note{background:#fff;border-left:3px solid var(--rule);padding:12px 16px;
+margin:16px 0;color:var(--mid);font-size:13.5px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bar{height:6px;background:#ece5db;border-radius:3px;overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;background:var(--ink)}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);
+color:var(--mid);font-size:12.5px}
+</style></head><body><div class="wrap">
+
+<h1>Document review, run locally</h1>
+<p class="sub">MacBook Pro M4 Pro &middot; darwin arm64
+&middot; gemma4:12b &middot; generated 2026-08-23 20:27</p>
+<p class="sub">Reference date 2026-08-27.
+Every document in this corpus is synthetic.</p>
+
+<div class="cards">
+<div class="card"><div class="k">documents read</div><div class="v">49</div></div>
+<div class="card"><div class="k">model calls</div><div class="v">49</div><div class="n">all on this machine</div></div>
+<div class="card"><div class="k">output tokens</div><div class="v">4,861</div><div class="n">measured by ollama</div></div>
+<div class="card"><div class="k">wall clock</div><div class="v">319.1s</div></div>
+<div class="card"><div class="k">checks</div><div class="v">15 pass</div><div class="n">none failed</div></div>
+<div class="card"><div class="k">ran on</div><div class="v">gemma4:12b</div><div class="n">arm64, locally</div></div>
+</div>
+
+<div class="note"><strong>Every model call on this page ran on this machine.</strong>
+The model was served from 127.0.0.1:11434 on loopback, so no
+document left the device. Nothing here depends on a hosted API, an account, or a
+per-token charge.</div>
+
+
+<h2>Read every contract in a folder and work out when each one actually renews.</h2>
+<p class="sub mono">triage-contracts v1.0 &middot;
+authored by frontier model, once. Never runs again. &middot;
+executed by gemma4:12b (4eb23ef187e2)</p>
+<h3>Steps the runbook fixed in advance</h3>
+<table><tbody><tr><td class="n">1</td><td>Read the contract folder from disk</td><td class="mono sub">load</td></tr><tr><td class="n">2</td><td>Extract renewal terms from each contract</td><td class="mono sub">extract</td></tr><tr><td class="n">3</td><td>Validate every record</td><td class="mono sub">check</td></tr><tr><td class="n">4</td><td>Assemble the renewal calendar</td><td class="mono sub">report</td></tr></tbody></table>
+<h3>Checks</h3>
+<div class="chk"><span class="badge pass">PASS</span><span class="id mono">parses</span><span class="d">21/21 model outputs parsed as JSON</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">record_count</span><span class="d">21 records for 21 input files</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">file_mapping</span><span class="d">21/21 records map to a real input file</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">enum_valid</span><span class="d">42/42 enum values allowed</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">required_present</span><span class="d">7 required fields checked on 21 records</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">date_format</span><span class="d">21/21 dates are ISO or exactly &#x27;unknown&#x27;</span></div>
+<h3>Output</h3>
+<table><thead><tr><th>file</th><th>doc type</th><th>counterparty</th><th>renewal basis</th><th>renewal date</th><th>notice days</th><th>expires within 90 days</th><th>contains personal data</th></tr></thead><tbody><tr><td class="mono">001-service-agreement-northwind.txt</td><td>maintenance</td><td>Northwind Facilities Group</td><td>fixed_date</td><td class="flag">2026-10-31</td><td>90</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">002-saas-subscription-brightledger.txt</td><td>saas_subscription</td><td>BrightLedger Software Inc.</td><td>fixed_date</td><td class="flag">2026-09-15</td><td>no</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">003-lease-harbor-point.txt</td><td>lease</td><td>Harbor Point Commercial Properties</td><td>fixed_date</td><td>2028-02-29</td><td>180</td><td>no</td><td>no</td></tr><tr><td class="mono">004-maintenance-summit-hvac.txt</td><td>maintenance</td><td>Summit Mechanical Services</td><td>fixed_date</td><td>2027-06-30</td><td>no</td><td>no</td><td>no</td></tr><tr><td class="mono">005-sow-tidewater-analytics.txt</td><td>statement_of_work</td><td>Tidewater Analytics LLC</td><td>fixed_date</td><td class="flag">2026-11-13</td><td>no</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">006-service-agreement-pinnacle.txt</td><td>service_agreement</td><td>Pinnacle Freight Partners</td><td>fixed_date</td><td>2029-01-31</td><td>no</td><td>no</td><td>no</td></tr><tr><td class="mono">007-service-agreement-alder-creek.txt</td><td>service_agreement</td><td>Alder Creek Security Systems</td><td>anniversary_of_execution</td><td>2027-09-18</td><td>30</td><td>no</td><td>no</td></tr><tr><td class="mono">008-saas-subscription-quillstack.txt</td><td>saas_subscription</td><td>Quillstack Technologies</td><td>anniversary_of_execution</td><td class="flag">2027-11-05</td><td>45</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">009-maintenance-granite-fleet.txt</td><td>maintenance</td><td>Granite Fleet Care</td><td>anniversary_of_execution</td><td>2027-10-02</td><td>60</td><td>no</td><td>no</td></tr><tr><td class="mono">010-service-agreement-lantern-hr.txt</td><td>service_agreement</td><td>Lantern HR Advisory</td><td>anniversary_of_execution</td><td>2027-03-11</td><td>30</td><td>no</td><td>no</td></tr><tr><td class="mono">011-sow-meridian-design.txt</td><td>statement_of_work</td><td>Meridian Design Studio</td><td>anniversary_of_execution</td><td>2027-11-20</td><td>30</td><td>no</td><td>no</td></tr><tr><td class="mono">012-saas-subscription-forgepoint.txt</td><td>saas_subscription</td><td>Forgepoint Systems</td><td>auto_renew_unless_notice</td><td class="flag">2026-09-30</td><td>60</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">013-service-agreement-blue-heron.txt</td><td>service_agreement</td><td>Blue Heron Waste Solutions</td><td>auto_renew_unless_notice</td><td class="flag">2026-11-30</td><td>90</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">014-maintenance-copperline-it.txt</td><td>service_agreement</td><td>Copperline IT Support</td><td>auto_renew_unless_notice</td><td class="flag">2026-10-15</td><td>30</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">015-lease-ironwood-storage.txt</td><td>lease</td><td>Ironwood Self Storage</td><td>auto_renew_unless_notice</td><td class="flag">2026-09-01</td><td>15</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">016-saas-subscription-cartograph.txt</td><td>saas_subscription</td><td>Cartograph Data Co.</td><td>auto_renew_unless_notice</td><td>2027-04-30</td><td>60</td><td>no</td><td>no</td></tr><tr><td class="mono">017-service-agreement-westmark.txt</td><td>service_agreement</td><td>Westmark Audit Group</td><td>fiscal_year_end</td><td class="flag">2026-09-30</td><td>no</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">018-saas-subscription-ledgerline.txt</td><td>saas_subscription</td><td>Ledgerline Compliance</td><td>fiscal_year_end</td><td class="flag">2026-09-30</td><td>30</td><td class="flag">yes</td><td>no</td></tr><tr><td class="mono">019-maintenance-stonebridge.txt</td><td>maintenance</td><td>Stonebridge Grounds Care</td><td>fiscal_year_end</td><td>2027-06-30</td><td>no</td><td>no</td><td>no</td></tr><tr><td class="mono">020-nda-riverbend.txt</td><td>nda</td><td>Riverbend Capital Advisors</td><td>none</td><td>unknown</td><td>no</td><td>no</td><td>yes</td></tr><tr><td class="mono">021-sow-caldwell-consulting.txt</td><td>service_agreement</td><td>Caldwell Consulting</td><td>fixed_date</td><td class="flag">2026-10-09</td><td>no</td><td class="flag">yes</td><td>yes</td></tr></tbody></table>
+
+<h2>Read every email in a folder, route it to an owner, and flag anything holding personal data.</h2>
+<p class="sub mono">triage-inbox v1.0 &middot;
+authored by frontier model, once. Never runs again. &middot;
+executed by gemma4:12b (4eb23ef187e2)</p>
+<h3>Steps the runbook fixed in advance</h3>
+<table><tbody><tr><td class="n">1</td><td>Read the inbox from disk</td><td class="mono sub">load</td></tr><tr><td class="n">2</td><td>Classify and extract from each email</td><td class="mono sub">extract</td></tr><tr><td class="n">3</td><td>Validate every record</td><td class="mono sub">check</td></tr><tr><td class="n">4</td><td>Assemble the routing report</td><td class="mono sub">report</td></tr></tbody></table>
+<h3>Checks</h3>
+<div class="chk"><span class="badge pass">PASS</span><span class="id mono">parses</span><span class="d">25/25 model outputs parsed as JSON</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">record_count</span><span class="d">25 records for 25 input files</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">file_mapping</span><span class="d">25/25 records map to a real input file</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">enum_valid</span><span class="d">75/75 enum values allowed</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">required_present</span><span class="d">6 required fields checked on 25 records</span></div>
+<h3>Output</h3>
+<table><thead><tr><th>file</th><th>category</th><th>urgency</th><th>summary</th><th>action</th><th>owner</th><th>contains personal data</th></tr></thead><tbody><tr><td class="mono">001-duplicate-invoice.eml</td><td>invoice_dispute</td><td>no_deadline</td><td>Duplicate invoice 20841-A received for payment already made.</td><td>Void the duplicate invoice 20841-A.</td><td>finance</td><td>no</td></tr><tr><td class="mono">002-order-arrived-damaged.eml</td><td>customer_complaint</td><td class="flag">today</td><td>Order 55219: 2 of 10 insulated carriers arrived damaged.</td><td>Contact Marcus to confirm if replacements can be shipped today.</td><td>support</td><td>no</td></tr><tr><td class="mono">003-hr-escalation-confidential.eml</td><td>internal_hr</td><td class="flag">today</td><td>Shift Supervisor Alicia Brennan reports a conduct issue involving a staff member&#x27;s disclosure of a colleague&#x27;s medical information.</td><td>Schedule a meeting with Alicia to discuss the conduct issue and next steps.</td><td>people_ops</td><td>yes</td></tr><tr><td class="mono">004-vendor-quote-packaging.eml</td><td>vendor_quote</td><td>no_deadline</td><td>Sunil from Arbor Pack is providing a quote for custom corrugated inserts.</td><td>Add to the procurement team&#x27;s list for review.</td><td>finance</td><td>no</td></tr><tr><td class="mono">005-job-application-warehouse.eml</td><td>job_application</td><td>no_deadline</td><td>Theo Vandersloot is applying for the Warehouse Associate role.</td><td>Forward to HR.</td><td>people_ops</td><td>no</td></tr><tr><td class="mono">006-sales-inquiry-wholesale.eml</td><td>sales_inquiry</td><td>this_week</td><td>Northgate Outdoor is inquiring about wholesale terms and drop shipping for a 40-store rollout.</td><td>Sales team to contact Priyanka Deshmukh to discuss wholesale terms and drop shipping options.</td><td>sales</td><td>no</td></tr><tr><td class="mono">007-support-login-loop.eml</td><td>support_request</td><td>this_week</td><td>Dealer portal keeps logging out every 90 seconds.</td><td>Investigate and fix the login issue for the dealer portal.</td><td>support</td><td>no</td></tr><tr><td class="mono">008-spam-seo.eml</td><td>spam</td><td>no_deadline</td><td>Growth Team is offering SEO services to the business.</td><td>No action needed.</td><td>none</td><td>no</td></tr><tr><td class="mono">009-complaint-wrong-size.eml</td><td>customer_complaint</td><td>this_week</td><td>Customer received the wrong size twice and wants a replacement or refund.</td><td>Issue a refund or send the correct size.</td><td>support</td><td>no</td></tr><tr><td class="mono">010-invoice-po-mismatch.eml</td><td>invoice_dispute</td><td>this_week</td><td>Invoice 20903 ($8,140) exceeds PO 4471 ($7,800) by $340 due to freight.</td><td>Provide a corrected invoice or a PO amendment before the 31st.</td><td>finance</td><td>no</td></tr><tr><td class="mono">011-support-integration-docs.eml</td><td>support_request</td><td>no_deadline</td><td>Wes is looking for documentation on the inventory webhook payload format.</td><td>Provide the documentation or clarify if the payload sends absolute stock counts or deltas.</td><td>support</td><td>no</td></tr><tr><td class="mono">012-customer-medical-context.eml</td><td>support_request</td><td class="flag">today</td><td>Customer needs to update delivery address for account 4471-88213 due to surgery.</td><td>Update the delivery address for the specified account and confirm with the customer.</td><td>support</td><td>yes</td></tr><tr><td class="mono">013-sales-inquiry-custom.eml</td><td>sales_inquiry</td><td>this_week</td><td>Inquiry about custom colorways for a100 units for a November project.</td><td>Sales team to contact Ingrid to discuss custom order and minimums.</td><td>sales</td><td>no</td></tr><tr><td class="mono">014-spam-invoice-phish.eml</td><td>invoice_dispute</td><td class="flag">today</td><td>A document regarding a remittance advice is pending signature.</td><td>Review and sign the remittance advice document.</td><td>finance</td><td>no</td></tr><tr><td class="mono">015-vendor-quote-freight.eml</td><td>vendor_quote</td><td>this_week</td><td>Pinnacle Freight is providing updated LTL rates for October 1st.</td><td>Review the new LTL rates and decide if a 6-month lock-in is needed before Sept 15.</td><td>finance</td><td>no</td></tr><tr><td class="mono">016-complaint-tone-ambiguous.eml</td><td>customer_complaint</td><td>no_deadline</td><td>Customer is complaining about shipping delays and tracking errors.</td><td>Acknowledge the complaint and apologize for the shipping issues.</td><td>support</td><td>no</td></tr><tr><td class="mono">017-job-application-referral.eml</td><td>job_application</td><td>no_deadline</td><td>Naomi Castellanos is applying for the operations coordinator role.</td><td>Forward to HR.</td><td>people_ops</td><td>no</td></tr><tr><td class="mono">018-internal-hr-benefits.eml</td><td>internal_hr</td><td>this_week</td><td>Staff open enrollment window dates need to be re-announced due to carrier changes.</td><td>Schedule a meeting with Yusuf to discuss the enrollment window.</td><td>people_ops</td><td>no</td></tr><tr><td class="mono">019-support-return-label.eml</td><td>support_request</td><td>this_week</td><td>Customer requested a return label on the 14th and hasn&#x27;t received it.</td><td>Provide the missing return label to the customer.</td><td>support</td><td>no</td></tr><tr><td class="mono">020-invoice-credit-note.eml</td><td>invoice_dispute</td><td class="flag">today</td><td>Credit note 331 for $1,910 is missing from the account.</td><td>Apply credit note 331 or provide a written explanation before Wednesday.</td><td>finance</td><td>no</td></tr><tr><td class="mono">021-sales-inquiry-tiny.eml</td><td>sales_inquiry</td><td>no_deadline</td><td>Omar Haddad is inquiring about minimum order requirements for a single-location shop.</td><td>Sales team should reach out to Omar to discuss starter tiers and dealer account options.</td><td>sales</td><td>no</td></tr><tr><td class="mono">022-vendor-quote-insurance.eml</td><td>vendor_quote</td><td>this_week</td><td>Insurance renewal quote for three carrier options.</td><td>Review the three liability insurance options and select one by the 12th.</td><td>finance</td><td>no</td></tr><tr><td class="mono">023-complaint-escalation-threat.eml</td><td>customer_complaint</td><td class="flag">today</td><td>Duncan Pryce is frustrated by a lack of response regarding order 54880.</td><td>Contact Duncan to provide an update on order 54880.</td><td>support</td><td>no</td></tr><tr><td class="mono">024-spam-recruiter-blast.eml</td><td>spam</td><td>no_deadline</td><td>Talent Solutions is offering pre-vetted warehouse candidates for hire.</td><td>Ignore the offer.</td><td>none</td><td>no</td></tr><tr><td class="mono">025-internal-hr-payroll-detail.eml</td><td>internal_hr</td><td class="flag">today</td><td>Wage garnishment order for Trevor Lindqvist (ID 88-4412) requires immediate action.</td><td>HR/Payroll team needs to confirm address and decide on application cycle.</td><td>people_ops</td><td>yes</td></tr></tbody></table>
+
+<h2>Take whatever the triage runbooks flagged as holding personal data and produce a version safe to send outside the building.</h2>
+<p class="sub mono">redact v1.0 &middot;
+authored by frontier model, once. Never runs again. &middot;
+executed by gemma4:12b (4eb23ef187e2)</p>
+<h3>Steps the runbook fixed in advance</h3>
+<table><tbody><tr><td class="n">1</td><td>Collect every document flagged as sensitive</td><td class="mono sub">load</td></tr><tr><td class="n">2</td><td>Remove identifying detail from each one</td><td class="mono sub">redact</td></tr><tr><td class="n">3</td><td>Scan the output for anything that survived</td><td class="mono sub">check</td></tr><tr><td class="n">4</td><td>Show original beside redacted</td><td class="mono sub">report</td></tr></tbody></table>
+<h3>Checks</h3>
+<div class="chk"><span class="badge pass">PASS</span><span class="id mono">parses</span><span class="d">3/3 model outputs parsed as JSON</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">required_present</span><span class="d">2 required fields checked on 3 records</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">enum_valid</span><span class="d">22/22 enum values allowed</span></div><div class="chk"><span class="badge pass">PASS</span><span class="id mono">survival_scan</span><span class="d">0 of 14 planted identifiers survived redaction</span></div>
+<h3>Output</h3>
+<h3>003-hr-escalation-confidential.eml</h3><p class="sub mono">10 spans removed: email x1, employment_detail x1, medical_detail x1, person_name x6, phone x1</p><div class="sbs"><div><h4>original, stays on this machine</h4><pre>From: <mark><mark>Alicia Brennan</mark></mark> &lt;<mark>a.brennan@cedarridge.example</mark>&gt;
+Date: Fri, 21 Aug 2026 17:22:10 -0400
+Subject: Confidential - concern about conduct on the warehouse floor
+
+Please treat this as confidential.
+
+I need to raise a concern about <mark><mark>Devon</mark> Mackey</mark> on the second shift. Over the past
+three weeks he has made repeated comments about <mark><mark>Renata</mark></mark>&#x27;s schedule changes in
+front of other staff. She has been leaving early on Tuesdays because her son is
+being treated for epilepsy at St. Aubin Children&#x27;s, which she disclosed to me in
+confidence and which I have not shared with the floor.
+
+I checked the personnel file and <mark>Devon</mark> was written up twice in 2024 for the same
+behaviour, so this is not new.
+
+<mark><mark>Renata</mark></mark> has not filed anything herself and I do not want to put her in that
+position. I would like to talk through options before this escalates on its own.
+You can reach me directly at <mark>904-555-0143</mark> rather than through the shared line.
+
+<mark><mark>Alicia Brennan</mark></mark>
+<mark>Shift Supervisor</mark></pre></div><div><h4>redacted, safe to send outside</h4><pre>From: <span class="gone">[PERSON_NAME]</span> &lt;<span class="gone">[EMAIL]</span>&gt;
+Date: Fri, 21 Aug 2026 17:22:10 -0400
+Subject: Confidential - concern about conduct on the warehouse floor
+
+Please treat this as confidential.
+
+I need to raise a concern about <span class="gone">[PERSON_NAME]</span> on the second shift. Over the past
+three weeks he has made repeated comments about <span class="gone">[PERSON_NAME]</span>&#x27;s schedule changes in
+front of other staff. She has been leaving early on Tuesdays because <span class="gone">[MEDICAL_DETAIL]</span>, which she disclosed to me in
+confidence and which I have not shared with the floor.
+
+I checked the personnel file and <span class="gone">[PERSON_NAME]</span> was written up twice in 2024 for the same
+behaviour, so this is not new.
+
+<span class="gone">[PERSON_NAME]</span> has not filed anything herself and I do not want to put her in that
+position. I would like to talk through options before this escalates on its own.
+You can reach me directly at <span class="gone">[PHONE]</span> rather than through the shared line.
+
+<span class="gone">[PERSON_NAME]</span>
+<span class="gone">[EMPLOYMENT_DETAIL]</span></pre></div></div><h3>012-customer-medical-context.eml</h3><p class="sub mono">7 spans removed: account_id x1, email x1, medical_detail x1, person_name x2, phone x1, street_address x1</p><div class="sbs"><div><h4>original, stays on this machine</h4><pre>From: <mark><mark>Rosalind Achebe</mark></mark> &lt;<mark>r.achebe@mailbox.example</mark>&gt;
+Date: Mon, 24 Aug 2026 06:31:19 -0400
+Subject: Need to change my delivery address urgently
+
+Please change the delivery address on my standing order, acct <mark>4471-88213</mark>.
+
+<mark>I&#x27;m being admitted for a hip replacement on Wednesday and I&#x27;ll be at my
+daughter&#x27;s place for six weeks afterwards.</mark> Send everything to 882 Ashgrove Lane,
+Unit 12 until the middle of October, then back to the usual address.
+
+If there&#x27;s a problem call me today on <mark>904-555-0198</mark> because after Wednesday I
+won&#x27;t be reachable for a couple of days.
+
+<mark><mark>Rosalind Achebe</mark></mark></pre></div><div><h4>redacted, safe to send outside</h4><pre>From: <span class="gone">[PERSON_NAME]</span> &lt;<span class="gone">[EMAIL]</span>&gt;
+Date: Mon, 24 Aug 2026 06:31:19 -0400
+Subject: Need to change my delivery address urgently
+
+Please change the delivery address on my standing order, acct <span class="gone">[ACCOUNT_ID]</span>.
+
+<span class="gone">[MEDICAL_DETAIL]</span> Send everything to <span class="gone">[STREET_ADDRESS]</span> until the middle of October, then back to the usual address.
+
+If there&#x27;s a problem call me today on <span class="gone">[PHONE]</span> because after Wednesday I
+won&#x27;t be reachable for a couple of days.
+
+<span class="gone">[PERSON_NAME]</span></pre></div></div><h3>025-internal-hr-payroll-detail.eml</h3><p class="sub mono">5 spans removed: email x1, employment_detail x2, person_name x1, street_address x1</p><div class="sbs"><div><h4>original, stays on this machine</h4><pre>From: Payroll &lt;<mark>payroll@cedarridge.example</mark>&gt;
+Date: Fri, 21 Aug 2026 15:33:27 -0400
+Subject: Garnishment order received - need handling instruction
+
+We received a court order this morning affecting <mark>Trevor Lindqvist</mark>, emp id
+<mark>88-4412</mark>.
+
+<mark>It is a wage garnishment order for unpaid child support, effective with the
+next pay run. The order specifies 18 percent of disposable earnings and lists
+his address of record as <mark>41 Marlowe Terrace</mark>, which does not match what we have
+on file.</mark>
+
+Payroll closes Tuesday. I need written instruction on whether to apply it this
+cycle or next, and someone needs to confirm the address discrepancy before we
+send any notice to him.
+
+Payroll</pre></div><div><h4>redacted, safe to send outside</h4><pre>From: Payroll &lt;<span class="gone">[EMAIL]</span>&gt;
+Date: Fri, 21 Aug 2026 15:33:27 -0400
+Subject: Garnishment order received - need handling instruction
+
+We received a court order this morning affecting <span class="gone">[PERSON_NAME]</span>, emp id
+<span class="gone">[EMPLOYMENT_DETAIL]</span>.
+
+<span class="gone">[EMPLOYMENT_DETAIL]</span>
+
+Payroll closes Tuesday. I need written instruction on whether to apply it this
+cycle or next, and someone needs to confirm the address discrepancy before we
+send any notice to him.
+
+Payroll</pre></div></div>
+
+
+<h2>Where the reasoning happened</h2>
+
+<div class="split">
+  <div>
+    <h3>Decided once, by a frontier model</h3>
+    <table><tbody>
+      <tr><td>calls</td><td class="n">3</td></tr>
+      <tr><td>tokens</td><td class="n">not recorded</td></tr>
+      <tr><td>when</td><td>runbook authoring, 2026-08-23</td></tr>
+      <tr><td>during this run</td><td>0 calls</td></tr>
+    </tbody></table>
+    <p class="sub" style="font-size:13px">Authored triage-inbox, triage-contracts and redact once. Did not run during this execution and is not required to.</p>
+  </div>
+  <div>
+    <h3>Decided every run, by a local model</h3>
+    <table><tbody>
+      <tr><td>calls</td><td class="n">21</td></tr>
+      <tr><td>tokens</td><td class="n">21,092 in / 1,657 out</td></tr>
+      <tr><td>throughput</td><td class="n">11.6 tok/sec</td></tr>
+      <tr><td>wall clock</td><td class="n">142.7s</td></tr>
+    </tbody></table>
+    <p class="sub" style="font-size:13px">Token counts measured by Ollama,
+    not estimated. Ran on local hardware, one call per document.</p>
+  </div>
+</div>
+<div class="note">Frontier and local token counts are not comparable units and
+no ratio between them is shown. A frontier token here designed the schema and
+the checks. A local token read one document. The point is that the first cost
+was paid once and the second scales on hardware you own.</div>
+
+
+<footer>Generated by local-runbook. A frontier model authored the runbooks once.
+Everything reported above was produced by a local model on the machine named at
+the top of this page. Corpus is synthetic; no real person or agreement appears
+in it.</footer>
+
+</div></body></html>
