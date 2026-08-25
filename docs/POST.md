@@ -149,6 +149,48 @@ that is arguably deployable and the second at a level that clearly is not. Any
 sentence of the form "small models are good enough now" is incomplete until it
 names the task.
 
+## What the runbook itself is worth
+
+Everything above varies one thing: the model, with the runbook held at its final
+version. So it measures what a small model does with a good specification and says
+nothing about what the specification was worth. That was the load-bearing claim of
+this whole idea and it went unmeasured for two days.
+
+Measuring it means sweeping the other axis. I rebuilt the underspecified runbook
+as a four-rung ladder, each rung adding back one named piece of specification, and
+ran the ladder across the top and bottom of the model curve. Sixteen runs, same
+documents, same code.
+
+![Runbook quality ablation: inbox climbs steeply and the two models converge, contracts climbs shallowly and the models stay apart](charts/runbook-ladder.svg)
+
+Two things fall out of that shape.
+
+**Writing the decisions down was worth 38 points on inbox triage**, taking
+`gemma4:12b` from 55.0% with a bare output format to 93.0% with the committed
+runbook. No model change, no per-document hints, only definitions of what the
+words mean.
+
+**Which half is your bottleneck depends on the task.** Holding the model fixed and
+improving the runbook is worth +38.0 on inbox and +15.6 on contracts. Holding the
+runbook fixed and upgrading the model is worth +2.0 on inbox and +18.4 on
+contracts. Inbox triage is limited by how well you wrote the instructions;
+contract triage is limited by the model. For classification, write a better spec.
+For interpretation and arithmetic, get a better model.
+
+There is also a warning in the data. `qwen3.5:4b` on contracts scored **6.8 points
+below the bare schema** on the rung that introduces a defective date rule,
+because it followed the bad instruction faithfully. The 12B partly ignored the
+same rule and gained 4 points. A sloppy specification punishes the small model
+hardest, which is the practical argument for the runbook being committed,
+reviewable text rather than a prompt somebody typed once.
+
+And one correction to my own earlier account. I had credited the inbox recovery to
+two fixes: defining the enum values and supplying a reference date. The reference
+date turns out to be worth **+0.0** on `gemma4:12b` and **-1.0** on `qwen3.5:4b`,
+because `.eml` files carry their own `Date` header and the model already had it. I
+had been crediting a fix that did nothing. The full ladder, including the rungs
+that go backwards, is in [`docs/FINDINGS.md`](FINDINGS.md).
+
 ## Field by field
 
 ![Per-field accuracy heatmap for the contract fields across all five models](charts/contract-fields.svg)

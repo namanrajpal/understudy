@@ -282,7 +282,8 @@ transferable part of this repo and each is written up in full in
 | A check that examines nothing must not report PASS | On that run, 5 of 6 checks passed vacuously |
 | The safety gate was weaker than the thing it was gating | The survival scan could not detect a leak the redactor could remove |
 | Ask the model for judgment, not for string replacement | It listed the clause to remove, correctly, then left it verbatim |
-| Most "the small model is not good enough" was an underspecified runbook | Inbox 54% to 93%, contracts 77.6% to 93.2%, no model change |
+| Most "the small model is not good enough" was an underspecified runbook | A four-rung ablation puts inbox at 55% to 93% and contracts at 77.6% to 93.2%, same model throughout |
+| Whether you need a better spec or a better model depends on the task | Inbox: runbook worth +38 points, model upgrade worth +2. Contracts: +15.6 against +18.4 |
 | Run-to-run variance survives temperature 0 | Two identical redaction runs leaked different clauses |
 
 ## Verifying the repo without a model
