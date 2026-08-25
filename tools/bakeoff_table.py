@@ -124,8 +124,11 @@ def main() -> None:
 
     print()
     print("redaction gate  (identifiers gate the result, facts are reported)")
-    print(f'  {"model":<19}{"gate":>6}{"identifiers":>13}{"facts":>8}'
-          f'{"removals":>10}{"retries":>9}')
+    # "0/10" under a header reading "identifiers" is ambiguous: it looks like a
+    # score of zero out of ten rather than zero leaks out of ten planted. Say
+    # LEAKED so the good result cannot be misread as a total failure.
+    print(f'  {"model":<19}{"gate":>6}{"ident LEAKED":>14}'
+          f'{"facts LEAKED":>14}{"removals":>10}{"retries":>9}')
     for model in MODELS:
         r = summary[model]["redact"]
         if r.get("status") != "ok":
@@ -133,7 +136,7 @@ def main() -> None:
             continue
         ids = f'{r.get("identifiers_survived")}/{r.get("identifiers_total")}'
         fct = f'{r.get("facts_survived")}/{r.get("facts_total")}'
-        print(f'  {model:<19}{r["survival_scan"].upper():>6}{ids:>13}{fct:>8}'
+        print(f'  {model:<19}{r["survival_scan"].upper():>6}{ids:>14}{fct:>14}'
               f'{r["removals"]:>10}{r.get("empty_removal_retries", 0):>9}')
 
     out = BAKE / "summary.json"
