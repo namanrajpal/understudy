@@ -7,8 +7,7 @@ and where a small local transformer genuinely earns its keep versus where it
 stumbles.
 
 Everything is committed to this repo: the corpus, the runbooks, the run outputs,
-the scoring, the charts. No number below was typed from memory; each comes from a
-file you can open.
+the scoring, the charts. Every number below comes from one of those files.
 
 ## The idea
 
@@ -315,6 +314,12 @@ Two rows stand out.
 has a cliff rather than a slope: 100% for the top three models, 66.7% for both
 qwen3.5 models, and nothing in between.
 
+The failure that survives is worth naming. On 4 of the 5 anniversary-basis
+contracts, `gemma4:12b` identifies the renewal regime correctly and then lands
+exactly one year past the right date. Classification strong, chained arithmetic
+weaker, which is the documented shape for models this size. Those four records are
+the ones a sensible pipeline hands to a person or a bigger model.
+
 `contains_personal_data` is 100% on all five models, on both corpora, from
 3.4 GB to 18 GB. That happens to be the field that gates the privacy decision:
 it determines what enters redaction and therefore what could ever be sent
@@ -330,9 +335,9 @@ one is checking almost nothing.
 ## Could a regex do this?
 
 Fair question, because if patterns get the same result, the model is
-decoration. `tools/baseline_regex.py` is a real attempt, not a strawman: it
-handles longhand and numeric dates and looks for expiry wording near a date
-rather than grabbing the first date in the file.
+decoration. `tools/baseline_regex.py` handles longhand and numeric dates, and
+looks for expiry wording near a date instead of grabbing the first date in the
+file.
 
 ![Regex baseline versus models on renewal date extraction: the baseline scores zero wherever the date must be computed](charts/regex-vs-model.svg)
 
@@ -388,77 +393,32 @@ deterministic verifier is a hope, not a control.
 
 ## This is not a new idea
 
-Writing a pipeline down once and then executing it with a cheaper model is
-established practice. [DSPy](https://arxiv.org/abs/2310.03714) is the automated
-version: you declare what each step should do, it compiles the prompts for you,
-and it reports small open models beating ordinary few-shot prompting once
-compiled. Understudy is the hand-written case. The runbook is authored rather than
-optimised, which trades automation for auditability: you can open the file that
-governs the run, read it, and diff it when it changes.
+Writing a pipeline down once and executing it with a cheaper model is established
+practice. [DSPy](https://arxiv.org/abs/2310.03714) is the automated version: it
+compiles the prompts for you, and reports small open models beating ordinary
+few-shot prompting once compiled. Understudy is the hand-written case, which
+trades automation for auditability, because you can read the file that governs the
+run and diff it when it changes.
 
-Two capabilities make the executor side work, and I depended on both rather than
-building either. **Instruction tuning** is the difference between a model that
-continues text and one that follows a specification, and it is why a 3.4 GB model
-can execute a spec written by a 27B one. **Constrained decoding** is why the output
-parses: Ollama's `format` parameter accepts a full JSON Schema, so the model
-cannot hand back prose where an enum was required. Neither existed in usable form
-for local models three years ago, which is most of why this is buildable now.
+Two things make the executor side work and I built neither. **Instruction tuning**
+is why a 3.4 GB model can follow a specification written by a 27B one.
+**Constrained decoding** is why the output parses: Ollama's `format` parameter
+takes a JSON Schema, so the model cannot hand back prose where an enum was
+required.
 
-One clarification, because the vocabulary overlaps with a research area this does
-not belong to. There is a body of work on agent memory, where a system distills
-its own execution traces into reusable procedures and retrieves them later.
-Understudy does none of that: no memory, no retrieval, no update loop, no traces.
-The runbook is an input written before anything runs, not an output produced by
-running.
+It is also not agent memory, which the vocabulary sometimes suggests. There is no
+loop, no retrieval, and no accumulated state. The runbook is an input written
+before anything runs.
 
-So the honest description is unglamorous: a fixed pipeline where one step happens
-to be a model call, executed locally, with a privacy gate that is measured rather
-than asserted. What is worth reporting is not the architecture. It is the numbers
-for how well small models hold up inside it, and which tasks they hold up on.
+## What I take from it
 
-## Left imperfect on purpose
+These are my experiments: one job shape, one corpus, five models. A small local
+model handles narrow, repeated, checkable document work at an accuracy worth
+taking seriously, provided the plan it executes was written by something smarter,
+once. How much of that accuracy comes from the model and how much from the plan
+depends on the task, and both are measurable.
 
-No prompt was tuned to make a number look better, and the residual failures are
-deliberately visible.
-
-The clearest one: on 4 of 5 anniversary-basis contracts, `gemma4:12b` lands
-exactly one year past the correct renewal date. It identifies the renewal
-regime with 100% accuracy and then gets the multi-year arithmetic wrong. That
-is a well-documented shape for small models, classification strong and chained
-computation weaker, and those four records are exactly the ones a sensible
-pipeline escalates to a person or a bigger model.
-
-Speed and accuracy trade steeply: 28 to 30 tokens per second at 4B, about 5 at
-27B. Six times the throughput for roughly 23 points of contract accuracy. That
-trade is free for an overnight batch and decisive for anything interactive. And
-to be clear about what is not being claimed: local is not faster than cloud.
-Total response time is dominated by model size and device compute, and a small
-model on modest hardware can be slower end to end than a frontier model over a
-good connection. The defensible claims are predictability, availability, and
-that repeated runs cost nothing remote.
-
-Every document in the corpus is synthetic. No real person, company, or
-agreement appears anywhere in this repository, which is both a privacy
-requirement and what makes the results reproducible for anyone who clones it.
-
-Plenty went wrong building this, and the failures were more instructive than
-the successes; they are written up separately in [FINDINGS.md](FINDINGS.md).
-
-## Run it yourself
-
-```bash
-ollama pull gemma4:12b
-make validate    # integrity checks, no model, no network
-make all         # contracts, inbox, redact, report
-make score       # accuracy against ground truth, per field
-```
-
-Python 3.11+ and Ollama are the only requirements. No pip installs, including
-for the charts on this page, which are hand-rolled SVG from the standard
-library because a chart script needing a pip install would break the repo's own
-stdlib-only claim.
-
-These are my experiments, one job shape, one corpus, five models. The numbers
-say a small local model handles narrow, repeated, checkable document work at an
-accuracy worth taking seriously, provided the plan it executes was written by
-something smarter, once.
+Every document in the corpus is synthetic, which is both a privacy requirement and
+what makes the numbers reproducible for anyone who clones the repo. The failures,
+including the ones I caused, are written up in [FINDINGS.md](FINDINGS.md). The
+README has what you need to run it.
