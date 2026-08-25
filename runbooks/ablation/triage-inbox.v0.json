@@ -1,0 +1,144 @@
+{
+  "id": "triage-inbox-v0",
+  "version": "v0",
+  "authored_by": "reconstructed ablation rung, derived from the committed runbook by tools/ablation_runbooks.py. NOT the original underspecified runbook, which was never committed.",
+  "authored_on": "2026-08-23",
+  "purpose": "Read every email in a folder, route it to an owner, and flag anything holding personal data. Ablation rung v0.",
+  "input": {
+    "glob": "corpus/inbox/*.eml",
+    "loader": "eml"
+  },
+  "steps": [
+    {
+      "n": 1,
+      "name": "Read the inbox from disk",
+      "op": "load"
+    },
+    {
+      "n": 2,
+      "name": "Classify and extract from each email",
+      "op": "extract"
+    },
+    {
+      "n": 3,
+      "name": "Validate every record",
+      "op": "check"
+    },
+    {
+      "n": 4,
+      "name": "Assemble the routing report",
+      "op": "report"
+    }
+  ],
+  "extract": {
+    "prompt": "You are triaging one email for a small business. Read it and return JSON matching the required schema. Choose the single best category and owner. Keep summary and action to one short line each.\n\nEMAIL:\n{document}",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": [
+            "customer_complaint",
+            "invoice_dispute",
+            "sales_inquiry",
+            "job_application",
+            "vendor_quote",
+            "internal_hr",
+            "support_request",
+            "spam"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "today",
+            "this_week",
+            "no_deadline"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string",
+          "enum": [
+            "support",
+            "finance",
+            "sales",
+            "people_ops",
+            "none"
+          ]
+        },
+        "contains_personal_data": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "category",
+        "urgency",
+        "summary",
+        "action",
+        "owner",
+        "contains_personal_data"
+      ]
+    },
+    "options": {
+      "temperature": 0,
+      "seed": 7,
+      "num_ctx": 8192
+    }
+  },
+  "checks": [
+    {
+      "id": "parses",
+      "kind": "structural"
+    },
+    {
+      "id": "record_count",
+      "kind": "structural"
+    },
+    {
+      "id": "file_mapping",
+      "kind": "structural"
+    },
+    {
+      "id": "enum_valid",
+      "kind": "structural"
+    },
+    {
+      "id": "required_present",
+      "kind": "structural"
+    }
+  ],
+  "report": {
+    "title": "Inbox routing",
+    "group_by": "owner",
+    "highlight": "urgency",
+    "highlight_value": "today",
+    "columns": [
+      "file",
+      "category",
+      "urgency",
+      "owner",
+      "summary",
+      "action"
+    ]
+  },
+  "ablation": {
+    "task": "inbox",
+    "rung": "v0",
+    "gained_at_this_rung": "bare schema, no field guidance at all",
+    "still_missing": [
+      "business",
+      "category",
+      "urgency",
+      "owner",
+      "pii",
+      "today"
+    ],
+    "derived_from": "runbooks/triage-inbox.json"
+  }
+}

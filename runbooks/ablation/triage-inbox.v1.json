@@ -1,0 +1,140 @@
+{
+  "id": "triage-inbox-v1",
+  "version": "v1",
+  "authored_by": "reconstructed ablation rung, derived from the committed runbook by tools/ablation_runbooks.py. NOT the original underspecified runbook, which was never committed.",
+  "authored_on": "2026-08-23",
+  "purpose": "Read every email in a folder, route it to an owner, and flag anything holding personal data. Ablation rung v1.",
+  "input": {
+    "glob": "corpus/inbox/*.eml",
+    "loader": "eml"
+  },
+  "steps": [
+    {
+      "n": 1,
+      "name": "Read the inbox from disk",
+      "op": "load"
+    },
+    {
+      "n": 2,
+      "name": "Classify and extract from each email",
+      "op": "extract"
+    },
+    {
+      "n": 3,
+      "name": "Validate every record",
+      "op": "check"
+    },
+    {
+      "n": 4,
+      "name": "Assemble the routing report",
+      "op": "report"
+    }
+  ],
+  "extract": {
+    "prompt": "You are triaging one email for a small business. Read it and return JSON matching the required schema. Choose the single best category and owner. Keep summary and action to one short line each.\n\nThe business sells outdoor and soft goods to retailers and to the public. Read every message from the business's point of view: the business is the recipient.\n\ncategory:\n- customer_complaint: an existing customer is dissatisfied with a product, an order, or the service they received.\n- invoice_dispute: a specific billing document is wrong, duplicated, unapplied, or mismatched against a purchase order.\n- sales_inquiry: someone wants to BUY from the business, or is asking about terms, minimums, or availability before buying.\n- vendor_quote: a supplier is QUOTING PRICES TO the business, or notifying it of its own rates. The business would be the payer. Direction matters: money flowing out is a vendor quote, money flowing in is a sales inquiry.\n- job_application: someone is applying for employment.\n- internal_hr: sent by a member of staff about a personnel, payroll, benefits, or conduct matter.\n- support_request: an existing customer needs something fixed, sent, or changed, and is not primarily complaining.\n- spam: unsolicited bulk sales outreach, SEO or recruitment blasts, or a phishing attempt.\n\nWhen a message both complains and asks for something practical, pick complaint if the dissatisfaction is the point and support_request if the fix is the point.\n\nowner: support for customer product, order, and account problems. finance for invoices, credits, purchase orders, rates, insurance, and anything with an amount in dispute. sales for prospects and buying enquiries. people_ops for applications and internal personnel matters. none for spam and anything needing no action.\n\ncontains_personal_data: true only when the message body holds detail that should not leave the machine. That means a home or residential address, a personal phone number, an account or employee identifier, a medical detail about a person, or an employment matter about a named individual such as a complaint, a garnishment, a disciplinary record, or a leave reason. Ordinary business correspondence is NOT personal data: a sender's own name, their work email address, their job title, and their company name all appear on every message here and never on their own make this true.\n\nEMAIL:\n{document}",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": [
+            "customer_complaint",
+            "invoice_dispute",
+            "sales_inquiry",
+            "job_application",
+            "vendor_quote",
+            "internal_hr",
+            "support_request",
+            "spam"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "today",
+            "this_week",
+            "no_deadline"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string",
+          "enum": [
+            "support",
+            "finance",
+            "sales",
+            "people_ops",
+            "none"
+          ]
+        },
+        "contains_personal_data": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "category",
+        "urgency",
+        "summary",
+        "action",
+        "owner",
+        "contains_personal_data"
+      ]
+    },
+    "options": {
+      "temperature": 0,
+      "seed": 7,
+      "num_ctx": 8192
+    }
+  },
+  "checks": [
+    {
+      "id": "parses",
+      "kind": "structural"
+    },
+    {
+      "id": "record_count",
+      "kind": "structural"
+    },
+    {
+      "id": "file_mapping",
+      "kind": "structural"
+    },
+    {
+      "id": "enum_valid",
+      "kind": "structural"
+    },
+    {
+      "id": "required_present",
+      "kind": "structural"
+    }
+  ],
+  "report": {
+    "title": "Inbox routing",
+    "group_by": "owner",
+    "highlight": "urgency",
+    "highlight_value": "today",
+    "columns": [
+      "file",
+      "category",
+      "urgency",
+      "owner",
+      "summary",
+      "action"
+    ]
+  },
+  "ablation": {
+    "task": "inbox",
+    "rung": "v1",
+    "gained_at_this_rung": "category, owner and personal-data definitions supplied",
+    "still_missing": [
+      "urgency",
+      "today"
+    ],
+    "derived_from": "runbooks/triage-inbox.json"
+  }
+}

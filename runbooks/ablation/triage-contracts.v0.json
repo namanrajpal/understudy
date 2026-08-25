@@ -1,0 +1,147 @@
+{
+  "id": "triage-contracts-v0",
+  "version": "v0",
+  "authored_by": "reconstructed ablation rung, derived from the committed runbook by tools/ablation_runbooks.py. NOT the original underspecified runbook, which was never committed.",
+  "authored_on": "2026-08-23",
+  "purpose": "Read every contract in a folder and work out when each one actually renews. Ablation rung v0.",
+  "input": {
+    "glob": "corpus/contracts/*.txt",
+    "loader": "text"
+  },
+  "steps": [
+    {
+      "n": 1,
+      "name": "Read the contract folder from disk",
+      "op": "load"
+    },
+    {
+      "n": 2,
+      "name": "Extract renewal terms from each contract",
+      "op": "extract"
+    },
+    {
+      "n": 3,
+      "name": "Validate every record",
+      "op": "check"
+    },
+    {
+      "n": 4,
+      "name": "Assemble the renewal calendar",
+      "op": "report"
+    }
+  ],
+  "extract": {
+    "prompt": "You are reading one contract to find out when it renews or expires. Return JSON matching the required schema.\n\nToday's date is {today}. Use it for renewal_date and for expires_within_90_days, which is true when renewal_date falls within 90 days after today.\n\nCONTRACT:\n{document}",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "doc_type": {
+          "type": "string",
+          "enum": [
+            "service_agreement",
+            "nda",
+            "lease",
+            "saas_subscription",
+            "statement_of_work",
+            "maintenance"
+          ]
+        },
+        "counterparty": {
+          "type": "string"
+        },
+        "renewal_basis": {
+          "type": "string",
+          "enum": [
+            "fixed_date",
+            "anniversary_of_execution",
+            "auto_renew_unless_notice",
+            "fiscal_year_end",
+            "none"
+          ]
+        },
+        "renewal_date": {
+          "type": "string"
+        },
+        "notice_days": {
+          "type": "integer"
+        },
+        "expires_within_90_days": {
+          "type": "boolean"
+        },
+        "contains_personal_data": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "doc_type",
+        "counterparty",
+        "renewal_basis",
+        "renewal_date",
+        "notice_days",
+        "expires_within_90_days",
+        "contains_personal_data"
+      ]
+    },
+    "options": {
+      "temperature": 0,
+      "seed": 7,
+      "num_ctx": 8192
+    }
+  },
+  "checks": [
+    {
+      "id": "parses",
+      "kind": "structural"
+    },
+    {
+      "id": "record_count",
+      "kind": "structural"
+    },
+    {
+      "id": "file_mapping",
+      "kind": "structural"
+    },
+    {
+      "id": "enum_valid",
+      "kind": "structural"
+    },
+    {
+      "id": "required_present",
+      "kind": "structural"
+    },
+    {
+      "id": "date_format",
+      "kind": "semantic",
+      "field": "renewal_date"
+    }
+  ],
+  "report": {
+    "title": "Renewal calendar",
+    "group_by": "renewal_basis",
+    "highlight": "expires_within_90_days",
+    "highlight_value": true,
+    "columns": [
+      "file",
+      "doc_type",
+      "counterparty",
+      "renewal_basis",
+      "renewal_date",
+      "notice_days"
+    ]
+  },
+  "ablation": {
+    "task": "contracts",
+    "rung": "v0",
+    "gained_at_this_rung": "bare schema, no field guidance at all",
+    "still_missing": [
+      "perspective",
+      "counterparty",
+      "doc_type",
+      "renewal_basis",
+      "renewal_date",
+      "notice_days",
+      "pii"
+    ],
+    "derived_from": "runbooks/triage-contracts.json"
+  }
+}

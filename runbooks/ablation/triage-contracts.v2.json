@@ -1,0 +1,141 @@
+{
+  "id": "triage-contracts-v2",
+  "version": "v2",
+  "authored_by": "reconstructed ablation rung, derived from the committed runbook by tools/ablation_runbooks.py. NOT the original underspecified runbook, which was never committed.",
+  "authored_on": "2026-08-23",
+  "purpose": "Read every contract in a folder and work out when each one actually renews. Ablation rung v2.",
+  "input": {
+    "glob": "corpus/contracts/*.txt",
+    "loader": "text"
+  },
+  "steps": [
+    {
+      "n": 1,
+      "name": "Read the contract folder from disk",
+      "op": "load"
+    },
+    {
+      "n": 2,
+      "name": "Extract renewal terms from each contract",
+      "op": "extract"
+    },
+    {
+      "n": 3,
+      "name": "Validate every record",
+      "op": "check"
+    },
+    {
+      "n": 4,
+      "name": "Assemble the renewal calendar",
+      "op": "report"
+    }
+  ],
+  "extract": {
+    "prompt": "You are reading one contract to find out when it renews or expires. Return JSON matching the required schema.\n\nThe review is being run by Cedar Ridge Outfitters LLC on its own contract file.\n\ncounterparty: the name of the OTHER party, the one Cedar Ridge is contracting with. Never answer Cedar Ridge Outfitters LLC. It appears in every document in this folder and is never the answer.\n\ndoc_type:\n- saas_subscription: software, platform, or data access sold on a recurring subscription or per-seat basis.\n- maintenance: recurring servicing, support, or upkeep of equipment, premises, or systems.\n- statement_of_work: a defined deliverable or engagement, often issued under a separate master agreement, often naming a retainer or a fixed fee.\n- lease: occupation or rental of premises, land, or a storage unit.\n- nda: confidentiality obligations as the substance of the agreement.\n- service_agreement: use only when the document fits none of the above more specifically.\n\nrenewal_basis rules:\n- fixed_date: the document names an explicit end or renewal date.\n- anniversary_of_execution: renewal is tied to the anniversary of the date the contract was signed or executed.\n- auto_renew_unless_notice: the document names an end date for the current term and the term extends automatically unless a party gives notice.\n- fiscal_year_end: the term ends with a fiscal or calendar year rather than a named date.\n- none: the document states no renewal or expiry.\n\nWhen a document names an explicit end date for the current term AND says the term extends automatically, answer auto_renew_unless_notice. When the renewal date has to be computed from the execution or signature date because no end date is named, answer anniversary_of_execution, even where the same clause also requires notice.\n\nrenewal_date: the next date on which this agreement renews or expires, on or after today. Give ISO YYYY-MM-DD. Use the string unknown if it cannot be determined.\n\nnotice_days: the days of advance notice required to PREVENT RENEWAL. This is not the same as notice to terminate early for convenience, and it is not the length of an option to extend. Use 0 when the agreement does not renew or names no such notice.\n\ncontains_personal_data: true if the document names an individual person, or gives a residential address, phone number, email address, account or employee number, a medical detail, an employment matter about a named person, or a confidential commercial term such as a valuation or deal size. A company name is not personal data, and neither is the address of leased business premises.\n\nToday's date is {today}. Use it for renewal_date and for expires_within_90_days, which is true when renewal_date falls within 90 days after today.\n\nCONTRACT:\n{document}",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "doc_type": {
+          "type": "string",
+          "enum": [
+            "service_agreement",
+            "nda",
+            "lease",
+            "saas_subscription",
+            "statement_of_work",
+            "maintenance"
+          ]
+        },
+        "counterparty": {
+          "type": "string"
+        },
+        "renewal_basis": {
+          "type": "string",
+          "enum": [
+            "fixed_date",
+            "anniversary_of_execution",
+            "auto_renew_unless_notice",
+            "fiscal_year_end",
+            "none"
+          ]
+        },
+        "renewal_date": {
+          "type": "string"
+        },
+        "notice_days": {
+          "type": "integer"
+        },
+        "expires_within_90_days": {
+          "type": "boolean"
+        },
+        "contains_personal_data": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "doc_type",
+        "counterparty",
+        "renewal_basis",
+        "renewal_date",
+        "notice_days",
+        "expires_within_90_days",
+        "contains_personal_data"
+      ]
+    },
+    "options": {
+      "temperature": 0,
+      "seed": 7,
+      "num_ctx": 8192
+    }
+  },
+  "checks": [
+    {
+      "id": "parses",
+      "kind": "structural"
+    },
+    {
+      "id": "record_count",
+      "kind": "structural"
+    },
+    {
+      "id": "file_mapping",
+      "kind": "structural"
+    },
+    {
+      "id": "enum_valid",
+      "kind": "structural"
+    },
+    {
+      "id": "required_present",
+      "kind": "structural"
+    },
+    {
+      "id": "date_format",
+      "kind": "semantic",
+      "field": "renewal_date"
+    }
+  ],
+  "report": {
+    "title": "Renewal calendar",
+    "group_by": "renewal_basis",
+    "highlight": "expires_within_90_days",
+    "highlight_value": true,
+    "columns": [
+      "file",
+      "doc_type",
+      "counterparty",
+      "renewal_basis",
+      "renewal_date",
+      "notice_days"
+    ]
+  },
+  "ablation": {
+    "task": "contracts",
+    "rung": "v2",
+    "gained_at_this_rung": "counterparty perspective stated",
+    "still_missing": [
+      "renewal_date"
+    ],
+    "derived_from": "runbooks/triage-contracts.json"
+  }
+}
