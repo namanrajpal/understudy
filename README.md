@@ -11,13 +11,13 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/charts/architecture-dark.svg">
-  <img src="docs/charts/architecture-light.svg" alt="A frontier model authors a runbook once. A small local model executes it over 46 documents on your own machine, producing a renewal calendar, a routing report and a redaction gate  (identifiers gate the result, facts are reported)
-  model                gate  ident LEAKED  facts LEAKED  removals  retries
-  gemma4:12b           PASS          0/10           1/4        24        0
-  muse-glimmer:30b     PASS          0/10           1/4        21        2
-  qwen3.5:4b           PASS          0/10           2/4        19        0
-  qwen3.5:9b           PASS          0/10           3/4        19        0
-  qwen3.8:27b          PASS          0/10           1/4        21        0
+  <img src="docs/charts/architecture-light.svg" alt="A frontier model authors a runbook once. A small local model executes it over 46 documents on your own machine, producing a renewal calendar, a routing report and a redaction gate.">
+</picture>
+
+</div>
+
+## Start here
+
 ```bash
 ollama pull gemma4:12b
 
@@ -148,12 +148,12 @@ line the HIPAA Safe Harbor de-identification standard draws.
 
 ```
 redaction gate  (identifiers gate the result, facts are reported)
-  model                gate  identifiers   facts  removals  retries
-  gemma4:12b           PASS         0/10     1/4        24        0
-  qwen3.8:27b          PASS         0/10     1/4        21        0
-  muse-glimmer:30b     PASS         0/10     1/4        21        2
-  qwen3.5:9b           PASS         0/10     3/4        19        0
-  qwen3.5:4b           PASS         0/10     2/4        19        0
+  model                gate  ident LEAKED  facts LEAKED  removals  retries
+  gemma4:12b           PASS          0/10           1/4        24        0
+  qwen3.8:27b          PASS          0/10           1/4        21        0
+  muse-glimmer:30b     PASS          0/10           1/4        21        2
+  qwen3.5:9b           PASS          0/10           3/4        19        0
+  qwen3.5:4b           PASS          0/10           2/4        19        0
 ```
 
 All five models pass: 0 of 10 planted identifiers survive on any model. Two
