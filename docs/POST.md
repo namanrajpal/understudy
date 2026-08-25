@@ -12,6 +12,16 @@ file you can open.
 
 ## The idea
 
+Most document work at a small business is repetitive. The same contracts get read
+for renewal dates every quarter. The same inbox gets sorted every morning. The
+same intake notes get stripped of personal detail before they go anywhere.
+
+The expensive part of that work is not doing it. It is deciding **how** to do it:
+which fields matter, what counts as a valid answer, what to do when a document is
+ambiguous. That decision is worth a capable model. Re-deriving it from scratch for
+every document is not, and that is exactly what happens when you send each one to
+a frontier API with the same prompt.
+
 The repo is called **understudy** because that is the job description. An
 understudy learns the part once from the lead, then performs it every night
 without the lead in the building.
@@ -22,6 +32,11 @@ JSON. A small local model then executes that runbook over a folder of documents,
 supplying the per-document judgment the runbook cannot contain. Reasoning that
 happens once lives in the runbook. Reasoning that happens every run happens on
 your hardware.
+
+So the question is narrow: can a small local model carry that second half? Not
+whether it can plan the work, and not whether it replaces a frontier model.
+Whether it can follow a specification faithfully enough, over and over, that the
+output is worth having.
 
 Three concrete outputs come out the other end:
 
@@ -205,6 +220,59 @@ passed, because an empty array is structurally valid. The runner now retries
 any flagged document that comes back with no removals, and that retry recovered
 the run from three leaked identifiers to none. A redaction pipeline without a
 deterministic verifier is a hope, not a control.
+
+## This is not a new idea
+
+Worth saying plainly, because the framing above can read as though I invented
+something. I did not. Reusing a strong model's plan on a weaker executor is an
+active research area, usually filed under **procedural memory** or experience
+reuse for agents, and the papers got there first.
+
+The closest result is [Memp](https://arxiv.org/abs/2508.06433) (Fang et al., ACL
+2026 Findings). It distills past agent trajectories into reusable step-by-step
+instructions and script-like abstractions, then studies how to build, retrieve and
+update that memory. The line that matters for understudy:
+
+> "procedural memory built from a stronger model retains its value: migrating the
+> procedural memory to a weaker model can also yield substantial performance
+> gains"
+
+That is this repo's thesis, published, and measured on TravelPlanner and ALFWorld
+rather than on business paperwork.
+[LEGOMem](https://arxiv.org/abs/2510.04851) finds the same shape in multi-agent
+workflow automation: teams built from smaller models close much of the gap to
+stronger ones once they are given prior execution traces. The framing that agents
+waste effort "re-deriving solutions even in recurring scenarios" comes from that
+literature too, not from me.
+
+Two adjacent lines are worth knowing. Routing each query to the cheapest model
+that can handle it is [FrugalGPT](https://arxiv.org/abs/2305.05176). Compiling a
+pipeline's prompts instead of hand-writing them is
+[DSPy](https://arxiv.org/abs/2310.03714), which reports small open models
+self-bootstrapping pipelines that beat ordinary few-shot prompting by a wide
+margin.
+
+It is also worth naming the two capabilities that make the executor side work at
+all, because they are why this is buildable now and was not three years ago.
+**Instruction tuning** is the difference between a model that continues text and
+one that follows a specification, and it is the reason a 3.4 GB model can execute
+a spec written by a 27B one. **Constrained decoding** is why the output parses:
+Ollama's `format` parameter accepts a full JSON Schema, so the model cannot hand
+back prose where an enum was required. Neither is something I did; both are things
+I depended on.
+
+So what is actually different here? Less than the papers, and more practical.
+
+The runbook is **hand-authored, committed and human-readable** rather than learned
+from traces. That is a downgrade in automation and an upgrade in auditability: you
+can open the file that governs the run, read it, and diff it when it changes. The
+executor is **local** rather than a cheaper cloud tier, which is the entire point
+when the documents themselves are the sensitive thing. And the measurement includes
+a **privacy gate**, which the agent-benchmark work does not test, because planning
+a trip does not involve handling somebody's medical detail.
+
+If you want the real version of this idea, read Memp. What follows below is one
+practical instance of it, measured on hardware you can buy.
 
 ## Left imperfect on purpose
 

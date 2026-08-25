@@ -4,6 +4,8 @@
 
 **Define the work once with a capable model. Do the work repeatedly with a small one, on your own machine.**
 
+*My experiments with local LLMs. A measured record, not a working tool.*
+
 [![validate](https://github.com/namanrajpal/understudy/actions/workflows/validate.yml/badge.svg)](https://github.com/namanrajpal/understudy/actions/workflows/validate.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue?style=flat-square)
 ![dependencies: none](https://img.shields.io/badge/dependencies-none-lightgrey?style=flat-square)
@@ -11,12 +13,63 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/charts/architecture-dark.svg">
-  <img src="docs/charts/architecture-light.svg" alt="A frontier model authors a runbook once. A small local model executes it over 46 documents on your own machine, producing a renewal calendar, a routing report and a redaction gate.">
+  <img src="docs/charts/architecture-light.svg" alt="A frontier model authors a runbook once. A small local model executes it over 46 documents on your own machine, producing a renewal calendar, a routing report and a redaction gate." width="100%">
 </picture>
+
+[Read the write-up](docs/POST.md) · [Results](docs/RESULTS.md) · [Findings](docs/FINDINGS.md) · [Corpus](docs/CORPUS.md) · [Spec](SPEC.md) · [Output, without installing anything](examples/)
 
 </div>
 
-## Start here
+---
+
+> [!IMPORTANT]
+> **This is a repo of experiments, not a working or ready tool.** I built it to
+> find out whether small open-weight models are genuinely useful for one shape of
+> document work, and to measure where they stop being useful. Everything here is
+> experimental: nothing is packaged, hardened, supported, or intended for
+> production use, and interfaces change whenever an experiment needs them to.
+> Read every number as a measurement of this corpus on this hardware, not as a
+> claim about your documents.
+>
+> Questions, or want to talk about any of it: mail me directly at
+> **namanrajpal16@gmail.com**.
+
+## What this is testing
+
+Most document work at a small business is repetitive. The same contracts get read
+for renewal dates every quarter. The same inbox gets sorted every morning. The
+same intake notes get stripped of personal detail before they go anywhere.
+
+The expensive part of that work is not doing it. It is deciding **how** to do it:
+which fields matter, what counts as a valid answer, what to do when a document is
+ambiguous. That decision is worth a capable model. Re-deriving it for every
+document is not.
+
+So make the decision once, write it down, and commit it. Then run the
+writing-down against your documents on your own hardware, as often as you like.
+
+The question here is whether a small local model can carry that second half. Not
+whether it can plan the work, and not whether it replaces a frontier model.
+Whether it can follow a specification faithfully enough, over and over, that the
+output is worth having.
+
+The short answer is yes for some tasks and no for others, and which is which turns
+out to be predictable. The rest of this page is the measurement.
+
+## How it works
+
+A frontier model authors a **runbook**: the steps, the output schema, the checks,
+and what to do on failure. That happens once and is committed to this repo as
+JSON. A small local model then executes that runbook over a folder of documents,
+supplying the per-document judgment the runbook cannot contain.
+
+Every model call goes to a local Ollama endpoint on loopback. No document in
+`corpus/` leaves the machine it is running on. Every document in `corpus/` is
+synthetic: no real person, company, or agreement appears anywhere in this
+repository, which is both a privacy requirement and what makes the results
+reproducible for anyone who clones it.
+
+## Quick start
 
 ```bash
 ollama pull gemma4:12b
@@ -65,10 +118,40 @@ and a lease, and the runner never learns which it is holding.
 
 ## Measured results
 
-`gemma4:12b`, 46 documents, temperature 0, seed 7. It runs on a single 16 GB
-consumer GPU, which is the bar for "reproduces on hardware you already own", and
-every headline number here comes from it for that reason. Full provenance in
+Five models, 46 documents, temperature 0, seed 7, on an M4 Pro with 48 GB unified
+memory. Full provenance and per-field numbers for every model in
 [`docs/RESULTS.md`](docs/RESULTS.md); raw run files in [`examples/`](examples/).
+
+| Model | Size | Contracts, 21 docs | Inbox, 25 docs | Redaction gate | tok/s |
+|---|---|---|---|---|---|
+| `qwen3.8:27b` | 18 GB | **98.0%** | **96.0%** | PASS | 5.0 |
+| `muse-glimmer:30b` | 18 GB | 94.6% | **96.0%** | PASS | 6.1 |
+| `gemma4:12b` | 7.6 GB | 93.2% | 93.0% | PASS | 12.2 |
+| `qwen3.5:9b` | 6.6 GB | 81.0% | 90.0% | PASS | 17.1 |
+| `qwen3.5:4b` | 3.4 GB | 74.8% | 91.0% | PASS | 28.1 |
+
+Three things in that table are the point of the whole exercise.
+
+Contract accuracy climbs steeply with size, 74.8% to 98.0%. Inbox accuracy stays
+nearly flat, 90.0% to 96.0%, and the 3.4 GB model beats the 6.6 GB one on it.
+**Good enough is a property of the task, not of the model.** Read the same numbers
+per field and the reason is legible: routing an email is classification into a
+short list, while dating a contract renewal is clause reading plus arithmetic.
+
+The redaction gate passes on all five. Removing identifiers turned out not to be
+the thing that discriminates between these models at all, which was not the
+expectation going in.
+
+Accuracy and speed move in opposite directions, and the fastest model is the least
+accurate on the task that needs accuracy. Those tok/s figures are Ollama's own
+measurements on one machine, so treat them as the shape of the tradeoff rather
+than a number to plan against.
+
+### The per-field picture
+
+Below is `gemma4:12b` alone. It is the only model in the set that runs on a single
+16 GB consumer GPU, which is the bar for "reproduces on hardware you already own",
+so it is the one worth reading in detail.
 
 | Contracts, 21 docs | | Inbox, 25 docs | |
 |---|---|---|---|
@@ -87,21 +170,22 @@ five are the contracts whose renewal date is not written down and has to be
 computed. The model classifies all five correctly and slips on the arithmetic,
 which is a useful shape to know.
 
-Across the five-model set, contract accuracy climbs steeply with size
-(74.8% to 98.0%) while inbox accuracy stays nearly flat (90.0% to 96.0%). Good
-enough is a property of the task, not of the model. Charts and the full table are
-in [the write-up](docs/POST.md).
+One row never degrades: `contains_personal_data` is 100% on all five models,
+including the 3.4 GB one. That is the field that gates the privacy decision, and
+it is the cheapest one to get right.
+
+Charts for all of the above are in [the write-up](docs/POST.md).
 
 <details>
-<summary>The five models, and why these five</summary>
+<summary>Why these five models</summary>
 
-| Tag | Lab | Size | Role |
-|---|---|---|---|
-| `gemma4:12b` | Google | 7.6 GB | primary, and the source of the numbers above |
-| `qwen3.8:27b` | Alibaba | 18 GB | newest generation, the quality ceiling |
-| `muse-glimmer:30b` | Meta | 18 GB | tuned for local agent work |
-| `qwen3.5:9b` | Alibaba | 6.6 GB | mid-size point on the curve |
-| `qwen3.5:4b` | Alibaba | 3.4 GB | deliberately small, to show where quality falls off |
+| Tag | Lab | Role |
+|---|---|---|
+| `gemma4:12b` | Google | primary, the only one that fits a 16 GB consumer GPU |
+| `qwen3.8:27b` | Alibaba | newest generation, the quality ceiling |
+| `muse-glimmer:30b` | Meta | tuned for local agent work |
+| `qwen3.5:9b` | Alibaba | mid-size point on the curve |
+| `qwen3.5:4b` | Alibaba | deliberately small, to show where quality falls off |
 
 `qwen3.8:27b` at q4 needs more than 16 GB; smaller quantizations start around
 9 GB if that is your constraint. Bigger models work and score better. These are
@@ -121,7 +205,7 @@ the first date it sees.
 | `auto_renew_unless_notice` | 100% | |
 | `anniversary_of_execution` | **0 of 5** | |
 | `fiscal_year_end` | **0 of 3** | |
-| overall `renewal_date` | **57.1%** | **81.0%** |
+| overall `renewal_date` | **57.1%** | **76.2%** |
 
 Where the regex ties, the end date is written in the document. Where it scores
 zero, the date is not in the document at all and has to be computed:
@@ -171,6 +255,40 @@ structural check passed, because an empty array is structurally valid. The runne
 now retries any flagged document that returns no removals, which recovered that
 run from 3 leaked identifiers to none. A redaction pipeline without a
 deterministic verifier is a hope, not a control.
+
+## Where this sits
+
+None of this is a new idea. Reusing a strong model's plan on a weaker executor is
+an active research area, usually called **procedural memory** or experience reuse
+for agents. The closest published result is
+[Memp](https://arxiv.org/abs/2508.06433) (Fang et al., ACL 2026 Findings), which
+distills agent trajectories into reusable step-by-step instructions and reports
+that "procedural memory built from a stronger model retains its value: migrating
+the procedural memory to a weaker model can also yield substantial performance
+gains." [LEGOMem](https://arxiv.org/abs/2510.04851) finds the same shape in
+multi-agent workflow automation, that teams of smaller models close much of the
+gap to stronger ones when given prior execution traces. Routing work to the
+cheapest model that can do it is [FrugalGPT](https://arxiv.org/abs/2305.05176),
+and compiling a pipeline's prompts rather than hand-writing them is
+[DSPy](https://arxiv.org/abs/2310.03714).
+
+Two capabilities make the executor side work at all, and both are worth naming
+because they are why this is possible now and was not three years ago.
+**Instruction tuning** is the difference between a model that continues text and
+one that follows a specification. **Constrained decoding** is why the output
+parses: Ollama's `format` parameter takes a full JSON Schema, so the model cannot
+return prose where an enum was required.
+
+What is different here is smaller than the literature and more practical. The
+runbook is hand-authored, committed, and human-readable rather than learned from
+traces, so you can read the thing that governs the run and diff it. Execution is
+local rather than a cheaper cloud tier, which is the whole point when the
+documents are the sensitive part. And the measurement includes a privacy gate,
+which the agent-benchmark literature does not test because its tasks are not about
+handling other people's personal data.
+
+Worth reading those papers before taking this repo's framing as novel. It is a
+practical instance of a known idea, measured on hardware you can buy.
 
 ## What went wrong building it
 
@@ -259,6 +377,12 @@ synthetic by construction. See [`docs/CORPUS.md`](docs/CORPUS.md) for how it was
 built and what it therefore cannot prove.
 
 </details>
+
+## Questions
+
+This is an experiment log rather than a maintained project, so the best channel
+is direct mail: **namanrajpal16@gmail.com**. Happy to talk about any of it,
+including the parts that did not work.
 
 ## License
 
