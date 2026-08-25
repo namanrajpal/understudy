@@ -12,15 +12,18 @@ file you can open.
 
 ## The idea
 
-Most document work at a small business is repetitive. The same contracts get read
-for renewal dates every quarter. The same inbox gets sorted every morning. The
-same intake notes get stripped of personal detail before they go anywhere.
+Most paperwork in a workplace repeats. The same contracts get read for renewal
+dates every quarter. The same inbox gets sorted every morning. The same intake
+notes get stripped of personal detail before they go anywhere.
 
-The expensive part of that work is not doing it. It is deciding **how** to do it:
-which fields matter, what counts as a valid answer, what to do when a document is
-ambiguous. That decision is worth a capable model. Re-deriving it from scratch for
-every document is not, and that is exactly what happens when you send each one to
-a frontier API with the same prompt.
+Every one of those runs needs the same judgment calls made before it can start.
+Which fields matter. What counts as a valid answer. Whether an email that
+complains and asks for a fix is a complaint or a support request. Whether a
+sender's own name counts as personal data. What to do when a document is
+genuinely ambiguous. Those calls are identical in January and in June, and
+getting them right is harder than reading the documents. Sending every document
+to a frontier API with the same prompt pays for those calls again on every single
+one.
 
 The repo is called **understudy** because that is the job description. An
 understudy learns the part once from the lead, then performs it every night
@@ -33,10 +36,16 @@ supplying the per-document judgment the runbook cannot contain. Reasoning that
 happens once lives in the runbook. Reasoning that happens every run happens on
 your hardware.
 
-So the question is narrow: can a small local model carry that second half? Not
-whether it can plan the work, and not whether it replaces a frontier model.
-Whether it can follow a specification faithfully enough, over and over, that the
-output is worth having.
+This repo measures both parts. **How much of the accuracy comes from the
+runbook?** On inbox sorting, going from a bare output format to a fully written
+runbook took the same model from 55% to 93%. **Can a small local model do the work
+once it has one?** A 7.6 GB model, the kind that fits a consumer graphics card,
+reads 46 documents at 93% against answers checked by hand.
+
+The part I did not expect is that these two do not matter equally. For sorting an
+inbox, writing the instructions well beat using a model three times larger, by a
+wide margin. For reading a contract, the bigger model won, and better
+instructions did not close the gap.
 
 Three concrete outputs come out the other end:
 

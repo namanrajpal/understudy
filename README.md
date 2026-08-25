@@ -36,25 +36,33 @@
 
 ## What this is testing
 
-Most document work at a small business is repetitive. The same contracts get read
-for renewal dates every quarter. The same inbox gets sorted every morning. The
-same intake notes get stripped of personal detail before they go anywhere.
+Most paperwork in a workplace repeats. The same contracts get read for renewal
+dates every quarter. The same inbox gets sorted every morning. The same intake
+notes get stripped of personal detail before they go anywhere.
 
-The expensive part of that work is not doing it. It is deciding **how** to do it:
-which fields matter, what counts as a valid answer, what to do when a document is
-ambiguous. That decision is worth a capable model. Re-deriving it for every
-document is not.
+Every one of those runs needs the same judgment calls made before it can start.
+Which fields matter. What counts as a valid answer. Whether an email that
+complains and asks for a fix is a complaint or a support request. Whether a
+sender's own name counts as personal data. What to do when a document is
+genuinely ambiguous. Those calls are identical in January and in June, and
+getting them right is harder than reading the documents.
 
-So make the decision once, write it down, and commit it. Then run the
-writing-down against your documents on your own hardware, as often as you like.
+So make them once, using a large model, and write the answers into a file you can
+read and review: a runbook. It holds the steps, the output format, the checks, and
+what to do when a step fails. Nothing in that file has to be worked out again.
+Every run after that follows it, on a model small enough to run on your own
+machine.
 
-The question here is whether a small local model can carry that second half. Not
-whether it can plan the work, and not whether it replaces a frontier model.
-Whether it can follow a specification faithfully enough, over and over, that the
-output is worth having.
+This repo measures both parts. **How much of the accuracy comes from the
+runbook?** On inbox sorting, going from a bare output format to a fully written
+runbook took the same model from 55% to 93%. **Can a small local model do the work
+once it has one?** A 7.6 GB model, the kind that fits a consumer graphics card,
+reads 46 documents at 93% against answers checked by hand.
 
-The short answer is yes for some tasks and no for others, and which is which turns
-out to be predictable. The rest of this page is the measurement.
+The part I did not expect is that these two do not matter equally. For sorting an
+inbox, writing the instructions well beat using a model three times larger, by a
+wide margin. For reading a contract, the bigger model won, and better
+instructions did not close the gap. The rest of this page is the measurement.
 
 ## How it works
 
