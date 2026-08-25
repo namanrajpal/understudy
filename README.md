@@ -243,23 +243,23 @@ the gate caught before it passed.
 
 ## Where this sits
 
-None of this is a new idea. Reusing a strong model's plan on a weaker executor is
-an active research area, usually filed under **procedural memory** for agents, and
-the closest published result is [Memp](https://arxiv.org/abs/2508.06433) (Fang et
-al., ACL 2026 Findings), which reports that "procedural memory built from a
-stronger model retains its value: migrating the procedural memory to a weaker model
-can also yield substantial performance gains." Two capabilities I depended on and
-did not build make the executor side work at all: **instruction tuning**, which is
-why a model follows a specification instead of continuing text, and **constrained
-decoding**, which is why the output parses.
+Authoring a pipeline once and then running it with a cheaper model is not a new
+idea. [DSPy](https://arxiv.org/abs/2310.03714) does a more automated version of it,
+compiling a program's prompts rather than having a person write them, and reports
+small open models beating ordinary few-shot prompting once compiled. Understudy is
+the hand-written case: the runbook is authored rather than optimised, which trades
+automation for an artifact you can read and diff.
 
-What differs here is smaller and more practical: the runbook is hand-authored and
-committed rather than learned from traces, execution is local rather than a cheaper
-cloud tier, and the measurement includes a privacy gate the agent benchmarks do not
-test.
+Two capabilities I depended on and did not build make the executor side work at
+all. **Instruction tuning** is why a model follows a specification instead of
+continuing text, and it is why a 3.4 GB model can execute a spec written by a 27B
+one. **Constrained decoding** is why the output parses: Ollama's `format` takes a
+JSON Schema, so the model cannot return prose where an enum was required.
 
-The write-up has the [full treatment](docs/POST.md#this-is-not-a-new-idea), with
-LEGOMem, FrugalGPT and DSPy.
+What this is not: an agent, a memory system, or novel. There is no loop, no tool
+selection, no retrieval, and no accumulated state. It is a fixed pipeline where one
+step happens to be a model call, run locally, with a privacy gate that is measured
+rather than asserted.
 
 ## What went wrong building it
 

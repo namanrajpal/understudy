@@ -224,55 +224,38 @@ deterministic verifier is a hope, not a control.
 ## This is not a new idea
 
 Worth saying plainly, because the framing above can read as though I invented
-something. I did not. Reusing a strong model's plan on a weaker executor is an
-active research area, usually filed under **procedural memory** or experience
-reuse for agents, and the papers got there first.
+something. I did not, and it is worth being precise about which part is old.
 
-The closest result is [Memp](https://arxiv.org/abs/2508.06433) (Fang et al., ACL
-2026 Findings). It distills past agent trajectories into reusable step-by-step
-instructions and script-like abstractions, then studies how to build, retrieve and
-update that memory. The line that matters for understudy:
+Writing a pipeline down once and then executing it with a cheaper model is
+established practice. [DSPy](https://arxiv.org/abs/2310.03714) is the more
+automated version: you declare what each step should do, it compiles the prompts
+for you, and it reports small open models outperforming ordinary few-shot
+prompting once compiled. Understudy is the hand-written case. The runbook is
+authored rather than optimised, which is a downgrade in automation and an upgrade
+in auditability, because you can open the file that governs the run, read it, and
+diff it when it changes.
 
-> "procedural memory built from a stronger model retains its value: migrating the
-> procedural memory to a weaker model can also yield substantial performance
-> gains"
+Two capabilities make the executor side work at all, and both are things I
+depended on rather than things I built. **Instruction tuning** is the difference
+between a model that continues text and one that follows a specification, and it
+is the entire reason a 3.4 GB model can execute a spec written by a 27B one.
+**Constrained decoding** is why the output parses: Ollama's `format` parameter
+accepts a full JSON Schema, so the model cannot hand back prose where an enum was
+required. Neither existed in usable form for local models three years ago, which is
+most of why this is buildable now.
 
-That is this repo's thesis, published, and measured on TravelPlanner and ALFWorld
-rather than on business paperwork.
-[LEGOMem](https://arxiv.org/abs/2510.04851) finds the same shape in multi-agent
-workflow automation: teams built from smaller models close much of the gap to
-stronger ones once they are given prior execution traces. The framing that agents
-waste effort "re-deriving solutions even in recurring scenarios" comes from that
-literature too, not from me.
+It is also worth being clear about what this is **not**, because the vocabulary
+overlaps with a research area it does not belong to. There is a body of work on
+agent memory, where a system distills its own past execution traces into reusable
+procedures and then retrieves and updates them over time. Understudy does none of
+that. It has no memory, no retrieval, no update loop, and no traces. The runbook is
+an input written before anything runs, not an output produced by running. There is
+no loop, no tool selection, and no accumulated state.
 
-Two adjacent lines are worth knowing. Routing each query to the cheapest model
-that can handle it is [FrugalGPT](https://arxiv.org/abs/2305.05176). Compiling a
-pipeline's prompts instead of hand-writing them is
-[DSPy](https://arxiv.org/abs/2310.03714), which reports small open models
-self-bootstrapping pipelines that beat ordinary few-shot prompting by a wide
-margin.
-
-It is also worth naming the two capabilities that make the executor side work at
-all, because they are why this is buildable now and was not three years ago.
-**Instruction tuning** is the difference between a model that continues text and
-one that follows a specification, and it is the reason a 3.4 GB model can execute
-a spec written by a 27B one. **Constrained decoding** is why the output parses:
-Ollama's `format` parameter accepts a full JSON Schema, so the model cannot hand
-back prose where an enum was required. Neither is something I did; both are things
-I depended on.
-
-So what is actually different here? Less than the papers, and more practical.
-
-The runbook is **hand-authored, committed and human-readable** rather than learned
-from traces. That is a downgrade in automation and an upgrade in auditability: you
-can open the file that governs the run, read it, and diff it when it changes. The
-executor is **local** rather than a cheaper cloud tier, which is the entire point
-when the documents themselves are the sensitive thing. And the measurement includes
-a **privacy gate**, which the agent-benchmark work does not test, because planning
-a trip does not involve handling somebody's medical detail.
-
-If you want the real version of this idea, read Memp. What follows below is one
-practical instance of it, measured on hardware you can buy.
+So the honest description is unglamorous: a fixed pipeline where one step happens
+to be a model call, executed locally, with a privacy gate that is measured rather
+than asserted. What is worth reporting is not the architecture. It is the numbers
+for how well small models hold up inside it, and which tasks they hold up on.
 
 ## Left imperfect on purpose
 
