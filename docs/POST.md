@@ -76,13 +76,37 @@ Silica on Windows. And Meta's ExecuTorch runtime runs inside Instagram,
 WhatsApp, Messenger, and the Ray-Ban glasses, which is probably the largest
 deployment of on-device transformers that nobody talks about.
 
+Then, in the two weeks before I ran any of this, two labs shipped models aimed
+squarely at the machine on your desk. Meta released
+[Muse Glimmer](https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model)
+on 10 August 2026: 30B dense, Apache 2.0, distilled from their closed Muse Spark,
+and described by Meta as built for always-on local agents, tuned for tool use,
+long tasks, and failure recovery. That is close to a literal description of
+executing a runbook over a folder, and it is also Meta's return to open weights
+after the Llama line wound down. Four days later Alibaba shipped
+[Qwen3.8-27B](https://the-decoder.com/alibabas-qwen-team-releases-qwen-3-8-models-with-open-weights-under-the-apache-2-0-license/):
+27B dense, Apache 2.0, native vision, a 262K context window, and about 17 GB at
+four-bit quantization. CNBC read the timing
+[as a direct answer to Meta](https://www.cnbc.com/2026/08/17/alibaba-meta-qwen-open-weight-ai-laptop-models.html),
+which seems right: two labs, four days apart, both optimizing for a single
+consumer GPU rather than a datacenter.
+
+Both are in the results below. That is worth saying plainly, because it means
+the top of this comparison is two weeks old, and a reader repeating this in six
+months will have better models than I did.
+
 Local is not one thing, either. Local transcription via whisper.cpp is routine
 now, and local meeting transcription is a shipping product category. Small
 vision models like SmolVLM describe images in under a gigabyte. The New York
-Times games team has shown experimental on-device agents inside their word
-games, for accessibility and offline play, with the caveats that the work is
-experimental and the puzzles themselves are still entirely human-made. Tesco
-runs a local code index as one half of a hybrid architecture. And there are
+Times games team has shown
+[experimental on-device agents inside their word games](https://www.startuphub.ai/ai-news/artificial-intelligence/2026/nyt-explores-local-ai-for-accessible-mobile-games),
+for accessibility and offline play, with the caveats that the work is
+experimental and the puzzles themselves are still entirely human-made. Their
+framing of where this goes is the one I keep coming back to: away from a single
+centralized brain, toward a distributed network of small local brains. Tesco
+runs [a local code index](https://www.startuphub.ai/ai-news/artificial-intelligence/2026/ai-coding-token-reduction-rajkumar-sakthivel-on-local-code-index)
+as one half of a hybrid architecture, retrieving locally and sending only what
+survives retrieval to a cloud agent. And there are
 places where local is not a preference but a legal requirement: Jim McQuillan,
 who builds software for oncology clinics, runs Llama and Qwen locally via
 Ollama because patient data cannot be sent to any cloud model, full stop. He
@@ -119,8 +143,68 @@ quoting their numbers as the result would quietly break that claim.
 
 ## What was measured
 
-Scored per field against ground truth. `gemma4:12b`: **93.2%** on contract
-triage, **93.0%** on inbox triage. The full set:
+Before the numbers, what the model is actually being asked to do, because "93.2%
+per field" means nothing without it.
+
+Here is one of the 25 emails, trimmed:
+
+```
+From: Dana Kirkwood <dana@bellweatherstudio.example>
+Subject: Re: Invoice 20841 - I think this came twice
+Date: Mon, 24 Aug 2026 08:12:03 -0400
+
+I'm not angry, just a bit disappointed that the invoice came through twice
+this month. We paid 20841 on the 3rd by ACH and then 20841-A landed
+yesterday for the same amount and the same line items.
+
+I don't think anyone did anything wrong, I'd just like the second one voided
+before it ages into your collections run.
+```
+
+Four fields are scored against ground truth, and for this email they are:
+
+```json
+{ "category": "invoice_dispute", "urgency": "this_week",
+  "owner": "finance", "contains_personal_data": false }
+```
+
+Two things there are less obvious than they look. The sender opens by saying they
+are disappointed, which reads like a complaint, and the substance is a billing
+document mismatch. And no deadline is stated anywhere, so `this_week` has to come
+from "before it ages into your collections run".
+
+Contracts are harder, and this is the shape of the hard case. Contract 007 says,
+in its term clause:
+
+```
+...automatically on each anniversary of the date of execution set forth below,
+for successive one (1) year periods, unless either party gives written notice
+of non-renewal at least thirty (30) days before the applicable anniversary.
+```
+
+Eleven lines later, in the signature block:
+
+```
+IN WITNESS WHEREOF the parties have executed this Agreement this eighteenth day
+of September, 2023.
+```
+
+Seven fields are scored, and the interesting ones here are:
+
+```json
+{ "renewal_basis": "anniversary_of_execution", "renewal_date": "2026-09-18",
+  "notice_days": 30, "expires_within_90_days": true }
+```
+
+No date string anywhere in that document matches the answer. `2026-09-18` has to
+be assembled: read a longhand date out of a signature block, recognise that the
+term clause points at it, advance by whole years until it first passes today, and
+stop there. That is why a regex scores zero on this class of contract, and it is
+also where the smaller models make their one specific mistake, landing exactly one
+year late.
+
+Scored per field against ground truth, `gemma4:12b` gets **93.2%** on contract
+triage and **93.0%** on inbox triage. The full set:
 
 | model | contracts (21 docs) | inbox (25 docs) |
 |---|---|---|
