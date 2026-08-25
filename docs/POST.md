@@ -220,6 +220,40 @@ The shape of that chart matters more than the ranking. The inbox line is nearly
 flat: the smallest model in the set is within five points of the largest. The
 contracts line climbs 23 points across the same models.
 
+## High level findings
+
+**A model that runs on your own computer is good enough for this kind of work.**
+A 7.6 GB model, the size that fits a consumer graphics card, read 46 real-shaped
+business documents and got 93% of the fields right against answers checked by
+hand.
+
+**How good it needs to be depends on the job, not the model.** Sorting an inbox
+and reading a contract are not the same difficulty. The same small model scores
+91.0% on one and 74.8% on the other.
+
+**For some jobs, writing the instructions carefully beats buying a bigger
+model.** On inbox sorting, a better runbook was worth 38 points and a model three
+times larger was worth 2. On contracts it is the other way round.
+
+**The judgment that decides privacy was the most reliable one.** Deciding whether
+a document contains personal data was 100% correct on all five models, from the
+3.4 GB one to the 18 GB one. The field that carries the most consequence is the
+one that never degraded.
+
+**Patterns cannot do the part that matters.** A serious hand-written regex finds
+the renewal date 57.1% of the time, and never finds it at all when the date has
+to be computed rather than read. Six contracts that genuinely expire within 90
+days are invisible to it.
+
+**Every model removed every identifier, but only because something checked.**
+All five stripped 10 of 10 planted names, addresses, phone numbers and account
+IDs. One of them first returned an empty answer for the single most sensitive
+document in the corpus and passed every structural check while doing it, because
+an empty list is structurally valid. Valid output and correct output are
+different properties, and the difference is why the deterministic scan exists.
+
+The rest of this page is each of those in detail.
+
 ## "Good enough" is a property of the task, not the model
 
 The clearest single data point: `qwen3.5:4b` scores **91.0%** on inbox triage
@@ -235,45 +269,41 @@ names the task.
 
 ## What the runbook itself is worth
 
-Everything above varies one thing: the model, with the runbook held at its final
-version. So it measures what a small model does with a good specification and says
-nothing about what the specification was worth. That was the load-bearing claim of
-this whole idea and it went unmeasured for two days.
+Every number so far varies the model and holds the runbook at its finished
+version. That tests the small model and says nothing about the runbook, which is
+the other half of the idea. So I measured it too.
 
-Measuring it means sweeping the other axis. I rebuilt the underspecified runbook
-as a four-rung ladder, each rung adding back one named piece of specification, and
-ran the ladder across the top and bottom of the model curve. Sixteen runs, same
-documents, same code.
+I rebuilt the underspecified runbook as four versions, each one adding back a
+single piece of the specification, and ran all four on the largest and smallest
+models. Sixteen runs, same documents, same code.
 
 ![Runbook quality ablation: inbox climbs steeply and the two models converge, contracts climbs shallowly and the models stay apart](charts/runbook-ladder.svg)
 
-Two things fall out of that shape.
+**Writing the decisions down was worth 38 points.** On inbox sorting,
+`gemma4:12b` went from 55.0% with a bare output format to 93.0% with the finished
+runbook. Same model, same emails. The only thing that changed is that the runbook
+now says what the words mean.
 
-**Writing the decisions down was worth 38 points on inbox triage**, taking
-`gemma4:12b` from 55.0% with a bare output format to 93.0% with the committed
-runbook. No model change, no per-document hints, only definitions of what the
-words mean.
+**Which half matters more depends on the task.** Improving the runbook while
+holding the model fixed is worth +38.0 on inbox and +15.6 on contracts. Upgrading
+the model while holding the runbook fixed is worth +2.0 on inbox and +18.4 on
+contracts. Inbox sorting is limited by the instructions; contract reading is
+limited by the model. Sorting into categories rewards a better specification.
+Interpreting a clause and computing a date rewards a bigger model.
 
-**Which half is your bottleneck depends on the task.** Holding the model fixed and
-improving the runbook is worth +38.0 on inbox and +15.6 on contracts. Holding the
-runbook fixed and upgrading the model is worth +2.0 on inbox and +18.4 on
-contracts. Inbox triage is limited by how well you wrote the instructions;
-contract triage is limited by the model. For classification, write a better spec.
-For interpretation and arithmetic, get a better model.
+**A wrong instruction is worse than no instruction.** One of the four versions
+carries the buggy date rule I originally shipped. `qwen3.5:4b` scored 6.8 points
+*below* the bare output format on it, because it followed the bad rule exactly.
+`gemma4:12b` partly ignored the same rule and gained 4 points. A sloppy
+specification hurts the small model most, which is the practical reason the
+runbook is a committed file someone can review rather than a prompt someone typed
+once.
 
-There is also a warning in the data. `qwen3.5:4b` on contracts scored **6.8 points
-below the bare schema** on the rung that introduces a defective date rule,
-because it followed the bad instruction faithfully. The 12B partly ignored the
-same rule and gained 4 points. A sloppy specification punishes the small model
-hardest, which is the practical argument for the runbook being committed,
-reviewable text rather than a prompt somebody typed once.
-
-And one correction to my own earlier account. I had credited the inbox recovery to
-two fixes: defining the enum values and supplying a reference date. The reference
-date turns out to be worth **+0.0** on `gemma4:12b` and **-1.0** on `qwen3.5:4b`,
-because `.eml` files carry their own `Date` header and the model already had it. I
-had been crediting a fix that did nothing. The full ladder, including the rungs
-that go backwards, is in [`docs/FINDINGS.md`](FINDINGS.md).
+**One fix I had credited did nothing.** I thought the inbox recovery came from two
+changes: defining the categories and supplying today's date. The date turns out to
+be worth +0.0 on one model and -1.0 on the other, because emails carry their own
+date header and the model already had it. All four versions, including the one
+that goes backwards, are in [`docs/FINDINGS.md`](FINDINGS.md).
 
 ## Field by field
 
@@ -358,34 +388,28 @@ deterministic verifier is a hope, not a control.
 
 ## This is not a new idea
 
-Worth saying plainly, because the framing above can read as though I invented
-something. I did not, and it is worth being precise about which part is old.
-
 Writing a pipeline down once and then executing it with a cheaper model is
-established practice. [DSPy](https://arxiv.org/abs/2310.03714) is the more
-automated version: you declare what each step should do, it compiles the prompts
-for you, and it reports small open models outperforming ordinary few-shot
-prompting once compiled. Understudy is the hand-written case. The runbook is
-authored rather than optimised, which is a downgrade in automation and an upgrade
-in auditability, because you can open the file that governs the run, read it, and
-diff it when it changes.
+established practice. [DSPy](https://arxiv.org/abs/2310.03714) is the automated
+version: you declare what each step should do, it compiles the prompts for you,
+and it reports small open models beating ordinary few-shot prompting once
+compiled. Understudy is the hand-written case. The runbook is authored rather than
+optimised, which trades automation for auditability: you can open the file that
+governs the run, read it, and diff it when it changes.
 
-Two capabilities make the executor side work at all, and both are things I
-depended on rather than things I built. **Instruction tuning** is the difference
-between a model that continues text and one that follows a specification, and it
-is the entire reason a 3.4 GB model can execute a spec written by a 27B one.
-**Constrained decoding** is why the output parses: Ollama's `format` parameter
-accepts a full JSON Schema, so the model cannot hand back prose where an enum was
-required. Neither existed in usable form for local models three years ago, which is
-most of why this is buildable now.
+Two capabilities make the executor side work, and I depended on both rather than
+building either. **Instruction tuning** is the difference between a model that
+continues text and one that follows a specification, and it is why a 3.4 GB model
+can execute a spec written by a 27B one. **Constrained decoding** is why the output
+parses: Ollama's `format` parameter accepts a full JSON Schema, so the model
+cannot hand back prose where an enum was required. Neither existed in usable form
+for local models three years ago, which is most of why this is buildable now.
 
-It is also worth being clear about what this is **not**, because the vocabulary
-overlaps with a research area it does not belong to. There is a body of work on
-agent memory, where a system distills its own past execution traces into reusable
-procedures and then retrieves and updates them over time. Understudy does none of
-that. It has no memory, no retrieval, no update loop, and no traces. The runbook is
-an input written before anything runs, not an output produced by running. There is
-no loop, no tool selection, and no accumulated state.
+One clarification, because the vocabulary overlaps with a research area this does
+not belong to. There is a body of work on agent memory, where a system distills
+its own execution traces into reusable procedures and retrieves them later.
+Understudy does none of that: no memory, no retrieval, no update loop, no traces.
+The runbook is an input written before anything runs, not an output produced by
+running.
 
 So the honest description is unglamorous: a fixed pipeline where one step happens
 to be a model call, executed locally, with a privacy gate that is measured rather
