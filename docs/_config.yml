@@ -1,0 +1,30 @@
+# GitHub Pages config.
+#
+# Serves this docs/ folder as a site. Enable it once in the repo settings:
+#   Settings -> Pages -> Source: "Deploy from a branch", Branch: main, Folder: /docs
+#
+# The site root is docs/index.md, which pulls in POST.md rather than copying it,
+# so the post has exactly one source of truth and the version you read on GitHub
+# is the version the site serves.
+#
+# jekyll-theme-primer is GitHub's own docs theme, so it needs no gem install and
+# no local build. Charts resolve as relative paths from docs/, which is why they
+# work identically on the site and in the repo view.
+
+title: understudy
+description: >-
+  Define the work once with a capable model. Do the work repeatedly with a small
+  one, on your own machine. Experiments measuring whether small open-weight
+  models can execute a frontier-authored runbook over business documents.
+theme: jekyll-theme-primer
+
+# Keep the site to the write-up and the reference docs. Everything else in this
+# folder is either an asset or already linked from a page.
+exclude:
+  - HANDOFF-POST.md
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default

@@ -147,34 +147,21 @@ accurate on the task that needs accuracy. Those tok/s figures are Ollama's own
 measurements on one machine, so treat them as the shape of the tradeoff rather
 than a number to plan against.
 
-### The per-field picture
+### Where the misses are
 
-Below is `gemma4:12b` alone. It is the only model in the set that runs on a single
-16 GB consumer GPU, which is the bar for "reproduces on hardware you already own",
-so it is the one worth reading in detail.
-
-| Contracts, 21 docs | | Inbox, 25 docs | |
-|---|---|---|---|
-| `doc_type` | 100% | `contains_personal_data` | 100% |
-| `counterparty` | 100% | `category` | 92% |
-| `renewal_basis` | 100% | `owner` | 92% |
-| `notice_days` | 100% | `urgency` | 88% |
-| `contains_personal_data` | 100% | | |
-| `renewal_date` | 76.2% | | |
-| `expires_within_90_days` | 76.2% | | |
-| **overall** | **93.2%** | **overall** | **93.0%** |
-
-All ten contract misses are the same defect on five documents: `renewal_date` off
-by exactly one year, and `expires_within_90_days` wrong as a consequence. Those
+`gemma4:12b` is the model to read in detail, because it is the only one in the set
+that runs on a single 16 GB consumer GPU. It scores 100% on five of seven contract
+fields. All ten of its misses are the same defect on five documents: `renewal_date`
+off by exactly one year, and `expires_within_90_days` wrong as a consequence. Those
 five are the contracts whose renewal date is not written down and has to be
-computed. The model classifies all five correctly and slips on the arithmetic,
-which is a useful shape to know.
+computed. It classifies all five correctly and slips on the arithmetic.
 
 One row never degrades: `contains_personal_data` is 100% on all five models,
-including the 3.4 GB one. That is the field that gates the privacy decision, and
-it is the cheapest one to get right.
+including the 3.4 GB one. That is the field that gates the privacy decision, and it
+is the cheapest one to get right.
 
-Charts for all of the above are in [the write-up](docs/POST.md).
+Per-field tables for every model are in [`docs/RESULTS.md`](docs/RESULTS.md), and
+the charts are in [the write-up](docs/POST.md).
 
 <details>
 <summary>Why these five models</summary>
@@ -240,55 +227,39 @@ redaction gate  (identifiers gate the result, facts are reported)
   qwen3.5:4b           PASS          0/10           2/4        19        0
 ```
 
-All five models pass: 0 of 10 planted identifiers survive on any model. Two
-design decisions did most of that work, and both are about trusting the model
-less, not more.
+All five models pass: 0 of 10 planted identifiers survive on any model. Two design
+decisions did most of that work, and both are about trusting the model less rather
+than more. The model finds the spans and **code** applies them, because models
+substituted short tokens reliably while leaving multi-line clauses verbatim, even
+when they had correctly listed those clauses as removals. And an empty answer is
+treated as suspicious rather than clean: `muse-glimmer:30b` returned zero spans for
+a flagged document holding five identifiers while every structural check passed, so
+the runner now retries any flagged document that comes back with no removals. That
+recovered the run from 3 leaked identifiers to none.
 
-**The model finds the spans, code applies them.** Asked to both find and rewrite,
-models reliably substituted short tokens and reliably left multi-line clauses
-verbatim while correctly listing them as removals. Finding an identifying span is
-judgment. Replacing a substring is not.
-
-**An empty answer is suspicious, not clean.** `muse-glimmer:30b` returned zero
-removal spans for a flagged document holding five planted identifiers, and every
-structural check passed, because an empty array is structurally valid. The runner
-now retries any flagged document that returns no removals, which recovered that
-run from 3 leaked identifiers to none. A redaction pipeline without a
-deterministic verifier is a hope, not a control.
+A redaction pipeline without a deterministic verifier is a hope, not a control. The
+[write-up](docs/POST.md#the-redaction-gate) has the full reasoning, including what
+the gate caught before it passed.
 
 ## Where this sits
 
 None of this is a new idea. Reusing a strong model's plan on a weaker executor is
-an active research area, usually called **procedural memory** or experience reuse
-for agents. The closest published result is
-[Memp](https://arxiv.org/abs/2508.06433) (Fang et al., ACL 2026 Findings), which
-distills agent trajectories into reusable step-by-step instructions and reports
-that "procedural memory built from a stronger model retains its value: migrating
-the procedural memory to a weaker model can also yield substantial performance
-gains." [LEGOMem](https://arxiv.org/abs/2510.04851) finds the same shape in
-multi-agent workflow automation, that teams of smaller models close much of the
-gap to stronger ones when given prior execution traces. Routing work to the
-cheapest model that can do it is [FrugalGPT](https://arxiv.org/abs/2305.05176),
-and compiling a pipeline's prompts rather than hand-writing them is
-[DSPy](https://arxiv.org/abs/2310.03714).
+an active research area, usually filed under **procedural memory** for agents, and
+the closest published result is [Memp](https://arxiv.org/abs/2508.06433) (Fang et
+al., ACL 2026 Findings), which reports that "procedural memory built from a
+stronger model retains its value: migrating the procedural memory to a weaker model
+can also yield substantial performance gains." Two capabilities I depended on and
+did not build make the executor side work at all: **instruction tuning**, which is
+why a model follows a specification instead of continuing text, and **constrained
+decoding**, which is why the output parses.
 
-Two capabilities make the executor side work at all, and both are worth naming
-because they are why this is possible now and was not three years ago.
-**Instruction tuning** is the difference between a model that continues text and
-one that follows a specification. **Constrained decoding** is why the output
-parses: Ollama's `format` parameter takes a full JSON Schema, so the model cannot
-return prose where an enum was required.
+What differs here is smaller and more practical: the runbook is hand-authored and
+committed rather than learned from traces, execution is local rather than a cheaper
+cloud tier, and the measurement includes a privacy gate the agent benchmarks do not
+test.
 
-What is different here is smaller than the literature and more practical. The
-runbook is hand-authored, committed, and human-readable rather than learned from
-traces, so you can read the thing that governs the run and diff it. Execution is
-local rather than a cheaper cloud tier, which is the whole point when the
-documents are the sensitive part. And the measurement includes a privacy gate,
-which the agent-benchmark literature does not test because its tasks are not about
-handling other people's personal data.
-
-Worth reading those papers before taking this repo's framing as novel. It is a
-practical instance of a known idea, measured on hardware you can buy.
+The write-up has the [full treatment](docs/POST.md#this-is-not-a-new-idea), with
+LEGOMem, FrugalGPT and DSPy.
 
 ## What went wrong building it
 
