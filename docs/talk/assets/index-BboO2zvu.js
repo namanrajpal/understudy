@@ -1007,7 +1007,7 @@ Define the term once, here, and then use it for the rest of the talk: a large la
 
 Worth saying for the technical minority: the interface is often local while the model call is not. An assistant inside an editor or a terminal still sends the request to a remote model.
 
-Do not imply remote inference is inherently bad. It provides capability and scale that consumer hardware cannot always match. This slide is the baseline, not the villain.`},{id:`how-we-got-here`,type:`rows`,status:`working`,motion:`rows`,compact:!0,eyebrow:`A short history`,title:`How the local option appeared`,items:[{label:`Until recently`,body:`Useful language models were too large to run anywhere but a data center.`},{label:`2024 to 2025`,body:`Open models got smaller and better, and compression made them fit in ordinary memory.`},{label:`2025`,body:`Apple and Google shipped models that run directly on phones and laptops people already own.`},{label:`Today`,body:`Local models run inside apps most people use daily, and anyone can download one for free.`}],notes:`Keep this to about ninety seconds. It exists so the room knows this is a recent change rather than a permanent fact, and so the rest of the talk is not the first time they hear that models can be small.
+Do not imply remote inference is inherently bad. It provides capability and scale that consumer hardware cannot always match. This slide is the baseline, not the villain.`},{id:`how-we-got-here`,type:`rows`,status:`working`,motion:`rows`,compact:!0,eyebrow:`A short history`,title:`How the local option appeared`,items:[{label:`Until recently`,body:`Useful language models were too large to run anywhere but a data center.`},{label:`2024 to 2025`,body:`Open models got smaller and better, and compression made them fit in ordinary memory.`},{label:`2025`,body:`Phone and laptop makers began shipping models that run directly on hardware people already own.`},{label:`Today`,body:`Local models run inside apps most people use daily, and anyone can download one for free.`}],notes:`Keep this to about ninety seconds. It exists so the room knows this is a recent change rather than a permanent fact, and so the rest of the talk is not the first time they hear that models can be small.
 
 The last row is the strongest proof available for a non-specialist audience: on-device models ship today inside Instagram, WhatsApp, Messenger, and Meta's Ray-Ban Display glasses, through the ExecuTorch runtime. Confirm it yourself against ai.meta.com/blog/executorch-reality-labs-on-device-ai and pytorch.org before saying it, because naming consumer apps invites a follow-up question.
 
@@ -1453,8 +1453,8 @@ Yes. The demonstration is about separating a high-capability planning step from 
     <div class="slide-content">${t}</div>
     ${ks(e)}
     ${Os(e.notes)}
-  </section>`,js=e=>`<p class="eyebrow js-eyebrow">${$(e)}</p>`,Ms=(e,t=`display`)=>`<h2 class="${t} kinetic" aria-label="${$(e.replaceAll(`[[`,``).replaceAll(`]]`,``))}">${Ds(e)}</h2>`,Ns=(e=!1)=>`
-  <g class="device js-device" data-id="hero-device" transform="translate(150 54)">
+  </section>`,js=e=>`<p class="eyebrow js-eyebrow">${$(e)}</p>`,Ms=(e,t=`display`)=>`<h2 class="${t} kinetic" aria-label="${$(e.replaceAll(`[[`,``).replaceAll(`]]`,``))}">${Ds(e)}</h2>`,Ns=(e=!1,t=54)=>`
+  <g class="device js-device" data-id="hero-device" transform="translate(150 ${t})">
     <rect class="device__body" width="220" height="390" rx="42" />
     <rect class="device__screen" x="18" y="30" width="184" height="320" rx="26" />
     <line class="device__speaker" x1="88" y1="15" x2="132" y2="15" />
@@ -1494,14 +1494,21 @@ Yes. The demonstration is about separating a high-capability planning step from 
       </div>`:`
     <div class="route-stage" role="img" aria-label="An AI request travels from a device to a distant data center and back">
       <svg viewBox="0 0 1400 500" aria-hidden="true">
-        ${Ns(!1)}
+        ${Ns(!1,110)}
         ${Ps}
-        <path id="cloud-route" class="route-line js-draw" d="M 370 230 C 570 34, 840 34, 1030 206" />
-        <path class="route-line route-line--return js-draw" d="M 1030 278 C 820 470, 570 470, 370 300" />
+        <path id="cloud-route" class="route-line js-draw" d="M 370 286 C 570 90, 840 34, 1030 206" />
+        <path id="cloud-route-return" class="route-line route-line--return js-draw" d="M 1030 278 C 820 470, 570 496, 370 356" />
         <circle class="route-pulse" r="10">
-          <animateMotion dur="3.2s" repeatCount="indefinite" rotate="auto">
+          <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.5;1">
             <mpath href="#cloud-route" />
           </animateMotion>
+          <animate attributeName="opacity" dur="3.6s" repeatCount="indefinite" calcMode="linear" values="1;1;0;0" keyTimes="0;0.47;0.5;1" />
+        </circle>
+        <circle class="route-pulse route-pulse--return" r="9">
+          <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto" calcMode="linear" keyPoints="0;0;1" keyTimes="0;0.5;1">
+            <mpath href="#cloud-route-return" />
+          </animateMotion>
+          <animate attributeName="opacity" dur="3.6s" repeatCount="indefinite" calcMode="linear" values="0;0;1;1" keyTimes="0;0.5;0.53;1" />
         </circle>
       </svg>
     </div>`,Is=e=>{let t={plane:`<path d="M8 22 28 4l5 1-8 19 12 7-2 4-14-4-6 9-4-1 2-11-8-3 3-3Z" />`,field:`<path d="M5 34c9-11 20-16 34-15M7 40c7-8 17-12 30-12M21 7v11M16 12h10" />`,offline:`<path d="M6 14c10-8 22-8 32 0M11 21c7-6 15-6 22 0M17 28c3-3 7-3 10 0M6 6l32 32" />`};return`<svg class="condition-glyph" viewBox="0 0 44 44" aria-hidden="true">${t[e]??t.offline}</svg>`},Ls=e=>As(e,`<div class="title-layout">
@@ -1510,7 +1517,7 @@ Yes. The demonstration is about separating a high-capability planning step from 
       <h1 class="hero kinetic" aria-label="${$(e.title.replaceAll(`[[`,``).replaceAll(`]]`,``))}">${Ds(e.title)}</h1>
       <p class="hero-subtitle js-subtitle">${$(e.subtitle)}</p>
       <div class="title-byline js-byline">
-        <img class="title-portrait" src="./headshot.jpg" alt="" width="72" height="72" decoding="async" />
+        <img class="title-portrait" src="./headshot.jpg" alt="" width="88" height="88" decoding="async" />
         <span class="byline-name">${$(e.byline)}</span>
         <span class="byline-role">Sr. SDE, Amazon Devices - Emerging Products</span>
       </div>
