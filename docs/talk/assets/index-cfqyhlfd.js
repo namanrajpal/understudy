@@ -1484,14 +1484,16 @@ Yes. The demonstration is about separating a high-capability planning step from 
     ${ks(e)}
     ${Os(e.notes)}
   </section>`,js=e=>e?`<p class="eyebrow js-eyebrow">${$(e)}</p>`:``,Ms=(e,t=`display`)=>`<h2 class="${t} kinetic" aria-label="${$(e.replaceAll(`[[`,``).replaceAll(`]]`,``))}">${Ds(e)}</h2>`,Ns=(e=!1,t=54)=>`
-  <g class="device js-device" data-id="hero-device" transform="translate(150 ${t})">
-    <rect class="device__body" width="220" height="390" rx="42" />
-    <rect class="device__screen" x="18" y="30" width="184" height="320" rx="26" />
-    <line class="device__speaker" x1="88" y1="15" x2="132" y2="15" />
-    <g class="device__intelligence ${e?`is-local`:``}" transform="translate(110 188)">
-      <circle r="60" />
-      <circle r="37" />
-      <circle r="15" />
+  <g transform="translate(150 ${t})">
+    <g class="device js-device" data-id="hero-device">
+      <rect class="device__body" width="220" height="390" rx="42" />
+      <rect class="device__screen" x="18" y="30" width="184" height="320" rx="26" />
+      <line class="device__speaker" x1="88" y1="15" x2="132" y2="15" />
+      <g class="device__intelligence ${e?`is-local`:``}" transform="translate(110 188)">
+        <circle r="60" />
+        <circle r="37" />
+        <circle r="15" />
+      </g>
     </g>
   </g>`,Ps=`
   <g class="data-center" transform="translate(1030 78)">
@@ -1522,12 +1524,12 @@ Yes. The demonstration is about separating a high-capability planning step from 
           </g>
         </svg>
       </div>`:`
-    <div class="route-stage" role="img" aria-label="An AI request travels from a device to a distant data center and back">
+    <div class="route-stage" role="img" aria-label="An AI request travels from personal devices to a distant data center and back">
       <svg viewBox="0 0 1400 500" aria-hidden="true">
-        ${Ns(!1,110)}
+        <image class="route-devices" href="./devices-hero.png" x="60" y="95" width="440" height="302" preserveAspectRatio="xMidYMid meet" />
         ${Ps}
-        <path id="cloud-route" class="route-line js-draw" d="M 370 286 C 570 90, 840 34, 1030 206" />
-        <path id="cloud-route-return" class="route-line route-line--return js-draw" d="M 1030 278 C 820 470, 570 496, 370 356" />
+        <path id="cloud-route" class="route-line js-draw" d="M 500 205 C 660 70, 880 60, 1030 190" />
+        <path id="cloud-route-return" class="route-line route-line--return js-draw" d="M 1030 296 C 880 430, 660 440, 500 290" />
         <circle class="route-pulse" r="10">
           <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.5;1">
             <mpath href="#cloud-route" />
