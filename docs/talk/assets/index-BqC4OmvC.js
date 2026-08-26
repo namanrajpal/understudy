@@ -1505,14 +1505,17 @@ Yes. The demonstration is about separating a high-capability planning step from 
         </circle>
       </svg>
     </div>`,Is=e=>{let t={plane:`<path d="M8 22 28 4l5 1-8 19 12 7-2 4-14-4-6 9-4-1 2-11-8-3 3-3Z" />`,field:`<path d="M5 34c9-11 20-16 34-15M7 40c7-8 17-12 30-12M21 7v11M16 12h10" />`,offline:`<path d="M6 14c10-8 22-8 32 0M11 21c7-6 15-6 22 0M17 28c3-3 7-3 10 0M6 6l32 32" />`};return`<svg class="condition-glyph" viewBox="0 0 44 44" aria-hidden="true">${t[e]??t.offline}</svg>`},Ls=e=>As(e,`<div class="title-layout">
-    ${js(e.eyebrow)}
-    <h1 class="hero kinetic" aria-label="${$(e.title.replaceAll(`[[`,``).replaceAll(`]]`,``))}">${Ds(e.title)}</h1>
-    <p class="hero-subtitle js-subtitle">${$(e.subtitle)}</p>
-    <div class="title-byline js-byline">
-      <img class="title-portrait" src="./headshot.jpg" alt="" width="72" height="72" decoding="async" />
-      <span class="byline-name">${$(e.byline)}</span>
-      <span class="byline-role">Sr. SDE, Amazon Devices - Emerging Products</span>
+    <div class="title-copy">
+      ${js(e.eyebrow)}
+      <h1 class="hero kinetic" aria-label="${$(e.title.replaceAll(`[[`,``).replaceAll(`]]`,``))}">${Ds(e.title)}</h1>
+      <p class="hero-subtitle js-subtitle">${$(e.subtitle)}</p>
+      <div class="title-byline js-byline">
+        <img class="title-portrait" src="./headshot.jpg" alt="" width="72" height="72" decoding="async" />
+        <span class="byline-name">${$(e.byline)}</span>
+        <span class="byline-role">Sr. SDE, Amazon Devices - Emerging Products</span>
+      </div>
     </div>
+    <img class="title-devices" src="./devices-hero.png" alt="Line illustration of a tablet, phone, laptop, smartwatch, earbuds and a speaker" decoding="async" />
   </div>`),Rs=e=>As(e,`<div class="question-layout">
     ${js(e.eyebrow)}
     ${Ms(e.title,`display display--question`)}
