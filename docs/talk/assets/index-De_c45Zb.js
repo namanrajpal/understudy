@@ -1510,9 +1510,8 @@ Yes. The demonstration is about separating a high-capability planning step from 
     <p class="hero-subtitle js-subtitle">${$(e.subtitle)}</p>
     <div class="title-byline js-byline">
       <img class="title-portrait" src="./headshot.jpg" alt="" width="72" height="72" decoding="async" />
-      <span>${$(e.byline)}</span>
-      <span class="byline-rule"></span>
-      <span>Consumer AI devices</span>
+      <span class="byline-name">${$(e.byline)}</span>
+      <span class="byline-role">Sr. SDE, Amazon Devices - Emerging Products</span>
     </div>
   </div>`),Rs=e=>As(e,`<div class="question-layout">
     ${js(e.eyebrow)}
