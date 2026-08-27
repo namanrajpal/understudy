@@ -1011,11 +1011,11 @@ After that I will show one experiment, its measured results, the limits I found,
 
 That includes web chat, phone assistants, editor assistants, and terminal tools. The interface may be on your device while the model call happens remotely.
 
-A large language model, or LLM, is the kind of AI behind chat assistants and writing tools. Remote inference gives us capability and scale that consumer hardware cannot always provide. This is the baseline for the choices that follow.`},{id:`how-we-got-here`,type:`rows`,status:`working`,motion:`rows`,compact:!0,eyebrow:`A short history`,title:`How the local option appeared`,items:[{label:`Until recently`,body:`Useful language models were too large to run anywhere but a data center.`},{label:`2024 to 2025`,body:`Open models got smaller and better, and compression made them fit in ordinary memory.`},{label:`2025`,body:`Phone and laptop makers began shipping models that run directly on hardware people already own.`},{label:`Today`,body:`Local models run inside apps most people use daily, and anyone can download one for free.`}],notes:`Until recently, useful language models were too large to run outside a data center.
+A large language model, or LLM, is the kind of AI behind chat assistants and writing tools. Remote inference gives us capability and scale that consumer hardware cannot always provide. This is the baseline for the choices that follow.`},{id:`how-we-got-here`,type:`rows`,status:`working`,motion:`rows`,compact:!0,eyebrow:`A short history`,title:`How the local option appeared`,items:[{label:`Until recently`,body:`Useful language models were too large to run anywhere but a data center.`},{label:`2024 to 2025`,body:`Open models got smaller and better, and compression made them fit in ordinary memory.`},{label:`2025`,body:`Phone and laptop makers began shipping models that run directly on hardware people already own.`},{label:`Today`,body:`Local models run inside apps most people use daily, and anyone can download one for free.`}],image:`./evidence/llama-cpp-prediction.png`,imageAlt:`Post by llama.cpp creator Georgi Gerganov predicting rapid growth in locally running AI agents`,notes:`Until recently, useful language models were too large to run outside a data center.
 
 During 2024 and 2025, open models improved, and compression made them fit into ordinary computer memory. Phone and laptop makers then began exposing on-device models to applications.
 
-Today, local models appear inside consumer applications, and downloadable models run on hardware many people already own. That combination made local AI a practical deployment option.
+Today, local models appear inside consumer applications, and downloadable models run on hardware many people already own. Georgi Gerganov, the creator of llama.cpp, marked the project reaching 100,000 stars with this deliberately bold prediction about local agents. The percentage is his forecast. The broader signal is the momentum behind local inference in the open-source ecosystem.
 
 Sources:
 https://ai.meta.com/blog/executorch-reality-labs-on-device-ai/
@@ -1027,17 +1027,17 @@ Those answers are independent. A vendor-managed model can run on your device. An
 
 A model can run on a device, on a laptop or desktop, on an office server close to the data, on a remote cloud GPU that your team operates, or through a managed cloud service.
 
-Each choice balances capability, proximity, control, capacity, and operating effort. Local and cloud each cover more than one architecture.`},{id:`what-is-local`,type:`statement`,status:`working`,motion:`underline`,eyebrow:`Local or on-device AI`,title:`Execution happens [[on or near the source.]]`,subtitle:`No remote cloud round trip is required for that operation.`,notes:`I will use local or on-device AI to mean that a particular operation happens on or near the source of its input.
+Each choice balances capability, proximity, control, capacity, and operating effort. Local and cloud each cover more than one architecture.`},{id:`what-is-local`,type:`statement`,status:`working`,motion:`underline`,eyebrow:`What is local AI?`,title:`The model runs [[on the device or nearby.]]`,subtitle:`A phone, computer, or office server does the work without sending the task to a remote cloud model.`,notes:`Local AI describes where the model runs.
 
-That operation requires no remote cloud round trip. An office server may be local to an organization, while a rented GPU remains remote even when your team controls it.
+The model may run directly on a phone or computer, or on a server inside the organization. The task can finish without sending its input to a model in a remote data center.
 
-Execution location and operational control are separate decisions.`},{id:`llm-advancements`,type:`section`,status:`working`,motion:`numbers`,eyebrow:`The LLM shift`,title:`What changed?`,numbers:[`01`,`02`,`03`],labels:[`Capability`,`Efficiency`,`Action`],notes:`Three changes in language models made this possible.
+A rented cloud GPU remains remote even when your team operates it. Execution location and operational control are separate decisions.`},{id:`llm-advancements`,type:`section`,status:`working`,motion:`numbers`,eyebrow:`The LLM shift`,title:`What changed?`,numbers:[`01`,`02`,`03`],labels:[`Capability`,`Efficiency`,`Action`],notes:`Three changes in language models made this possible.
 
 Capability improved in smaller models. Efficiency reduced the memory and computation they need. Structured outputs and tool use made them more useful inside repeatable workflows.
 
 Hardware and runtimes matter, but the main technical shift begins with the models.`},{id:`smaller-capable-models`,type:`statement`,status:`working`,motion:`underline`,eyebrow:`Capability`,title:`Useful work now fits in [[smaller models.]]`,subtitle:`A constrained task may need less capability than a broad one.`,notes:`Smaller models now do useful work when the task is constrained and the result is evaluated.
 
-A small model may be sufficient for classifying an inbox, extracting known fields, transcribing audio, or answering questions over controlled documents.
+Search and email automation, document summarization, and simple device control often need less capability than broad frontier reasoning. A small model may also be sufficient for classifying an inbox, extracting known fields, transcribing audio, or answering questions over controlled documents.
 
 The useful question is whether it meets the quality bar for this particular job.`},{id:`four-llm-advances`,type:`rows`,status:`working`,motion:`rows`,compact:!0,eyebrow:`A focused survey`,title:`Four relevant LLM advances`,items:[{label:`Efficiency`,body:`Compression and quantization reduce memory and compute requirements.`},{label:`Specialization`,body:`Models can be adapted or selected for constrained jobs.`},{label:`Structured action`,body:`Models increasingly produce schemas and choose known actions.`},{label:`Multimodality`,body:`Local models increasingly work across text, images, and audio.`}],notes:`Four model advances matter here.
 
@@ -1047,18 +1047,17 @@ Together, these changes make smaller models easier to place inside products.`},{
 
 Phones and computers gained more efficient processors for AI workloads. Runtimes learned to target the processors already present. Tools such as Ollama and LM Studio made downloading and testing a model approachable.
 
-All three layers improved at the same time, which made experimentation much easier.`},{id:`public-evidence`,type:`cards`,status:`optional`,motion:`cards`,eyebrow:`Public evidence`,title:`Current platform support`,items:[{label:`Phones and laptops`,title:`Apple · Microsoft`,body:`The model already on the machine is exposed to any app through a first-party API.`},{label:`The browser`,title:`Chrome`,body:`A local model ships with the browser. A web page can call it with no API key.`},{label:`Weights you can download`,title:`Meta · Qwen`,body:`Models released this month that run on one consumer GPU or a Mac.`}],notes:`This is a snapshot of current platform support as of August 2026.
+All three layers improved at the same time, which made experimentation much easier.`},{id:`public-evidence`,type:`cards`,status:`optional`,motion:`cards`,eyebrow:`Public evidence`,title:`Major AI companies are building for [[local execution.]]`,items:[{label:`Local-first system`,title:`Perplexity`,body:`Portable Computer runs an agent stack locally and escalates with permission.`,url:`https://www.perplexity.ai/hub/blog/introducing-portable-computer-for-local-first-ai`},{label:`Open model`,title:`Meta`,body:`Muse Glimmer is an agentic model designed to run on a consumer GPU or Mac.`,url:`https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model`},{label:`Hardware and tools`,title:`NVIDIA`,body:`Local AI resources spanning GPUs, runtimes, open models, agents, and guides.`,url:`https://developer.nvidia.com/topics/ai/local-ai`},{label:`Small open models`,title:`Google DeepMind`,body:`Gemma 4 spans efficient models for mobile devices and personal computers.`,url:`https://deepmind.google/models/gemma/gemma-4/#e2b-and-e4b`}],notes:`These companies are building at different layers of the local AI ecosystem.
 
-Apple and Microsoft expose on-device models through first-party application interfaces. Chrome ships a local model that a web page can call without a separate API key. Meta and Qwen released downloadable models this month that fit on a consumer GPU or a recent Mac.
+Perplexity shows a complete local-first agent system with explicit cloud escalation. Meta shows a downloadable model designed for local agent workflows. NVIDIA shows the hardware, runtime, and tooling stack. Google DeepMind shows efficient open models aimed at devices and personal computers.
 
-Together these show local inference appearing through operating systems, browsers, application runtimes, and downloadable weights.
+Each card links directly to the public source.
 
 Sources:
-https://developer.apple.com/apple-intelligence/
-https://learn.microsoft.com/en-us/windows/ai/apis/phi-silica
-https://developer.chrome.com/docs/ai/prompt-api
+https://www.perplexity.ai/hub/blog/introducing-portable-computer-for-local-first-ai
 https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model
-https://github.com/AlibabaCloud-Official/Qwen3.8-27B`},{id:`why-it-matters`,type:`section`,status:`working`,motion:`numbers`,eyebrow:``,title:`Why this matters`,numbers:[`01`,`02`,`03`],labels:[`Performance + experience`,`Privacy + control`,`Possibility`],notes:`These deployment choices create three practical consequences.
+https://developer.nvidia.com/topics/ai/local-ai
+https://deepmind.google/models/gemma/gemma-4/#e2b-and-e4b`},{id:`why-it-matters`,type:`section`,status:`working`,motion:`numbers`,eyebrow:``,title:`Why this matters`,numbers:[`01`,`02`,`03`],labels:[`Performance + experience`,`Privacy + control`,`Possibility`],notes:`These deployment choices create three practical consequences.
 
 The first is the experience when a network path disappears. The second is privacy and control over the input. The third is repeated work without a per-run model-service charge.
 
@@ -1644,17 +1643,18 @@ Yes. The demonstration is about separating a high-capability planning step from 
       <div class="model-core js-model-core">AI</div>
       <div class="scale-device js-scale-device"><span></span></div>
     </div>
-  </div>`),Bs=(e,t=!1)=>Q(e,`<div class="standard-layout">
-    ${$(e.eyebrow)}
-    ${js(e.title,`display display--medium`)}
-    <div class="card-grid ${t?`card-grid--resources`:``}">
-      ${e.items.map((e,t)=>`<article class="editorial-card js-auto-item" data-fragment-index="${t}">
-            <p class="card-label">${Z(e.label)}</p>
-            <h3>${Z(e.title)}</h3>
-            <p>${Z(e.body)}</p>
-          </article>`).join(``)}
-    </div>
-  </div>`),Vs={title:Is,question:Ls,journey:e=>Rs(e,!1),local:e=>Rs(e,!0),scale:zs,cards:Bs,"email-pipeline":e=>Q(e,`<div class="email-pipeline-layout">
+  </div>`),Bs=(e,t=!1)=>{let n=e.items.some(e=>e.url);return Q(e,`<div class="standard-layout">
+      ${$(e.eyebrow)}
+      ${js(e.title,`display display--medium`)}
+      <div class="card-grid ${t?`card-grid--resources`:``} ${n?`card-grid--links`:``}">
+        ${e.items.map((e,t)=>{let n=`<p class="card-label">${Z(e.label)}</p>
+              <h3>${Z(e.title)}</h3>
+              <p>${Z(e.body)}</p>`;return e.url?`<a class="editorial-card editorial-card--link js-auto-item" href="${Z(e.url)}" target="_blank" rel="noopener noreferrer" data-fragment-index="${t}">
+                ${n}
+                <span class="card-link">Open source ↗</span>
+              </a>`:`<article class="editorial-card js-auto-item" data-fragment-index="${t}">${n}</article>`}).join(``)}
+      </div>
+    </div>`)},Vs={title:Is,question:Ls,journey:e=>Rs(e,!1),local:e=>Rs(e,!0),scale:zs,cards:Bs,"email-pipeline":e=>Q(e,`<div class="email-pipeline-layout">
     <div class="email-pipeline-heading">
       ${$(e.eyebrow)}
       ${js(e.title,`display display--email-pipeline`)}
@@ -1720,7 +1720,7 @@ Yes. The demonstration is about separating a high-capability planning step from 
       ${$(e.eyebrow)}
       ${js(e.title,`display display--principle`)}
     </div>
-  </div>`),rows:e=>Q(e,`<div class="standard-layout standard-layout--rows">
+  </div>`),rows:e=>Q(e,`<div class="standard-layout standard-layout--rows${e.image?` standard-layout--rows-evidence`:``}">
     ${$(e.eyebrow)}
     ${js(e.title,`display display--medium`)}
     <div class="editorial-rows${e.compact?` editorial-rows--compact`:``}">
@@ -1729,6 +1729,7 @@ Yes. The demonstration is about separating a high-capability planning step from 
             <span class="editorial-row__body">${Z(e.body)}</span>
           </div>`).join(``)}
     </div>
+    ${e.image?`<figure class="rows-evidence js-auto-item"><img src="${Z(e.image)}" alt="${Z(e.imageAlt)}" decoding="async" /></figure>`:``}
   </div>`),meter:e=>Q(e,`<div class="meter-layout">
     <div class="meter-copy">
       ${$(e.eyebrow)}
